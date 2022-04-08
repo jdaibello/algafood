@@ -59,7 +59,7 @@ public class CozinhaController {
 	public ResponseEntity<Cozinha> atualizar(@PathVariable Long cozinhaId, @RequestBody Cozinha cozinha) {
 		Optional<Cozinha> cozinhaAtual = cozinhaRepository.findById(cozinhaId);
 
-		if (cozinhaAtual.isPresent()) {
+		if (cozinhaAtual != null) {
 			BeanUtils.copyProperties(cozinha, cozinhaAtual.get(), "id");
 			Cozinha cozinhaSalva = cadastroCozinha.salvar(cozinhaAtual.get());
 			return ResponseEntity.ok(cozinhaSalva);
