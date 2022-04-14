@@ -61,7 +61,7 @@ public class Restaurante {
 	@OneToMany
 	private List<Produto> produtos = new ArrayList<>();
 
-	@JsonIgnore
+	// @JsonIgnore
 	@ManyToMany
 	@JoinTable(
 		name = "RestauranteFormaPagamento",
