@@ -68,6 +68,8 @@ public class Restaurante {
 	private List<Produto> produtos = new ArrayList<>();
 
 	@JsonIgnore
+	// Usar EAGER com muito cuidado em relações ManyToMany
+	// @ManyToMany(fetch = FetchType.EAGER)
 	@ManyToMany
 	@JoinTable(
 		name = "RestauranteFormaPagamento",
