@@ -65,7 +65,7 @@ public class Restaurante {
 	@OneToMany
 	private List<Produto> produtos = new ArrayList<>();
 
-	// @JsonIgnore
+	@JsonIgnore
 	// Usar EAGER com muito cuidado em relações ManyToMany
 	// @ManyToMany(fetch = FetchType.EAGER)
 	@ManyToMany
