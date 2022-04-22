@@ -130,9 +130,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
 		if (body == null) {
 			body = Problem.builder().timestamp(LocalDateTime.now()).title(status.getReasonPhrase())
-					.status(status.value()).build();
+					.status(status.value()).userMessage(MSG_ERRO_GENERICO_USUARIO_FINAL).build();
 		} else if (body instanceof String) {
-			body = Problem.builder().timestamp(LocalDateTime.now()).title((String) body).status(status.value()).build();
+			body = Problem.builder().timestamp(LocalDateTime.now()).title((String) body).status(status.value())
+					.userMessage(MSG_ERRO_GENERICO_USUARIO_FINAL).build();
 		}
 
 		return super.handleExceptionInternal(ex, body, headers, status, request);
@@ -146,7 +147,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
 		ex.printStackTrace();
 
-		Problem problem = createProblemBuilder(status, problemType, detail).build();
+		Problem problem = createProblemBuilder(status, problemType, detail).userMessage(detail).build();
 		return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
 	}
 
