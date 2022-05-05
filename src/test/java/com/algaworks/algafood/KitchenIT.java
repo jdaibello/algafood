@@ -24,7 +24,7 @@ public class KitchenIT {
 	private KitchenService service;
 
 	@Test
-	public void shouldSaveKitchenSuccessfully() {
+	void shouldSaveKitchenSuccessfully() {
 		// Cenário
 		Kitchen newKitchen = new Kitchen();
 		newKitchen.setName("Australiana");
@@ -38,7 +38,7 @@ public class KitchenIT {
 	}
 
 	@Test
-	public void shouldFailWhenSavingKitchenWithoutName() {
+	void shouldFailWhenSavingKitchenWithoutName() {
 		Kitchen newKitchen = new Kitchen();
 		newKitchen.setName(null);
 
@@ -50,7 +50,7 @@ public class KitchenIT {
 	}
 
 	@Test
-	public void shouldFailWhenDeletingKitchenAlreadyInUse() {
+	void shouldFailWhenDeletingKitchenAlreadyInUse() {
 		EntityInUseException exceptedError = assertThrows(EntityInUseException.class, () -> {
 			service.delete(1L);
 		});
@@ -59,7 +59,7 @@ public class KitchenIT {
 	}
 
 	@Test
-	public void shouldFailWhenDeletingNonExistentKitchen() {
+	void shouldFailWhenDeletingNonExistentKitchen() {
 		KitchenNotFoundException expectedError = assertThrows(KitchenNotFoundException.class, () -> {
 			service.delete(100L);
 		});
