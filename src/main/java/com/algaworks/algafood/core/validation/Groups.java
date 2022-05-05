@@ -2,9 +2,9 @@ package com.algaworks.algafood.core.validation;
 
 public interface Groups {
 
-	public interface CozinhaId {
+	public interface KitchenId {
 	}
 
-	public interface EstadoId {
+	public interface StateId {
 	}
 }
