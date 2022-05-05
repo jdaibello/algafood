@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import com.algaworks.algafood.domain.exception.EntityInUseException;
+import com.algaworks.algafood.domain.exception.KitchenNotFoundException;
 import com.algaworks.algafood.domain.model.Kitchen;
 import com.algaworks.algafood.domain.service.KitchenService;
 
@@ -42,6 +44,24 @@ public class KitchenIntegrationTests {
 
 		ConstraintViolationException expectedError = assertThrows(ConstraintViolationException.class, () -> {
 			service.save(newKitchen);
+		});
+
+		assertThat(expectedError).isNotNull();
+	}
+
+	@Test
+	public void shouldFailWhenDeletingKitchenAlreadyInUse() {
+		EntityInUseException exceptedError = assertThrows(EntityInUseException.class, () -> {
+			service.delete(1L);
+		});
+
+		assertThat(exceptedError).isNotNull();
+	}
+
+	@Test
+	public void shouldFailWhenDeletingNonExistentKitchen() {
+		KitchenNotFoundException expectedError = assertThrows(KitchenNotFoundException.class, () -> {
+			service.delete(100L);
 		});
 
 		assertThat(expectedError).isNotNull();
