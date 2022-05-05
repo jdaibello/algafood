@@ -18,7 +18,7 @@ import com.algaworks.algafood.domain.service.KitchenService;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class KitchenIntegrationTests {
+public class KitchenIT {
 
 	@Autowired
 	private KitchenService service;
