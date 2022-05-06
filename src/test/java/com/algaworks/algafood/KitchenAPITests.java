@@ -5,9 +5,11 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
 
+import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -24,11 +26,16 @@ public class KitchenAPITests {
 	@LocalServerPort
 	private int port;
 
+	@Autowired
+	private Flyway flyway;
+
 	@BeforeEach
 	void setUp() {
 		enableLoggingOfRequestAndResponseIfValidationFails();
 		RestAssured.basePath = "/kitchens";
 		RestAssured.port = port;
+
+		flyway.migrate();
 	}
 
 	@Test
