@@ -41,4 +41,10 @@ public class KitchenAPITests {
 		given().accept(ContentType.JSON).when().get().then().body("", hasSize(4)).body("name",
 				hasItems("Indiana", "Tailandesa"));
 	}
+
+	@Test
+	void shouldReturnStatus201WhenSaveKitchen() {
+		given().body("{ \"name\": \"Chinesa\" }").contentType(ContentType.JSON).accept(ContentType.JSON).when().post()
+				.then().statusCode(HttpStatus.CREATED.value());
+	}
 }
