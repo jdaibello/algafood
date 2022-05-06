@@ -2,6 +2,8 @@ package com.algaworks.algafood;
 
 import static io.restassured.RestAssured.enableLoggingOfRequestAndResponseIfValidationFails;
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.hasSize;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,5 +28,13 @@ public class KitchenAPITests {
 
 		given().basePath("/kitchens").port(port).accept(ContentType.JSON).when().get().then()
 				.statusCode(HttpStatus.OK.value());
+	}
+
+	@Test
+	void shouldHave4KitchensWhenGetKitchens() {
+		enableLoggingOfRequestAndResponseIfValidationFails();
+
+		given().basePath("/kitchens").port(port).accept(ContentType.JSON).when().get().then().body("", hasSize(4))
+				.body("name", hasItems("Indiana", "Tailandesa"));
 	}
 }
