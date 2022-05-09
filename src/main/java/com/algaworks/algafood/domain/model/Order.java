@@ -1,7 +1,7 @@
 package com.algaworks.algafood.domain.model;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,11 +41,11 @@ public class Order {
 
 	@CreationTimestamp
 	@Column(nullable = false, columnDefinition = "datetime")
-	private LocalDateTime creationDate;
+	private OffsetDateTime creationDate;
 
-	private LocalDateTime confirmationDate;
-	private LocalDateTime cancellationDate;
-	private LocalDateTime deliveryDate;
+	private OffsetDateTime confirmationDate;
+	private OffsetDateTime cancellationDate;
+	private OffsetDateTime deliveryDate;
 
 	@ManyToOne
 	@JoinColumn(nullable = false)
