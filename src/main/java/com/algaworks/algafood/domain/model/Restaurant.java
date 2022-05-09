@@ -28,8 +28,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import com.algaworks.algafood.core.validation.Groups;
 import com.algaworks.algafood.core.validation.ZeroValueIncludesDescription;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -59,7 +57,6 @@ public class Restaurant {
 	@Column(name = "shipping_fee", nullable = false)
 	private BigDecimal shippingFee;
 
-	@JsonIgnoreProperties(value = "name", allowGetters = true)
 	@Valid
 	@ConvertGroup(from = Default.class, to = Groups.KitchenId.class)
 	@NotNull
@@ -67,26 +64,21 @@ public class Restaurant {
 	@JoinColumn(name = "kitchen_id", nullable = false)
 	private Kitchen kitchen;
 
-	@JsonIgnore
 	@Embedded
 	private Address address;
 
-	@JsonIgnore
 	@CreationTimestamp
 	@Column(name = "creation_date", nullable = false, columnDefinition = "datetime")
 	private LocalDateTime creationDate;
 
-	@JsonIgnore
 	@UpdateTimestamp
 	@Column(name = "update_date", nullable = false, columnDefinition = "datetime")
 	private LocalDateTime updateDate;
 
-	@JsonIgnore
 	@OneToMany
 	@JoinTable(name = "restaurant_product")
 	private List<Product> products = new ArrayList<>();
 
-	@JsonIgnore
 	// Usar EAGER com muito cuidado em relações ManyToMany
 	// @ManyToMany(fetch = FetchType.EAGER)
 	@ManyToMany
