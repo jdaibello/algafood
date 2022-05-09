@@ -3,6 +3,7 @@ package com.algaworks.algafood.api.controller;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.algaworks.algafood.api.model.KitchenDTO;
 import com.algaworks.algafood.api.model.RestaurantDTO;
 import com.algaworks.algafood.core.validation.ValidationException;
 import com.algaworks.algafood.domain.exception.BusinessException;
@@ -51,45 +53,43 @@ public class RestaurantController {
 	private SmartValidator validator;
 
 	@GetMapping
-	public List<Restaurant> fetchAll() {
-		return restaurantRepository.findAll();
+	public List<RestaurantDTO> fetchAll() {
+		return toCollectionModel(restaurantRepository.findAll());
 	}
 
 	@GetMapping("/{restaurantId}")
 	public RestaurantDTO find(@PathVariable Long restaurantId) {
 		Restaurant restaurant = service.findOrFail(restaurantId);
 
-		RestaurantDTO restaurantDTO = null;
-
-		return restaurantDTO;
+		return toModel(restaurant);
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Restaurant add(@RequestBody @Valid Restaurant restaurant) {
+	public RestaurantDTO add(@RequestBody @Valid Restaurant restaurant) {
 		try {
-			return service.save(restaurant);
+			return toModel(service.save(restaurant));
 		} catch (KitchenNotFoundException e) {
 			throw new BusinessException(e.getMessage(), e);
 		}
 	}
 
 	@PutMapping("/{restaurantId}")
-	public Restaurant update(@PathVariable Long restaurantId, @RequestBody Restaurant restaurant) {
+	public RestaurantDTO update(@PathVariable Long restaurantId, @RequestBody Restaurant restaurant) {
 		Restaurant currentRestaurant = service.findOrFail(restaurantId);
 
 		BeanUtils.copyProperties(restaurant, currentRestaurant, "id", "paymentMethods", "address", "creationDate",
 				"products");
 
 		try {
-			return service.save(currentRestaurant);
+			return toModel(service.save(currentRestaurant));
 		} catch (KitchenNotFoundException e) {
 			throw new BusinessException(e.getMessage(), e);
 		}
 	}
 
 	@PatchMapping("/{restaurantId}")
-	public Restaurant partialUpdate(@PathVariable Long restaurantId, @RequestBody Map<String, Object> fields,
+	public RestaurantDTO partialUpdate(@PathVariable Long restaurantId, @RequestBody Map<String, Object> fields,
 			HttpServletRequest request) {
 
 		Restaurant currentRestaurant = service.findOrFail(restaurantId);
@@ -103,6 +103,23 @@ public class RestaurantController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable Long restaurantId) {
 		service.delete(restaurantId);
+	}
+
+	private List<RestaurantDTO> toCollectionModel(List<Restaurant> restaurants) {
+		return restaurants.stream().map(restaurant -> toModel(restaurant)).collect(Collectors.toList());
+	}
+
+	private RestaurantDTO toModel(Restaurant restaurant) {
+		KitchenDTO kitchenDto = new KitchenDTO();
+		kitchenDto.setId(restaurant.getKitchen().getId());
+		kitchenDto.setName(restaurant.getKitchen().getName());
+
+		RestaurantDTO restaurantDto = new RestaurantDTO();
+		restaurantDto.setId(restaurant.getId());
+		restaurantDto.setName(restaurant.getName());
+		restaurantDto.setShippingFee(restaurant.getShippingFee());
+		restaurantDto.setKitchen(kitchenDto);
+		return restaurantDto;
 	}
 
 	private void validate(Restaurant restaurant, String objectName) {

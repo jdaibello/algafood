@@ -11,5 +11,5 @@ public class RestaurantDTO {
 	private Long id;
 	private String name;
 	private BigDecimal shippingFee;
-	private KitchenDTO kitchenId;
+	private KitchenDTO kitchen;
 }
