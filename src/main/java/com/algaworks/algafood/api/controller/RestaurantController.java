@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.algaworks.algafood.api.model.RestaurantDTO;
 import com.algaworks.algafood.core.validation.ValidationException;
 import com.algaworks.algafood.domain.exception.BusinessException;
 import com.algaworks.algafood.domain.exception.KitchenNotFoundException;
@@ -55,8 +56,12 @@ public class RestaurantController {
 	}
 
 	@GetMapping("/{restaurantId}")
-	public Restaurant find(@PathVariable Long restaurantId) {
-		return service.findOrFail(restaurantId);
+	public RestaurantDTO find(@PathVariable Long restaurantId) {
+		Restaurant restaurant = service.findOrFail(restaurantId);
+
+		RestaurantDTO restaurantDTO = null;
+
+		return restaurantDTO;
 	}
 
 	@PostMapping
