@@ -86,8 +86,7 @@ public class DatabaseCleaner {
 	private void addTruncateStatements(List<String> tableNames, Statement statement) {
 		tableNames.forEach(tableName -> {
 			try {
-				statement.addBatch(sql("DELETE TABLE " + tableName));
-				System.out.println("TRUNCATE TABLE " + tableName);
+				statement.addBatch(sql("TRUNCATE TABLE " + "`" + tableName + "`"));
 			} catch (SQLException e) {
 				throw new RuntimeException(e);
 			}
@@ -98,5 +97,4 @@ public class DatabaseCleaner {
 		logger.debug("Adding SQL: {}", sql);
 		return sql;
 	}
-
 }
