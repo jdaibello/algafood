@@ -97,5 +97,4 @@ public class DatabaseCleaner {
 		logger.debug("Adding SQL: {}", sql);
 		return sql;
 	}
-
 }

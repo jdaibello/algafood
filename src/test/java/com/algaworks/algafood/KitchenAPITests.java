@@ -49,7 +49,6 @@ public class KitchenAPITests {
 		RestAssured.basePath = "/kitchens";
 		RestAssured.port = port;
 
-		// TODO: Fix error when cleaning tables
 		databaseCleaner.clearTables();
 		prepareData();
 
