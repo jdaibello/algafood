@@ -32,7 +32,7 @@ public class KitchenAPITests {
 
 	private Kitchen americanKitchen;
 	private int numberOfRegisteredKitchens;
-	private String correctJsonChineseKitchen;
+	private String jsonCorrectChineseKitchen;
 
 	@LocalServerPort
 	private int port;
@@ -53,7 +53,7 @@ public class KitchenAPITests {
 		databaseCleaner.clearTables();
 		prepareData();
 
-		correctJsonChineseKitchen = ResourceUtils.getContentFromResource("/json/correct/chinese-kitchen.json");
+		jsonCorrectChineseKitchen = ResourceUtils.getContentFromResource("/json/correct/chinese-kitchen.json");
 	}
 
 	@Test
@@ -68,7 +68,7 @@ public class KitchenAPITests {
 
 	@Test
 	void shouldReturnStatus201WhenSaveKitchen() {
-		given().body(correctJsonChineseKitchen).contentType(ContentType.JSON).accept(ContentType.JSON).when().post()
+		given().body(jsonCorrectChineseKitchen).contentType(ContentType.JSON).accept(ContentType.JSON).when().post()
 				.then().statusCode(HttpStatus.CREATED.value());
 	}
 
