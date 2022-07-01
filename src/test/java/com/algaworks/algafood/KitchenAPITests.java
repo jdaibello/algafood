@@ -2,6 +2,7 @@ package com.algaworks.algafood;
 
 import static io.restassured.RestAssured.enableLoggingOfRequestAndResponseIfValidationFails;
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -61,6 +62,18 @@ public class KitchenAPITests {
 	void shouldReturnStatus201WhenSaveKitchen() {
 		given().body("{ \"name\": \"Chinesa\" }").contentType(ContentType.JSON).accept(ContentType.JSON).when().post()
 				.then().statusCode(HttpStatus.CREATED.value());
+	}
+
+	@Test
+	void shouldReturnResponseAndCorrectStatusWhenGetExistingKitchen() {
+		given().pathParam("kitchenId", 2).accept(ContentType.JSON).when().get("/{kitchenId}").then()
+				.statusCode(HttpStatus.OK.value()).body("name", equalTo("Americana"));
+	}
+
+	@Test
+	void shouldReturnStatus400WhenGetNonExistingKitchen() {
+		given().pathParam("kitchenId", 100).accept(ContentType.JSON).when().get("/{kitchenId}").then()
+				.statusCode(HttpStatus.NOT_FOUND.value());
 	}
 
 	private void prepareData() {

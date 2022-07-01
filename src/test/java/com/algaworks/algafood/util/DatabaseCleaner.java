@@ -87,7 +87,6 @@ public class DatabaseCleaner {
 		tableNames.forEach(tableName -> {
 			try {
 				statement.addBatch(sql("TRUNCATE TABLE " + "`" + tableName + "`"));
-				System.out.println("TRUNCATE TABLE " + tableName);
 			} catch (SQLException e) {
 				throw new RuntimeException(e);
 			}
