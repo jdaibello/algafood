@@ -16,17 +16,10 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
-import javax.validation.groups.ConvertGroup;
-import javax.validation.groups.Default;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.algaworks.algafood.core.validation.Groups;
 import com.algaworks.algafood.core.validation.ZeroValueIncludesDescription;
 
 import lombok.Data;
@@ -46,20 +39,12 @@ public class Restaurant {
 	@EqualsAndHashCode.Include
 	private Long id;
 
-	// @NotNull
-	// @NotEmpty
-	@NotBlank
 	@Column(nullable = false)
 	private String name;
 
-	@NotNull
-	@PositiveOrZero
 	@Column(name = "shipping_fee", nullable = false)
 	private BigDecimal shippingFee;
 
-	@Valid
-	@ConvertGroup(from = Default.class, to = Groups.KitchenId.class)
-	@NotNull
 	@ManyToOne
 	@JoinColumn(name = "kitchen_id", nullable = false)
 	private Kitchen kitchen;
