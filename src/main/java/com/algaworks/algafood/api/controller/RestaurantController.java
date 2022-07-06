@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.algaworks.algafood.api.assembler.RestaurantInputDisassembler;
 import com.algaworks.algafood.api.assembler.RestaurantDTOAssembler;
+import com.algaworks.algafood.api.assembler.RestaurantInputDisassembler;
 import com.algaworks.algafood.api.model.RestaurantDTO;
 import com.algaworks.algafood.api.model.input.RestaurantInput;
 import com.algaworks.algafood.domain.exception.BusinessException;
@@ -70,11 +69,8 @@ public class RestaurantController {
 	@PutMapping("/{restaurantId}")
 	public RestaurantDTO update(@PathVariable Long restaurantId, @RequestBody RestaurantInput restaurantInput) {
 		try {
-			Restaurant restaurant = restaurantInputDisassembler.toDomainObject(restaurantInput);
 			Restaurant currentRestaurant = service.findOrFail(restaurantId);
-
-			BeanUtils.copyProperties(restaurant, currentRestaurant, "id", "paymentMethods", "address", "creationDate",
-					"products");
+			restaurantInputDisassembler.copyToDomainObject(restaurantInput, currentRestaurant);
 
 			return restaurantModelAssembler.toModel(service.save(currentRestaurant));
 		} catch (KitchenNotFoundException e) {
