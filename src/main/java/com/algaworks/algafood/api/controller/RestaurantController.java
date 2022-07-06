@@ -1,7 +1,6 @@
 package com.algaworks.algafood.api.controller;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -18,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.algaworks.algafood.api.model.KitchenDTO;
+import com.algaworks.algafood.api.assembler.RestaurantModelAssembler;
 import com.algaworks.algafood.api.model.RestaurantDTO;
 import com.algaworks.algafood.api.model.input.RestaurantInput;
 import com.algaworks.algafood.domain.exception.BusinessException;
@@ -38,16 +37,19 @@ public class RestaurantController {
 	@Autowired
 	private RestaurantService service;
 
+	@Autowired
+	private RestaurantModelAssembler restaurantModelAssembler;
+
 	@GetMapping
 	public List<RestaurantDTO> fetchAll() {
-		return toCollectionModel(restaurantRepository.findAll());
+		return restaurantModelAssembler.toCollectionModel(restaurantRepository.findAll());
 	}
 
 	@GetMapping("/{restaurantId}")
 	public RestaurantDTO find(@PathVariable Long restaurantId) {
 		Restaurant restaurant = service.findOrFail(restaurantId);
 
-		return toModel(restaurant);
+		return restaurantModelAssembler.toModel(restaurant);
 	}
 
 	@PostMapping
@@ -56,7 +58,7 @@ public class RestaurantController {
 		try {
 			Restaurant restaurant = toDomainObject(restaurantInput);
 
-			return toModel(service.save(restaurant));
+			return restaurantModelAssembler.toModel(service.save(restaurant));
 		} catch (KitchenNotFoundException e) {
 			throw new BusinessException(e.getMessage(), e);
 		}
@@ -71,7 +73,7 @@ public class RestaurantController {
 			BeanUtils.copyProperties(restaurant, currentRestaurant, "id", "paymentMethods", "address", "creationDate",
 					"products");
 
-			return toModel(service.save(currentRestaurant));
+			return restaurantModelAssembler.toModel(service.save(currentRestaurant));
 		} catch (KitchenNotFoundException e) {
 			throw new BusinessException(e.getMessage(), e);
 		}
@@ -81,23 +83,6 @@ public class RestaurantController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable Long restaurantId) {
 		service.delete(restaurantId);
-	}
-
-	private RestaurantDTO toModel(Restaurant restaurant) {
-		KitchenDTO kitchenDto = new KitchenDTO();
-		kitchenDto.setId(restaurant.getKitchen().getId());
-		kitchenDto.setName(restaurant.getKitchen().getName());
-
-		RestaurantDTO restaurantDto = new RestaurantDTO();
-		restaurantDto.setId(restaurant.getId());
-		restaurantDto.setName(restaurant.getName());
-		restaurantDto.setShippingFee(restaurant.getShippingFee());
-		restaurantDto.setKitchen(kitchenDto);
-		return restaurantDto;
-	}
-
-	private List<RestaurantDTO> toCollectionModel(List<Restaurant> restaurants) {
-		return restaurants.stream().map(restaurant -> toModel(restaurant)).collect(Collectors.toList());
 	}
 
 	private Restaurant toDomainObject(RestaurantInput restaurantInput) {
