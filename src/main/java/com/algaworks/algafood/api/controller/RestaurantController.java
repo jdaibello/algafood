@@ -17,12 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.algaworks.algafood.api.assembler.RestaurantInputDisassembler;
 import com.algaworks.algafood.api.assembler.RestaurantModelAssembler;
 import com.algaworks.algafood.api.model.RestaurantDTO;
 import com.algaworks.algafood.api.model.input.RestaurantInput;
 import com.algaworks.algafood.domain.exception.BusinessException;
 import com.algaworks.algafood.domain.exception.KitchenNotFoundException;
-import com.algaworks.algafood.domain.model.Kitchen;
 import com.algaworks.algafood.domain.model.Restaurant;
 import com.algaworks.algafood.domain.repository.RestaurantRepository;
 import com.algaworks.algafood.domain.service.RestaurantService;
@@ -40,6 +40,9 @@ public class RestaurantController {
 	@Autowired
 	private RestaurantModelAssembler restaurantModelAssembler;
 
+	@Autowired
+	private RestaurantInputDisassembler restaurantInputDisassembler;
+
 	@GetMapping
 	public List<RestaurantDTO> fetchAll() {
 		return restaurantModelAssembler.toCollectionModel(restaurantRepository.findAll());
@@ -56,7 +59,7 @@ public class RestaurantController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public RestaurantDTO add(@RequestBody @Valid RestaurantInput restaurantInput) {
 		try {
-			Restaurant restaurant = toDomainObject(restaurantInput);
+			Restaurant restaurant = restaurantInputDisassembler.toDomainObject(restaurantInput);
 
 			return restaurantModelAssembler.toModel(service.save(restaurant));
 		} catch (KitchenNotFoundException e) {
@@ -67,7 +70,7 @@ public class RestaurantController {
 	@PutMapping("/{restaurantId}")
 	public RestaurantDTO update(@PathVariable Long restaurantId, @RequestBody RestaurantInput restaurantInput) {
 		try {
-			Restaurant restaurant = toDomainObject(restaurantInput);
+			Restaurant restaurant = restaurantInputDisassembler.toDomainObject(restaurantInput);
 			Restaurant currentRestaurant = service.findOrFail(restaurantId);
 
 			BeanUtils.copyProperties(restaurant, currentRestaurant, "id", "paymentMethods", "address", "creationDate",
@@ -83,18 +86,5 @@ public class RestaurantController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable Long restaurantId) {
 		service.delete(restaurantId);
-	}
-
-	private Restaurant toDomainObject(RestaurantInput restaurantInput) {
-		Restaurant restaurant = new Restaurant();
-		restaurant.setName(restaurantInput.getName());
-		restaurant.setShippingFee(restaurantInput.getShippingFee());
-
-		Kitchen kitchen = new Kitchen();
-		kitchen.setId(restaurantInput.getKitchen().getId());
-
-		restaurant.setKitchen(kitchen);
-
-		return restaurant;
 	}
 }
