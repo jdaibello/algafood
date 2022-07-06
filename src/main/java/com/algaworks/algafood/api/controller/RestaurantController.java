@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafood.api.assembler.RestaurantInputDisassembler;
-import com.algaworks.algafood.api.assembler.RestaurantModelAssembler;
+import com.algaworks.algafood.api.assembler.RestaurantDTOAssembler;
 import com.algaworks.algafood.api.model.RestaurantDTO;
 import com.algaworks.algafood.api.model.input.RestaurantInput;
 import com.algaworks.algafood.domain.exception.BusinessException;
@@ -38,7 +38,7 @@ public class RestaurantController {
 	private RestaurantService service;
 
 	@Autowired
-	private RestaurantModelAssembler restaurantModelAssembler;
+	private RestaurantDTOAssembler restaurantModelAssembler;
 
 	@Autowired
 	private RestaurantInputDisassembler restaurantInputDisassembler;
