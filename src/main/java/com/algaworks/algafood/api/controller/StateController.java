@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,6 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.algaworks.algafood.api.assembler.StateDTOAssembler;
+import com.algaworks.algafood.api.assembler.StateInputDisassembler;
+import com.algaworks.algafood.api.model.StateDTO;
+import com.algaworks.algafood.api.model.input.StateInput;
 import com.algaworks.algafood.domain.model.State;
 import com.algaworks.algafood.domain.repository.StateRepository;
 import com.algaworks.algafood.domain.service.StateService;
@@ -31,28 +34,40 @@ public class StateController {
 	@Autowired
 	private StateService service;
 
+	@Autowired
+	private StateDTOAssembler stateDTOAssembler;
+
+	@Autowired
+	private StateInputDisassembler stateInputDisassembler;
+
 	@GetMapping
-	public List<State> fetchAll() {
-		return stateRepository.findAll();
+	public List<StateDTO> fetchAll() {
+		return stateDTOAssembler.toCollectionModel(stateRepository.findAll());
 	}
 
 	@GetMapping("/{stateId}")
-	public State find(@PathVariable Long stateId) {
-		return service.findOrFail(stateId);
+	public StateDTO find(@PathVariable Long stateId) {
+		State state = service.findOrFail(stateId);
+
+		return stateDTOAssembler.toModel(state);
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public State add(@RequestBody @Valid State state) {
-		return service.save(state);
+	public StateDTO add(@RequestBody @Valid StateInput stateInput) {
+		State state = stateInputDisassembler.toDomainObject(stateInput);
+		state = service.save(state);
+
+		return stateDTOAssembler.toModel(state);
 	}
 
 	@PutMapping("/{stateId}")
-	public State update(@PathVariable Long stateId, @RequestBody @Valid State state) {
+	public StateDTO update(@PathVariable Long stateId, @RequestBody @Valid StateInput stateInput) {
 		State currentState = service.findOrFail(stateId);
-		BeanUtils.copyProperties(state, currentState, "id");
+		stateInputDisassembler.copyToDomainObject(stateInput, currentState);
+		currentState = service.save(currentState);
 
-		return service.save(currentState);
+		return stateDTOAssembler.toModel(currentState);
 	}
 
 	@DeleteMapping("/{stateId}")
