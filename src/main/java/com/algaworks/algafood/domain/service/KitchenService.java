@@ -24,15 +24,16 @@ public class KitchenService {
 	}
 
 	@Transactional
-	public void delete(Long cityId) {
+	public void delete(Long kitchenId) {
 		try {
-			kitchenRepository.deleteById(cityId);
+			kitchenRepository.deleteById(kitchenId);
+			kitchenRepository.flush();
 
 		} catch (EmptyResultDataAccessException e) {
-			throw new KitchenNotFoundException(cityId);
+			throw new KitchenNotFoundException(kitchenId);
 
 		} catch (DataIntegrityViolationException e) {
-			throw new EntityInUseException(String.format(KITCHEN_IN_USE_MSG, cityId));
+			throw new EntityInUseException(String.format(KITCHEN_IN_USE_MSG, kitchenId));
 		}
 	}
 
