@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,8 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafood.api.assembler.RestaurantDTOAssembler;
 import com.algaworks.algafood.api.assembler.RestaurantInputDisassembler;
-import com.algaworks.algafood.api.model.RestaurantDTO;
-import com.algaworks.algafood.api.model.input.RestaurantInput;
+import com.algaworks.algafood.api.dto.RestaurantDTO;
+import com.algaworks.algafood.api.dto.input.RestaurantInput;
 import com.algaworks.algafood.domain.exception.BusinessException;
 import com.algaworks.algafood.domain.exception.KitchenNotFoundException;
 import com.algaworks.algafood.domain.model.Restaurant;
@@ -75,5 +76,17 @@ public class RestaurantController {
 		} catch (KitchenNotFoundException e) {
 			throw new BusinessException(e.getMessage(), e);
 		}
+	}
+
+	@PutMapping("/{restaurantId}/active")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void activate(@PathVariable Long restaurantId) {
+		service.activate(restaurantId);
+	}
+
+	@DeleteMapping("/{restaurantId}/active")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void inactivate(@PathVariable Long restaurantId) {
+		service.inactivate(restaurantId);
 	}
 }

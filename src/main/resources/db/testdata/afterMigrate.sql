@@ -44,12 +44,12 @@ INSERT INTO city (id, name, state_id) VALUES (3, 'São Paulo', 2);
 INSERT INTO city (id, name, state_id) VALUES (4, 'Campinas', 2);
 INSERT INTO city (id, name, state_id) VALUES (5, 'Fortaleza', 3);
 
-INSERT INTO restaurant (id, name, shipping_fee, kitchen_id, creation_date, update_date, address_city_id, address_zipcode, address_street, address_number, address_district) VALUES (1, 'Thai Gourmet', 10, 1, UTC_TIMESTAMP(), UTC_TIMESTAMP(), 1, '38400-999', 'Rua João Pinheiro', '1000', 'Centro');
-INSERT INTO restaurant (id, name, shipping_fee, kitchen_id, creation_date, update_date) VALUES (2, 'Thai Delivery', 9.50, 1, UTC_TIMESTAMP(), UTC_TIMESTAMP());
-INSERT INTO restaurant (id, name, shipping_fee, kitchen_id, creation_date, update_date) VALUES (3, 'Tuk Tuk Comida Indiana', 15, 2, UTC_TIMESTAMP(), UTC_TIMESTAMP());
-INSERT INTO restaurant (id, name, shipping_fee, kitchen_id, creation_date, update_date) VALUES (4, 'Java Steakhouse', 15, 3, UTC_TIMESTAMP(), UTC_TIMESTAMP());
-INSERT INTO restaurant (id, name, shipping_fee, kitchen_id, creation_date, update_date) VALUES (5, 'Lanchonete da Maria', 9.99, 4 ,UTC_TIMESTAMP(), UTC_TIMESTAMP());
-INSERT INTO restaurant (id, name, shipping_fee, kitchen_id, creation_date, update_date) VALUES (6, 'Bar sem Lona', 6, 4.49, UTC_TIMESTAMP(), UTC_TIMESTAMP());
+INSERT INTO restaurant (id, name, shipping_fee, kitchen_id, creation_date, update_date, active, address_city_id, address_zipcode, address_street, address_number, address_district) VALUES (1, 'Thai Gourmet', 10, 1, UTC_TIMESTAMP(), UTC_TIMESTAMP(), true, 1, '38400-999', 'Rua João Pinheiro', '1000', 'Centro');
+INSERT INTO restaurant (id, name, shipping_fee, kitchen_id, creation_date, update_date, active) VALUES (2, 'Thai Delivery', 9.50, 1, UTC_TIMESTAMP(), UTC_TIMESTAMP(), true);
+INSERT INTO restaurant (id, name, shipping_fee, kitchen_id, creation_date, update_date, active) VALUES (3, 'Tuk Tuk Comida Indiana', 15, 2, UTC_TIMESTAMP(), UTC_TIMESTAMP(), true);
+INSERT INTO restaurant (id, name, shipping_fee, kitchen_id, creation_date, update_date, active) VALUES (4, 'Java Steakhouse', 15, 3, UTC_TIMESTAMP(), UTC_TIMESTAMP(), true);
+INSERT INTO restaurant (id, name, shipping_fee, kitchen_id, creation_date, update_date, active) VALUES (5, 'Lanchonete da Maria', 9.99, 4 ,UTC_TIMESTAMP(), UTC_TIMESTAMP(), true);
+INSERT INTO restaurant (id, name, shipping_fee, kitchen_id, creation_date, update_date, active) VALUES (6, 'Bar sem Lona', 6, 4.49, UTC_TIMESTAMP(), UTC_TIMESTAMP(), true);
 
 INSERT INTO product (id, name, description, price, active, restaurant_id) VALUES (1, 'Porco com molho agridoce', 'Deliciosa carne suína ao molho especial', 78.90, 1, 1);
 INSERT INTO product (id, name, description, price, active, restaurant_id) VALUES (2, 'Camarão tailandês', '16 camarões grandes ao molho picante', 110, 1, 1);

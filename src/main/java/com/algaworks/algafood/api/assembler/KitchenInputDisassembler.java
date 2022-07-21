@@ -4,7 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.algaworks.algafood.api.model.input.KitchenInput;
+import com.algaworks.algafood.api.dto.input.KitchenInput;
 import com.algaworks.algafood.domain.model.Kitchen;
 
 @Component
