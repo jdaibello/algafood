@@ -37,21 +37,21 @@ public class RestaurantController {
 	private RestaurantService service;
 
 	@Autowired
-	private RestaurantDTOAssembler restaurantModelAssembler;
+	private RestaurantDTOAssembler restaurantDTOAssembler;
 
 	@Autowired
 	private RestaurantInputDisassembler restaurantInputDisassembler;
 
 	@GetMapping
 	public List<RestaurantDTO> fetchAll() {
-		return restaurantModelAssembler.toCollectionModel(restaurantRepository.findAll());
+		return restaurantDTOAssembler.toCollectionModel(restaurantRepository.findAll());
 	}
 
 	@GetMapping("/{restaurantId}")
 	public RestaurantDTO find(@PathVariable Long restaurantId) {
 		Restaurant restaurant = service.findOrFail(restaurantId);
 
-		return restaurantModelAssembler.toModel(restaurant);
+		return restaurantDTOAssembler.toModel(restaurant);
 	}
 
 	@PostMapping
@@ -60,7 +60,7 @@ public class RestaurantController {
 		try {
 			Restaurant restaurant = restaurantInputDisassembler.toDomainObject(restaurantInput);
 
-			return restaurantModelAssembler.toModel(service.save(restaurant));
+			return restaurantDTOAssembler.toModel(service.save(restaurant));
 		} catch (KitchenNotFoundException e) {
 			throw new BusinessException(e.getMessage(), e);
 		}
@@ -72,7 +72,7 @@ public class RestaurantController {
 			Restaurant currentRestaurant = service.findOrFail(restaurantId);
 			restaurantInputDisassembler.copyToDomainObject(restaurantInput, currentRestaurant);
 
-			return restaurantModelAssembler.toModel(service.save(currentRestaurant));
+			return restaurantDTOAssembler.toModel(service.save(currentRestaurant));
 		} catch (KitchenNotFoundException e) {
 			throw new BusinessException(e.getMessage(), e);
 		}
