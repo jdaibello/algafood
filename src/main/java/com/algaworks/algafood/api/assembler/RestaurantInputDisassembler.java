@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.algaworks.algafood.api.dto.input.RestaurantInput;
+import com.algaworks.algafood.domain.model.City;
 import com.algaworks.algafood.domain.model.Kitchen;
 import com.algaworks.algafood.domain.model.Restaurant;
 
@@ -24,6 +25,10 @@ public class RestaurantInputDisassembler {
 		// instance of com.algaworks.algafood.domain.model.Kitchen was altered from X to
 		// Y" error;
 		restaurant.setKitchen(new Kitchen());
+
+		if (restaurant.getAddress() != null) {
+			restaurant.getAddress().setCity(new City());
+		}
 
 		modelMapper.map(restaurantInput, restaurant);
 	}

@@ -21,6 +21,7 @@ import com.algaworks.algafood.api.assembler.RestaurantInputDisassembler;
 import com.algaworks.algafood.api.dto.RestaurantDTO;
 import com.algaworks.algafood.api.dto.input.RestaurantInput;
 import com.algaworks.algafood.domain.exception.BusinessException;
+import com.algaworks.algafood.domain.exception.CityNotFoundException;
 import com.algaworks.algafood.domain.exception.KitchenNotFoundException;
 import com.algaworks.algafood.domain.model.Restaurant;
 import com.algaworks.algafood.domain.repository.RestaurantRepository;
@@ -61,19 +62,19 @@ public class RestaurantController {
 			Restaurant restaurant = restaurantInputDisassembler.toDomainObject(restaurantInput);
 
 			return restaurantDTOAssembler.toModel(service.save(restaurant));
-		} catch (KitchenNotFoundException e) {
+		} catch (KitchenNotFoundException | CityNotFoundException e) {
 			throw new BusinessException(e.getMessage(), e);
 		}
 	}
 
 	@PutMapping("/{restaurantId}")
-	public RestaurantDTO update(@PathVariable Long restaurantId, @RequestBody RestaurantInput restaurantInput) {
+	public RestaurantDTO update(@PathVariable Long restaurantId, @RequestBody @Valid RestaurantInput restaurantInput) {
 		try {
 			Restaurant currentRestaurant = service.findOrFail(restaurantId);
 			restaurantInputDisassembler.copyToDomainObject(restaurantInput, currentRestaurant);
 
 			return restaurantDTOAssembler.toModel(service.save(currentRestaurant));
-		} catch (KitchenNotFoundException e) {
+		} catch (KitchenNotFoundException | CityNotFoundException e) {
 			throw new BusinessException(e.getMessage(), e);
 		}
 	}
