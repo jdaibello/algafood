@@ -69,3 +69,5 @@ INSERT INTO permission (id, name, description) VALUES (1, 'CONSULTAR_COZINHAS', 
 INSERT INTO permission (id, name, description) VALUES (2, 'EDITAR_COZINHAS', 'Permite editar cozinhas');
 
 INSERT INTO restaurant_payment_method (restaurant_id, payment_method_id) VALUES (1, 1), (1, 2), (1, 3), (2, 3), (3, 2), (3, 3), (4, 1), (4, 2), (5, 1), (5, 2), (6, 3);
+
+INSERT INTO `group` (name) VALUES ('Gerente'), ('Vendedor'), ('Secretária'), ('Cadastrador');
