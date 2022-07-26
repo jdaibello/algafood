@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.algaworks.algafood.domain.exception.RestaurantNotFoundException;
 import com.algaworks.algafood.domain.model.City;
 import com.algaworks.algafood.domain.model.Kitchen;
+import com.algaworks.algafood.domain.model.PaymentMethod;
 import com.algaworks.algafood.domain.model.Restaurant;
 import com.algaworks.algafood.domain.repository.RestaurantRepository;
 
@@ -21,6 +22,9 @@ public class RestaurantService {
 
 	@Autowired
 	private CityService cityService;
+
+	@Autowired
+	private PaymentMethodService paymentMethodService;
 
 	@Transactional
 	public Restaurant save(Restaurant restaurant) {
@@ -45,6 +49,22 @@ public class RestaurantService {
 	public void inactivate(Long restaurantId) {
 		Restaurant currentRestaurant = findOrFail(restaurantId);
 		currentRestaurant.inactivate();
+	}
+
+	@Transactional
+	public void attachPaymentMethod(Long restaurantId, Long paymentMethodId) {
+		Restaurant restaurant = findOrFail(restaurantId);
+		PaymentMethod paymentMethod = paymentMethodService.findOrFail(paymentMethodId);
+
+		restaurant.addPaymentMethod(paymentMethod);
+	}
+
+	@Transactional
+	public void detachPaymentMethod(Long restaurantId, Long paymentMethodId) {
+		Restaurant restaurant = findOrFail(restaurantId);
+		PaymentMethod paymentMethod = paymentMethodService.findOrFail(paymentMethodId);
+
+		restaurant.removePaymentMethod(paymentMethod);
 	}
 
 	public Restaurant findOrFail(Long restaurantId) {
