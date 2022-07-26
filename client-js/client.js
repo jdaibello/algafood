@@ -3,7 +3,7 @@ function findRestaurants() {
 		url: "http://localhost:8080/restaurants",
 		type: "GET",
 		success: function (response) {
-			$("#content").text(response);
+			$("#content").text(JSON.stringify(response));
 		}
 	});
 }
