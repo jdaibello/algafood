@@ -48,11 +48,6 @@ create table restaurante (
     primary key (id)
 ) engine=InnoDB default charset=utf8;
 
-create table restaurante_produto (
-	restaurante_id bigint not null, 
-    produto_id bigint not null
-) engine=InnoDB default charset=utf8;
-
 create table restaurante_forma_pagamento (
 	restaurante_id bigint not null, 
 	forma_pagamento_id bigint not null
@@ -80,10 +75,6 @@ alter table produto add constraint fk_produto_restaurante foreign key (restauran
 
 alter table restaurante add constraint fk_restaurante_cozinha foreign key (cozinha_id) references cozinha (id);
 alter table restaurante add constraint fk_restaurante_cidade foreign key (endereco_cidade_id) references cidade (id);
-
-alter table restaurante_produto add constraint uq_restaurante_produto_produto unique (produto_id);
-alter table restaurante_produto add constraint fk_restaurante_produto_produto foreign key (produto_id) references produto (id);
-alter table restaurante_produto add constraint fk_restaurante_produto_restaurante foreign key (restaurante_id) references restaurante (id);
 
 alter table restaurante_forma_pagamento add constraint fk_rest_forma_pagto_forma_pagto foreign key (forma_pagamento_id) references forma_pagamento (id);
 alter table restaurante_forma_pagamento add constraint fk_rest_forma_pagto_restaurante foreign key (restaurante_id) references restaurante (id);

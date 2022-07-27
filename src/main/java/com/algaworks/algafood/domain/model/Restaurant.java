@@ -56,6 +56,8 @@ public class Restaurant {
 
 	private Boolean active = Boolean.TRUE;
 
+	private Boolean opened = Boolean.FALSE;
+
 	@CreationTimestamp
 	@Column(name = "creation_date", nullable = false, columnDefinition = "datetime")
 	private OffsetDateTime creationDate;
@@ -64,8 +66,7 @@ public class Restaurant {
 	@Column(name = "update_date", nullable = false, columnDefinition = "datetime")
 	private OffsetDateTime updateDate;
 
-	@OneToMany
-	@JoinTable(name = "restaurant_product")
+	@OneToMany(mappedBy = "restaurant")
 	private List<Product> products = new ArrayList<>();
 
 	// Usar EAGER com muito cuidado em relações ManyToMany
@@ -83,6 +84,14 @@ public class Restaurant {
 
 	public void inactivate() {
 		setActive(false);
+	}
+
+	public void open() {
+		setOpened(true);
+	}
+
+	public void close() {
+		setOpened(false);
 	}
 
 	public boolean addPaymentMethod(PaymentMethod paymentMethod) {
