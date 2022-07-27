@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.algaworks.algafood.domain.exception.EntityInUseException;
 import com.algaworks.algafood.domain.exception.GroupNotFoundException;
 import com.algaworks.algafood.domain.model.Group;
+import com.algaworks.algafood.domain.model.Permission;
 import com.algaworks.algafood.domain.repository.GroupRepository;
 
 @Service
@@ -18,9 +19,26 @@ public class GroupService {
 	@Autowired
 	private GroupRepository groupRepository;
 
+	@Autowired
+	private PermissionService permissionService;
+
 	@Transactional
 	public Group save(Group group) {
 		return groupRepository.save(group);
+	}
+
+	@Transactional
+	public void attachPermission(Long groupId, Long permissionId) {
+		Group group = findOrFail(groupId);
+		Permission permission = permissionService.findOrFail(permissionId);
+		group.addPermission(permission);
+	}
+
+	@Transactional
+	public void detachPermission(Long groupId, Long permissionId) {
+		Group group = findOrFail(groupId);
+		Permission permission = permissionService.findOrFail(permissionId);
+		group.removePermission(permission);
 	}
 
 	@Transactional
