@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.algaworks.algafood.domain.exception.BusinessException;
 import com.algaworks.algafood.domain.exception.UserNotFoundException;
+import com.algaworks.algafood.domain.model.Group;
 import com.algaworks.algafood.domain.model.User;
 import com.algaworks.algafood.domain.repository.UserRepository;
 
@@ -16,6 +17,9 @@ public class UserService {
 
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private GroupService groupService;
 
 	@Transactional
 	public User save(User user) {
@@ -40,6 +44,20 @@ public class UserService {
 		}
 
 		user.setPassword(newPassword);
+	}
+
+	@Transactional
+	public void attachGroup(Long userId, Long groupId) {
+		User user = findOrFail(userId);
+		Group group = groupService.findOrFail(groupId);
+		user.addGroup(group);
+	}
+
+	@Transactional
+	public void detachGroup(Long userId, Long groupId) {
+		User user = findOrFail(userId);
+		Group group = groupService.findOrFail(groupId);
+		user.removeGroup(group);
 	}
 
 	public User findOrFail(Long userId) {
