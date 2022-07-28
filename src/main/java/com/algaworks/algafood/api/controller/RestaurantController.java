@@ -23,6 +23,7 @@ import com.algaworks.algafood.api.dto.input.RestaurantInput;
 import com.algaworks.algafood.domain.exception.BusinessException;
 import com.algaworks.algafood.domain.exception.CityNotFoundException;
 import com.algaworks.algafood.domain.exception.KitchenNotFoundException;
+import com.algaworks.algafood.domain.exception.RestaurantNotFoundException;
 import com.algaworks.algafood.domain.model.Restaurant;
 import com.algaworks.algafood.domain.repository.RestaurantRepository;
 import com.algaworks.algafood.domain.service.RestaurantService;
@@ -89,6 +90,26 @@ public class RestaurantController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void inactivate(@PathVariable Long restaurantId) {
 		service.inactivate(restaurantId);
+	}
+
+	@PutMapping(value = "/activations")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void activateMultiples(@RequestBody List<Long> restaurantIds) {
+		try {
+			service.activate(restaurantIds);
+		} catch (RestaurantNotFoundException e) {
+			throw new BusinessException(e.getMessage(), e);
+		}
+	}
+
+	@DeleteMapping(value = "/activations")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void inactivateMultiples(@RequestBody List<Long> restaurantIds) {
+		try {
+			service.inactivate(restaurantIds);
+		} catch (RestaurantNotFoundException e) {
+			throw new BusinessException(e.getMessage(), e);
+		}
 	}
 
 	@PutMapping("/{restaurantId}/opening")
