@@ -109,6 +109,14 @@ public class Restaurant {
 		return getPaymentMethods().remove(paymentMethod);
 	}
 
+	public boolean acceptPaymentMethod(PaymentMethod paymentMethod) {
+		return getPaymentMethods().contains(paymentMethod);
+	}
+
+	public boolean doesntAcceptPaymentMethod(PaymentMethod paymentMethod) {
+		return !acceptPaymentMethod(paymentMethod);
+	}
+
 	public boolean addResponsible(User user) {
 		return getResponsibles().add(user);
 	}

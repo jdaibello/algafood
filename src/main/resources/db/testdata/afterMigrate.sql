@@ -79,3 +79,12 @@ INSERT INTO `user` (id, name, email, password, creation_date) VALUES (1, 'João 
 INSERT INTO user_group (user_id, group_id) VALUES (1, 1), (1, 2), (2, 2);
 
 INSERT INTO restaurant_responsible_user (restaurant_id, user_id) VALUES (1, 5), (3, 5);
+
+INSERT INTO `order` (id, restaurant_id, user_client_id, payment_method_id, address_city_id, address_zipcode, address_street, address_number, address_complement, address_district, status, creation_date, subtotal, shipping_fee, total_value) VALUES (1, 1, 1, 1, 1, '38400-000', 'Rua Floriano Peixoto', '500', 'Apto 801', 'Brasil', 'CREATED', utc_timestamp, 298.90, 10, 308.90);
+
+INSERT INTO order_item (id, order_id, product_id, quantity, unit_price, total_price, note) VALUES (1, 1, 1, 1, 78.9, 78.9, null);
+INSERT INTO order_item (id, order_id, product_id, quantity, unit_price, total_price, note) VALUES (2, 1, 2, 2, 110, 220, 'Menos picante, por favor');
+
+INSERT INTO `order` (id, restaurant_id, user_client_id, payment_method_id, address_city_id, address_zipcode, address_street, address_number, address_complement, address_district, status, creation_date, subtotal, shipping_fee, total_value) VALUES (2, 4, 1, 2, 1, '38400-111', 'Rua Acre', '300', 'Casa 2', 'Centro', 'CREATED', utc_timestamp, 79, 0, 79);
+
+INSERT INTO order_item (id, order_id, product_id, quantity, unit_price, total_price, note) VALUES (3, 2, 6, 1, 79, 79, 'Ao ponto');
