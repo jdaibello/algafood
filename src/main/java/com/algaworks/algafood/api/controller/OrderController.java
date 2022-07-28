@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafood.api.assembler.OrderDTOAssembler;
+import com.algaworks.algafood.api.assembler.OrderSummaryDTOAssembler;
 import com.algaworks.algafood.api.dto.OrderDTO;
+import com.algaworks.algafood.api.dto.OrderSummaryDTO;
 import com.algaworks.algafood.domain.model.Order;
 import com.algaworks.algafood.domain.repository.OrderRepository;
 import com.algaworks.algafood.domain.service.OrderIssuanceService;
@@ -27,9 +29,12 @@ public class OrderController {
 	@Autowired
 	private OrderDTOAssembler orderDTOAssembler;
 
+	@Autowired
+	private OrderSummaryDTOAssembler orderSummaryDTOAssembler;
+
 	@GetMapping
-	public List<OrderDTO> fetchAll() {
-		return orderDTOAssembler.toCollectionModel(orderRepository.findAll());
+	public List<OrderSummaryDTO> fetchAll() {
+		return orderSummaryDTOAssembler.toCollectionModel(orderRepository.findAll());
 	}
 
 	@GetMapping("/{orderId}")
