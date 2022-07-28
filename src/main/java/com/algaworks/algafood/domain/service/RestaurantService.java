@@ -9,6 +9,7 @@ import com.algaworks.algafood.domain.model.City;
 import com.algaworks.algafood.domain.model.Kitchen;
 import com.algaworks.algafood.domain.model.PaymentMethod;
 import com.algaworks.algafood.domain.model.Restaurant;
+import com.algaworks.algafood.domain.model.User;
 import com.algaworks.algafood.domain.repository.RestaurantRepository;
 
 @Service
@@ -25,6 +26,9 @@ public class RestaurantService {
 
 	@Autowired
 	private PaymentMethodService paymentMethodService;
+
+	@Autowired
+	private UserService userService;
 
 	@Transactional
 	public Restaurant save(Restaurant restaurant) {
@@ -77,6 +81,22 @@ public class RestaurantService {
 		PaymentMethod paymentMethod = paymentMethodService.findOrFail(paymentMethodId);
 
 		restaurant.removePaymentMethod(paymentMethod);
+	}
+
+	@Transactional
+	public void attachResponsible(Long restaurantId, Long userId) {
+		Restaurant restaurant = findOrFail(restaurantId);
+		User user = userService.findOrFail(userId);
+
+		restaurant.addResponsible(user);
+	}
+
+	@Transactional
+	public void detachResponsible(Long restaurantId, Long userId) {
+		Restaurant restaurant = findOrFail(restaurantId);
+		User user = userService.findOrFail(userId);
+
+		restaurant.removeResponsible(user);
 	}
 
 	public Restaurant findOrFail(Long restaurantId) {
