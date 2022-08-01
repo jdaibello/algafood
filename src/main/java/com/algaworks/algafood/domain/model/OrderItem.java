@@ -1,16 +1,10 @@
 package com.algaworks.algafood.domain.model;
 
-import java.math.BigDecimal;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -34,4 +28,19 @@ public class OrderItem {
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Product product;
+
+	public void calculateTotalValue() {
+		BigDecimal unitPrice = this.getUnitPrice();
+		Integer quantity = this.getQuantity();
+
+		if (unitPrice == null) {
+			unitPrice = BigDecimal.ZERO;
+		}
+
+		if (quantity == null) {
+			quantity = 0;
+		}
+
+		this.setTotalPrice(unitPrice.multiply(new BigDecimal(quantity)));
+	}
 }

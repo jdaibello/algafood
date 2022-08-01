@@ -22,11 +22,12 @@ ALTER TABLE city AUTO_INCREMENT = 1;
 ALTER TABLE `group` AUTO_INCREMENT = 1;
 ALTER TABLE kitchen AUTO_INCREMENT = 1;
 ALTER TABLE `order` AUTO_INCREMENT = 1;
+ALTER TABLE order_item AUTO_INCREMENT = 1;
 ALTER TABLE payment_method AUTO_INCREMENT = 1;
 ALTER TABLE permission AUTO_INCREMENT = 1;
 ALTER TABLE product AUTO_INCREMENT = 1;
 ALTER TABLE restaurant AUTO_INCREMENT = 1;
-ALTER TABLE state AUTO_INCREMENT = 1;
+ALTER TABLE `state` AUTO_INCREMENT = 1;
 ALTER TABLE user AUTO_INCREMENT = 1;
 
 INSERT INTO kitchen (id, name) VALUES (1, 'Tailandesa');
@@ -34,9 +35,9 @@ INSERT INTO kitchen (id, name) VALUES (2, 'Indiana');
 INSERT INTO kitchen (id, name) VALUES (3, 'Argentina');
 INSERT INTO kitchen (id, name) VALUES (4, 'Brasileira');
 
-INSERT INTO state (id, name) VALUES (1, 'Minas Gerais');
-INSERT INTO state (id, name) VALUES (2, 'São Paulo');
-INSERT INTO state (id, name) VALUES (3, 'Ceará');
+INSERT INTO `state` (id, name) VALUES (1, 'Minas Gerais');
+INSERT INTO `state` (id, name) VALUES (2, 'São Paulo');
+INSERT INTO `state` (id, name) VALUES (3, 'Ceará');
 
 INSERT INTO city (id, name, state_id) VALUES (1, 'Uberlândia', 1);
 INSERT INTO city (id, name, state_id) VALUES (2, 'Belo Horizonte', 1);
