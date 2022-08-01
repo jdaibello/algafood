@@ -1,16 +1,16 @@
 package com.algaworks.algafood.api.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
-
 @Getter
 @Setter
 public class OrderDTO {
-	private Long id;
+	private String code;
 	private BigDecimal subtotal;
 	private BigDecimal shippingFee;
 	private BigDecimal totalValue;

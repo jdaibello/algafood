@@ -1,13 +1,5 @@
 package com.algaworks.algafood.api.controller;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.algaworks.algafood.api.assembler.OrderDTOAssembler;
 import com.algaworks.algafood.api.assembler.OrderSummaryDTOAssembler;
 import com.algaworks.algafood.api.dto.OrderDTO;
@@ -15,6 +7,13 @@ import com.algaworks.algafood.api.dto.OrderSummaryDTO;
 import com.algaworks.algafood.domain.model.Order;
 import com.algaworks.algafood.domain.repository.OrderRepository;
 import com.algaworks.algafood.domain.service.OrderIssuanceService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/orders")
@@ -37,9 +36,9 @@ public class OrderController {
 		return orderSummaryDTOAssembler.toCollectionModel(orderRepository.findAll());
 	}
 
-	@GetMapping("/{orderId}")
-	public OrderDTO find(@PathVariable Long orderId) {
-		Order order = service.findOrFail(orderId);
+	@GetMapping("/{orderCode}")
+	public OrderDTO find(@PathVariable String orderCode) {
+		Order order = service.findOrFail(orderCode);
 
 		return orderDTOAssembler.toModel(order);
 	}
