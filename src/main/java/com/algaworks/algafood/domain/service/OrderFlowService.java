@@ -27,4 +27,34 @@ public class OrderFlowService {
         order.setStatus(OrderStatus.CONFIRMED);
         order.setConfirmationDate(OffsetDateTime.now());
     }
+
+    @Transactional
+    public void cancel(Long orderId) {
+        Order order = orderIssuanceService.findOrFail(orderId);
+
+        if (!order.getStatus().equals(OrderStatus.CREATED)) {
+            throw new BusinessException(String.format("Status do pedido %d não pode ser alterado de %s para %s",
+                    order.getId(),
+                    order.getStatus().getDescription(),
+                    OrderStatus.CANCELED.getDescription()));
+        }
+
+        order.setStatus(OrderStatus.CANCELED);
+        order.setCancellationDate(OffsetDateTime.now());
+    }
+
+    @Transactional
+    public void delivery(Long orderId) {
+        Order order = orderIssuanceService.findOrFail(orderId);
+
+        if (!order.getStatus().equals(OrderStatus.CONFIRMED)) {
+            throw new BusinessException(String.format("Status do pedido %d não pode ser alterado de %s para %s",
+                    order.getId(),
+                    order.getStatus().getDescription(),
+                    OrderStatus.DELIVERED.getDescription()));
+        }
+
+        order.setStatus(OrderStatus.DELIVERED);
+        order.setDeliveryDate(OffsetDateTime.now());
+    }
 }
