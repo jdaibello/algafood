@@ -1,5 +1,18 @@
 package com.algaworks.algafood.domain.model;
 
 public enum OrderStatus {
-	CREATED, CONFIRMED, DELIVERED, CANCELED
+	CREATED("Criado"),
+	CONFIRMED("Confirmado"),
+	DELIVERED("Entegue"),
+	CANCELED("Cancelado");
+
+	private final String description;
+
+	OrderStatus(String description) {
+		this.description = description;
+	}
+
+	public String getDescription() {
+		return this.description;
+	}
 }
