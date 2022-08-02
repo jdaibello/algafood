@@ -1,6 +1,7 @@
 package com.algaworks.algafood.api.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -24,6 +25,7 @@ import com.algaworks.algafood.api.assembler.OrderSummaryDTOAssembler;
 import com.algaworks.algafood.api.dto.OrderDTO;
 import com.algaworks.algafood.api.dto.OrderSummaryDTO;
 import com.algaworks.algafood.api.dto.input.OrderInput;
+import com.algaworks.algafood.core.data.PageableTranslator;
 import com.algaworks.algafood.domain.exception.BusinessException;
 import com.algaworks.algafood.domain.exception.EntityNotFoundException;
 import com.algaworks.algafood.domain.model.Order;
@@ -54,6 +56,8 @@ public class OrderController {
 
 	@GetMapping
 	public Page<OrderSummaryDTO> search(OrderFilter filter, @PageableDefault(size = 10) Pageable pageable) {
+		pageable = translatePageable(pageable);
+
 		Page<Order> ordersPage = orderRepository.findAll(OrderSpecs.usingFilter(filter), pageable);
 		List<OrderSummaryDTO> ordersSummaryDTO = orderSummaryDTOAssembler.toCollectionModel(ordersPage.getContent());
 
@@ -83,5 +87,13 @@ public class OrderController {
 		} catch (EntityNotFoundException e) {
 			throw new BusinessException(e.getMessage(), e);
 		}
+	}
+
+	private Pageable translatePageable(Pageable apiPageable) {
+		var mapper = Map.of("code", "code", "subtotal", "subtotal", "shippingFee", "shippingFee", "creationDate",
+				"creationdate", "restaurant.id", "restaurant.id", "restaurant.name", "restaurant.name", "client.id",
+				"client.id", "client.name", "client.name");
+
+		return PageableTranslator.translate(apiPageable, mapper);
 	}
 }
