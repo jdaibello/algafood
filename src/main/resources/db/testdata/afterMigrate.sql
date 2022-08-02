@@ -52,7 +52,7 @@ INSERT INTO restaurant (id, name, shipping_fee, kitchen_id, creation_date, updat
 INSERT INTO restaurant (id, name, shipping_fee, kitchen_id, creation_date, update_date, active, opened) VALUES (5, 'Lanchonete da Maria', 9.99, 4 ,UTC_TIMESTAMP(), UTC_TIMESTAMP(), true, true);
 INSERT INTO restaurant (id, name, shipping_fee, kitchen_id, creation_date, update_date, active, opened) VALUES (6, 'Bar sem Lona', 6, 4.49, UTC_TIMESTAMP(), UTC_TIMESTAMP(), true, true);
 
-INSERT INTO product (id, name, description, price, active, restaurant_id) VALUES (1, 'Porco com molho agridoce', 'Deliciosa carne suína ao molho especial', 78.90, 1, 1);
+INSERT INTO product (id, name, description, price, active, restaurant_id) VALUES (1, 'Porco com molho agridoce', 'Deliciosa carne suína ao molho especial', 78.90, 0, 1);
 INSERT INTO product (id, name, description, price, active, restaurant_id) VALUES (2, 'Camarão tailandês', '16 camarões grandes ao molho picante', 110, 1, 1);
 INSERT INTO product (id, name, description, price, active, restaurant_id) VALUES (3, 'Salada picante com carne grelhada', 'Salada de folhas com cortes finos de carne bovina grelhada e nosso molho especial de pimenta vermelha', 87.20, 1, 2);
 INSERT INTO product (id, name, description, price, active, restaurant_id) VALUES (4, 'Garlic Naan', 'Pão tradicional indiano com cobertura de alho', 21, 1, 3);
