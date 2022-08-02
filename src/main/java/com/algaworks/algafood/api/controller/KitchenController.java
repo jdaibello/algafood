@@ -47,9 +47,8 @@ public class KitchenController {
 	public Page<KitchenDTO> fetchAll(Pageable pageable) {
 		Page<Kitchen> kitchensPage = kitchenRepository.findAll(pageable);
 		List<KitchenDTO> kitchensDTO = kitchenDTOAssembler.toCollectionModel(kitchensPage.getContent());
-		Page<KitchenDTO> kitchensDTOPage = new PageImpl<>(kitchensDTO, pageable, kitchensPage.getTotalElements());
 
-		return kitchensDTOPage;
+		return new PageImpl<>(kitchensDTO, pageable, kitchensPage.getTotalElements());
 	}
 
 	@GetMapping("/{kitchenId}")

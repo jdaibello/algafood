@@ -5,6 +5,10 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,8 +53,11 @@ public class OrderController {
 	private OrderInputDisassembler orderInputDisassembler;
 
 	@GetMapping
-	public List<OrderSummaryDTO> search(OrderFilter filter) {
-		return orderSummaryDTOAssembler.toCollectionModel(orderRepository.findAll(OrderSpecs.usingFilter(filter)));
+	public Page<OrderSummaryDTO> search(OrderFilter filter, @PageableDefault(size = 10) Pageable pageable) {
+		Page<Order> ordersPage = orderRepository.findAll(OrderSpecs.usingFilter(filter), pageable);
+		List<OrderSummaryDTO> ordersSummaryDTO = orderSummaryDTOAssembler.toCollectionModel(ordersPage.getContent());
+
+		return new PageImpl<>(ordersSummaryDTO, pageable, ordersPage.getTotalElements());
 	}
 
 	@GetMapping("/{orderCode}")
