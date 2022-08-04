@@ -25,12 +25,13 @@ jobs:
     - name: Set up MySQL
       run: |
         sudo /etc/init.d/mysql start
-        mysql -e 'CREATE DATABASE algafood;' -uroot -p
+        mysql -e 'CREATE DATABASE algafood;' -uroot -proot
     - name: Run flayway migrations and seed database
       uses: joshuaavalon/flyway-action@v2
       with:
         url: jdbc:mysql://mysql:3306/algafood?createDatabaseIfNotExist=true&serverTimezone=UTC
         user: root
+        password: root
     - name: Run Integration Tests with Maven
       run: mvn -B verify --file pom.xml
     - name: Build with Maven
