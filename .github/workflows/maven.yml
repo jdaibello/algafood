@@ -35,12 +35,11 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Run flayway migrations and seed database
-    - uses: joshuaavalon/flyway-action@v2
+      uses: joshuaavalon/flyway-action@v2
       with:
         url: jdbc:mysql://localhost/algafood?createDatabaseIfNotExist=true&serverTimezone=UTC
         user: root
         password: admin
-    - run: echo 'Flyway configured successfully'
     - name: Run Integration Tests with Maven
       run: mvn -B verify --file pom.xml
     - name: Build with Maven
