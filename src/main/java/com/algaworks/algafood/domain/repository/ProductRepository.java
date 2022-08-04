@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.algaworks.algafood.domain.model.Product;
+import com.algaworks.algafood.domain.model.ProductPhoto;
 import com.algaworks.algafood.domain.model.Restaurant;
 
 @Repository
@@ -21,4 +22,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>, Product
 
 	@Query("FROM Product p WHERE p.active = true AND p.restaurant = :restaurant")
 	List<Product> findActivesByRestaurant(Restaurant restaurant);
+
+	@Query("SELECT p FROM ProductPhoto p JOIN p.product pr WHERE pr.restaurant.id = :restaurantId AND p.product.id = :productId")
+	Optional<ProductPhoto> findPhotoById(Long restaurantId, Long productId);
 }
