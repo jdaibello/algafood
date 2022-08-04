@@ -13,18 +13,6 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    services:
-      mysql:
-        image: mysql
-        env:
-          MYSQL_DATABASE: algafood
-          MYSQL_USER: root
-          MYSQL_PASSWORD: admin
-        options: >-
-          --health-cmd="mysqladmin ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
 
     steps:
     - uses: actions/checkout@v3
@@ -34,12 +22,16 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: maven
+    - name: Set up MySQL
+      run: |
+        sudo /etc/init.d/mysql start
+        mysql -e 'CREATE DATABASE algafood;' -u root -p root
     - name: Run flayway migrations and seed database
       uses: joshuaavalon/flyway-action@v2
       with:
-        url: jdbc:mysql://localhost/algafood?createDatabaseIfNotExist=true&serverTimezone=UTC
+        url: jdbc:mysql://mysql:3306/algafood?createDatabaseIfNotExist=true&serverTimezone=UTC
         user: root
-        password: admin
+        password: root
     - name: Run Integration Tests with Maven
       run: mvn -B verify --file pom.xml
     - name: Build with Maven
