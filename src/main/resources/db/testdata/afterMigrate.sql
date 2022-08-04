@@ -9,6 +9,7 @@ DELETE FROM order_item;
 DELETE FROM payment_method;
 DELETE FROM permission;
 DELETE FROM product;
+DELETE FROM product_photo;
 DELETE FROM restaurant;
 DELETE FROM restaurant_payment_method;
 DELETE FROM state;
