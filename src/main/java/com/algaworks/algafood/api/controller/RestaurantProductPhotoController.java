@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +33,13 @@ public class RestaurantProductPhotoController {
 
 	@Autowired
 	private ProductPhotoDTOAssembler productPhotoDTOAssembler;
+
+	@GetMapping
+	public ProductPhotoDTO find(@PathVariable Long restaurantId, @PathVariable Long productId) {
+		ProductPhoto productPhoto = productPhotoCatalogService.findOrFail(restaurantId, productId);
+
+		return productPhotoDTOAssembler.toModel(productPhoto);
+	}
 
 	@PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ProductPhotoDTO updatePhoto(@PathVariable Long restaurantId, @PathVariable Long productId,

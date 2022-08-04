@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.algaworks.algafood.domain.exception.ProductPhotoNotFoundException;
 import com.algaworks.algafood.domain.model.ProductPhoto;
 import com.algaworks.algafood.domain.repository.ProductRepository;
 import com.algaworks.algafood.domain.service.PhotoStorageService.NewPhoto;
@@ -19,6 +20,11 @@ public class ProductPhotoCatalogService {
 
 	@Autowired
 	private PhotoStorageService photoStorageService;
+
+	public ProductPhoto findOrFail(Long restaurantId, Long productId) {
+		return productRepository.findPhotoById(restaurantId, productId)
+				.orElseThrow(() -> new ProductPhotoNotFoundException(restaurantId, productId));
+	}
 
 	@Transactional
 	public ProductPhoto save(ProductPhoto photo, InputStream fileData) {
