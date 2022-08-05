@@ -1,20 +1,18 @@
 package com.algaworks.algafood.infrastructure.service.storage;
 
+import com.algaworks.algafood.core.StorageProperties;
+import com.algaworks.algafood.domain.service.PhotoStorageService;
+import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
+
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import org.springframework.util.FileCopyUtils;
-
-import com.algaworks.algafood.domain.service.PhotoStorageService;
-
 @Service
 public class LocalPhotoStorageService implements PhotoStorageService {
 
-	@Value("${algafood.storage.local.photos-dir}")
-	private Path photosDirectory;
+	private StorageProperties storageProperties;
 
 	@Override
 	public InputStream recover(String fileName) {
@@ -48,6 +46,6 @@ public class LocalPhotoStorageService implements PhotoStorageService {
 	}
 
 	private Path getFilePath(String fileName) {
-		return photosDirectory.resolve(Path.of(fileName));
+		return storageProperties.getLocal().getPhotosDirectory().resolve(Path.of(fileName));
 	}
 }
