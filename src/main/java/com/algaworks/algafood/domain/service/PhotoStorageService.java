@@ -1,10 +1,10 @@
 package com.algaworks.algafood.domain.service;
 
-import java.io.InputStream;
-import java.util.UUID;
-
 import lombok.Builder;
 import lombok.Getter;
+
+import java.io.InputStream;
+import java.util.UUID;
 
 public interface PhotoStorageService {
 
@@ -30,6 +30,7 @@ public interface PhotoStorageService {
 	@Getter
 	class NewPhoto {
 		private String fileName;
+		private String contentType;
 		private InputStream inputStream;
 	}
 }

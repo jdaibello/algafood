@@ -1,16 +1,15 @@
 package com.algaworks.algafood.domain.service;
 
-import java.io.InputStream;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.algaworks.algafood.domain.exception.ProductPhotoNotFoundException;
 import com.algaworks.algafood.domain.model.ProductPhoto;
 import com.algaworks.algafood.domain.repository.ProductRepository;
 import com.algaworks.algafood.domain.service.PhotoStorageService.NewPhoto;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.io.InputStream;
+import java.util.Optional;
 
 @Service
 public class ProductPhotoCatalogService {
@@ -43,7 +42,9 @@ public class ProductPhotoCatalogService {
 		photo = productRepository.save(photo);
 		productRepository.flush();
 
-		NewPhoto newPhoto = NewPhoto.builder().fileName(photo.getFileName()).inputStream(fileData).build();
+		NewPhoto newPhoto = NewPhoto.builder().fileName(photo.getFileName()).contentType(photo.getContentType())
+						.inputStream(fileData).build();
+
 		photoStorageService.substitute(existingFileName, newPhoto);
 
 		return photo;
