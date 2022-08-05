@@ -1,6 +1,6 @@
 package com.algaworks.algafood.infrastructure.service.storage;
 
-import com.algaworks.algafood.core.StorageProperties;
+import com.algaworks.algafood.core.storage.StorageProperties;
 import com.algaworks.algafood.domain.service.PhotoStorageService;
 import org.springframework.util.FileCopyUtils;
 
