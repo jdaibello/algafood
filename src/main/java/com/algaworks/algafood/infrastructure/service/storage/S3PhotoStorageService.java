@@ -3,7 +3,10 @@ package com.algaworks.algafood.infrastructure.service.storage;
 import com.algaworks.algafood.core.storage.StorageProperties;
 import com.algaworks.algafood.domain.service.PhotoStorageService;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.*;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +45,14 @@ public class S3PhotoStorageService implements PhotoStorageService {
 
     @Override
     public void remove(String fileName) {
+        try {
+            String filePath = getFilePath(fileName);
+            var deleteObjectRequest = new DeleteObjectRequest(storageProperties.getS3().getBucket(), filePath);
 
+            amazonS3.deleteObject(deleteObjectRequest);
+        } catch (Exception e) {
+            throw new StorageException("Não foi possível excluir o arquivo na Amazon S3", e);
+        }
     }
 
     private String getFilePath(String fileName) {
