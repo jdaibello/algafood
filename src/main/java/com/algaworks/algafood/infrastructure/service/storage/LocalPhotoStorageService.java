@@ -2,14 +2,13 @@ package com.algaworks.algafood.infrastructure.service.storage;
 
 import com.algaworks.algafood.core.StorageProperties;
 import com.algaworks.algafood.domain.service.PhotoStorageService;
-import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-@Service
+// @Service
 public class LocalPhotoStorageService implements PhotoStorageService {
 
 	private StorageProperties storageProperties;
