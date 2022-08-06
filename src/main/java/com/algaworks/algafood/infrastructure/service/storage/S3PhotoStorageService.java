@@ -10,7 +10,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.InputStream;
+import java.net.URL;
 
 @Service
 public class S3PhotoStorageService implements PhotoStorageService {
@@ -22,8 +22,11 @@ public class S3PhotoStorageService implements PhotoStorageService {
     private StorageProperties storageProperties;
 
     @Override
-    public InputStream recover(String fileName) {
-        return null;
+    public RecoveredPhoto recover(String fileName) {
+        String filePath = getFilePath(fileName);
+        URL url = amazonS3.getUrl(storageProperties.getS3().getBucket(), filePath);
+
+        return RecoveredPhoto.builder().url(url.toString()).build();
     }
 
     @Override

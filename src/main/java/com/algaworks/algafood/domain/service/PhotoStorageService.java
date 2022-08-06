@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface PhotoStorageService {
 
-	InputStream recover(String fileName);
+	RecoveredPhoto recover(String fileName);
 
 	void store(NewPhoto newPhoto);
 
@@ -32,5 +32,20 @@ public interface PhotoStorageService {
 		private String fileName;
 		private String contentType;
 		private InputStream inputStream;
+	}
+
+	@Builder
+	@Getter
+	class RecoveredPhoto {
+		private InputStream inputStream;
+		private String url;
+
+		public boolean hasInputStream() {
+			return inputStream != null;
+		}
+
+		public boolean hasUrl() {
+			return url != null;
+		}
 	}
 }
