@@ -1,19 +1,27 @@
 package com.algaworks.algafood.domain.service;
 
+import java.util.Set;
+
 import lombok.Builder;
 import lombok.Getter;
-
-import java.util.Set;
+import lombok.NonNull;
+import lombok.Singular;
 
 public interface EmailSendingService {
 
-    void send(Message message);
+	void send(Message message);
 
-    @Builder
-    @Getter
-    class Message {
-        private Set<String> recipients;
-        private String subject;
-        private String body;
-    }
+	@Builder
+	@Getter
+	class Message {
+
+		@Singular
+		private Set<String> recipients;
+
+		@NonNull
+		private String subject;
+
+		@NonNull
+		private String body;
+	}
 }
