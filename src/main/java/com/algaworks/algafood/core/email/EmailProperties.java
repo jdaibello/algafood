@@ -16,11 +16,18 @@ import lombok.Setter;
 @ConfigurationProperties("algafood.email")
 public class EmailProperties {
 	private Implementation impl = Implementation.FAKE;
+	private Sandbox sandbox = new Sandbox();
 
 	@NotNull
 	private String sender;
 
+	@Getter
+	@Setter
+	public class Sandbox {
+		private String recipient;
+	}
+
 	public enum Implementation {
-		SMTP, FAKE
+		SMTP, FAKE, SANDBOX
 	}
 }

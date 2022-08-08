@@ -1,5 +1,6 @@
 package com.algaworks.algafood.infrastructure.service.email;
 
+import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,15 +28,7 @@ public class SmtpEmailSendingService implements EmailSendingService {
 	@Override
 	public void send(Message message) {
 		try {
-			String body = proccessTemplate(message);
-
-			MimeMessage mimeMessage = mailSender.createMimeMessage();
-			MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "UTF-8");
-
-			helper.setFrom(emailProperties.getSender());
-			helper.setTo(message.getRecipients().toArray(new String[0]));
-			helper.setSubject(message.getSubject());
-			helper.setText(body, true);
+			MimeMessage mimeMessage = createMimeMessage(message);
 
 			mailSender.send(mimeMessage);
 		} catch (Exception e) {
@@ -51,5 +44,19 @@ public class SmtpEmailSendingService implements EmailSendingService {
 		} catch (Exception e) {
 			throw new EmailException("Não foi possível montar o template do e-mail", e);
 		}
+	}
+
+	protected MimeMessage createMimeMessage(Message message) throws MessagingException {
+		String body = proccessTemplate(message);
+
+		MimeMessage mimeMessage = mailSender.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "UTF-8");
+
+		helper.setFrom(emailProperties.getSender());
+		helper.setTo(message.getRecipients().toArray(new String[0]));
+		helper.setSubject(message.getSubject());
+		helper.setText(body, true);
+
+		return mimeMessage;
 	}
 }
