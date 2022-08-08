@@ -24,6 +24,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.domain.AbstractAggregateRoot;
 
+import com.algaworks.algafood.domain.event.CancelledOrderEvent;
 import com.algaworks.algafood.domain.event.ConfirmedOrderEvent;
 import com.algaworks.algafood.domain.exception.BusinessException;
 
@@ -97,6 +98,8 @@ public class Order extends AbstractAggregateRoot<Order> {
 	public void cancel() {
 		setStatus(OrderStatus.CANCELED);
 		setCancellationDate(OffsetDateTime.now());
+
+		registerEvent(new CancelledOrderEvent(this));
 	}
 
 	private void setStatus(OrderStatus newStatus) {

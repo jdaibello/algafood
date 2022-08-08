@@ -28,6 +28,8 @@ public class OrderFlowService {
 	public void cancel(String orderCode) {
 		Order order = orderIssuanceService.findOrFail(orderCode);
 		order.cancel();
+
+		orderRepository.save(order);
 	}
 
 	@Transactional
