@@ -22,17 +22,19 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.domain.AbstractAggregateRoot;
 
+import com.algaworks.algafood.domain.event.ConfirmedOrderEvent;
 import com.algaworks.algafood.domain.exception.BusinessException;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 @Entity
 @Table(name = "`order`")
-public class Order {
+public class Order extends AbstractAggregateRoot<Order> {
 
 	@EqualsAndHashCode.Include
 	@Id
@@ -83,6 +85,8 @@ public class Order {
 	public void confirm() {
 		setStatus(OrderStatus.CONFIRMED);
 		setConfirmationDate(OffsetDateTime.now());
+
+		registerEvent(new ConfirmedOrderEvent(this));
 	}
 
 	public void delivery() {

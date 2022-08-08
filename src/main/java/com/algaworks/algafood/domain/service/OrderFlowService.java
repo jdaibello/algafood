@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.algaworks.algafood.domain.model.Order;
-import com.algaworks.algafood.domain.service.EmailSendingService.Message;
+import com.algaworks.algafood.domain.repository.OrderRepository;
 
 @Service
 public class OrderFlowService {
@@ -14,17 +14,14 @@ public class OrderFlowService {
 	private OrderIssuanceService orderIssuanceService;
 
 	@Autowired
-	private EmailSendingService emailSendingService;
+	private OrderRepository orderRepository;
 
 	@Transactional
 	public void confirm(String orderCode) {
 		Order order = orderIssuanceService.findOrFail(orderCode);
 		order.confirm();
 
-		var message = Message.builder().subject(order.getRestaurant().getName() + " - Pedido confirmado")
-				.body("confirmed-order.html").variable("order", order).recipient(order.getClient().getEmail()).build();
-
-		emailSendingService.send(message);
+		orderRepository.save(order);
 	}
 
 	@Transactional
