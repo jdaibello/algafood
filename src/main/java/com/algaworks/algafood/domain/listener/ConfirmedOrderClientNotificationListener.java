@@ -1,8 +1,8 @@
 package com.algaworks.algafood.domain.listener;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 import com.algaworks.algafood.domain.event.ConfirmedOrderEvent;
 import com.algaworks.algafood.domain.model.Order;
@@ -15,7 +15,7 @@ public class ConfirmedOrderClientNotificationListener {
 	@Autowired
 	private EmailSendingService emailSendingService;
 
-	@EventListener
+	@TransactionalEventListener
 	public void whenConfirmingOrder(ConfirmedOrderEvent event) {
 		Order order = event.getOrder();
 
