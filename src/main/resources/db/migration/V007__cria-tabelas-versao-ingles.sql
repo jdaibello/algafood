@@ -78,11 +78,6 @@ CREATE TABLE restaurant (
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE restaurant_product (
-	restaurant_id BIGINT NOT NULL, 
-    product_id BIGINT NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 CREATE TABLE restaurant_payment_method (
 	restaurant_id BIGINT NOT NULL, 
 	payment_method_id BIGINT NOT NULL
@@ -110,10 +105,6 @@ ALTER TABLE product ADD CONSTRAINT fk_product_restaurant FOREIGN KEY (restaurant
 
 ALTER TABLE restaurant ADD CONSTRAINT fk_restaurant_kitchen FOREIGN KEY (kitchen_id) REFERENCES kitchen (id);
 ALTER TABLE restaurant ADD CONSTRAINT fk_restaurant_city FOREIGN KEY (address_city_id) REFERENCES city (id);
-
-ALTER TABLE restaurant_product ADD CONSTRAINT uq_restaurant_product_product UNIQUE (product_id);
-ALTER TABLE restaurant_product ADD CONSTRAINT fk_restaurant_product_product FOREIGN KEY (product_id) REFERENCES product (id);
-ALTER TABLE restaurant_product ADD CONSTRAINT fk_restaurant_product_restaurant FOREIGN KEY (restaurant_id) REFERENCES restaurant (id);
 
 ALTER TABLE restaurant_payment_method ADD CONSTRAINT fk_restaurant_payment_method_payment_method FOREIGN KEY (payment_method_id) REFERENCES payment_method (id);
 ALTER TABLE restaurant_payment_method ADD CONSTRAINT fk_restaurant_payment_method_restaurant FOREIGN KEY (restaurant_id) REFERENCES restaurant (id);

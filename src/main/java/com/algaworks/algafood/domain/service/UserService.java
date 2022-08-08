@@ -1,11 +1,14 @@
 package com.algaworks.algafood.domain.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.algaworks.algafood.domain.exception.BusinessException;
 import com.algaworks.algafood.domain.exception.UserNotFoundException;
+import com.algaworks.algafood.domain.model.Group;
 import com.algaworks.algafood.domain.model.User;
 import com.algaworks.algafood.domain.repository.UserRepository;
 
@@ -15,8 +18,20 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private GroupService groupService;
+
 	@Transactional
 	public User save(User user) {
+		userRepository.detach(user);
+
+		Optional<User> existingUser = userRepository.findByEmail(user.getEmail());
+
+		if (existingUser.isPresent() && !existingUser.get().equals(user)) {
+			throw new BusinessException(
+					String.format("Já existe um usuário cadastrado com o e-mail %s", user.getEmail()));
+		}
+
 		return userRepository.save(user);
 	}
 
@@ -29,6 +44,20 @@ public class UserService {
 		}
 
 		user.setPassword(newPassword);
+	}
+
+	@Transactional
+	public void attachGroup(Long userId, Long groupId) {
+		User user = findOrFail(userId);
+		Group group = groupService.findOrFail(groupId);
+		user.addGroup(group);
+	}
+
+	@Transactional
+	public void detachGroup(Long userId, Long groupId) {
+		User user = findOrFail(userId);
+		Group group = groupService.findOrFail(groupId);
+		user.removeGroup(group);
 	}
 
 	public User findOrFail(Long userId) {

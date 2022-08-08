@@ -12,6 +12,5 @@ DROP TABLE permissao;
 DROP TABLE produto;
 DROP TABLE restaurante;
 DROP TABLE restaurante_forma_pagamento;
-DROP TABLE restaurante_produto;
 DROP TABLE usuario;
 DROP TABLE usuario_grupo;
