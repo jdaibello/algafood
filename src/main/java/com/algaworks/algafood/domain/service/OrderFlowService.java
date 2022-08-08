@@ -22,8 +22,7 @@ public class OrderFlowService {
 		order.confirm();
 
 		var message = Message.builder().subject(order.getRestaurant().getName() + " - Pedido confirmado")
-				.body("O pedido de código <strong>" + order.getCode() + "</strong> foi confirmado!")
-				.recipient(order.getClient().getEmail()).build();
+				.body("confirmed-order.html").variable("order", order).recipient(order.getClient().getEmail()).build();
 
 		emailSendingService.send(message);
 	}
