@@ -33,15 +33,42 @@ function register() {
 	});
 }
 
+function remove(paymentMethod) {
+	var url = "http://localhost:8080/payment-methods/" + paymentMethod.id;
+
+	$.ajax({
+		url: url,
+		type: "DELETE",
+		success: function(response) {
+			consult();
+			alert("Forma de pagamento removida!");
+		},
+		error: function(error) {
+			if (error.status >= 400 && error.status <= 499) {
+				var problem = JSON.parse(error.responseText);
+				alert(problem.userMessage);
+			} else {
+				alert("Erro ao remover forma de pagamento");
+			}
+		}
+	});
+}
+
 function fillTable(paymentMethods) {
 	$("#table tbody tr").remove();
 
 	$.each(paymentMethods, function (i, paymentMethod) {
 		var row = $("<tr>");
 
+		var actionLink = $("<a href='#'>").text("Excluir").click(function (event) {
+			event.preventDefault();
+			remove(paymentMethod);
+		});
+
 		row.append(
 			$("<td>").text(paymentMethod.id),
-			$("<td>").text(paymentMethod.description)
+			$("<td>").text(paymentMethod.description),
+			$("<td>").append(actionLink)
 		);
 
 		row.appendTo("#table");
