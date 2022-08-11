@@ -69,11 +69,24 @@ public class PaymentMethodController {
 	}
 
 	@GetMapping("/{paymentMethodId}")
-	public ResponseEntity<PaymentMethodDTO> find(@PathVariable Long paymentMethodId) {
+	public ResponseEntity<PaymentMethodDTO> find(@PathVariable Long paymentMethodId, ServletWebRequest request) {
+		ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
+
+		String etag = "0";
+		OffsetDateTime updateDate = paymentMethodRepository.getUpdateDateById(paymentMethodId);
+
+		if (updateDate != null) {
+			etag = String.valueOf(updateDate.toEpochSecond());
+		}
+
+		if (request.checkNotModified(etag)) {
+			return null;
+		}
+
 		PaymentMethod paymentMethod = service.findOrFail(paymentMethodId);
 		PaymentMethodDTO paymentMethodDTO = paymentMethodDTOAssembler.toModel(paymentMethod);
 
-		return ResponseEntity.ok().cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic())
+		return ResponseEntity.ok().cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic()).eTag(etag)
 				.body(paymentMethodDTO);
 	}
 
