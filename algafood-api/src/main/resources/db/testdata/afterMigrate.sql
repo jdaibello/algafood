@@ -63,9 +63,9 @@ INSERT INTO product (id, name, description, price, active, restaurant_id) VALUES
 INSERT INTO product (id, name, description, price, active, restaurant_id) VALUES (8, 'Espetinho de Cupim', 'Acompanha farinha, mandioca e vinagrete', 8, 1, 5);
 INSERT INTO product (id, name, description, price, active, restaurant_id) VALUES (9, 'Sanduíche X-Tudo', 'Sandubão com muito queijo, hamburger bovino, bacon, ovo, salada e maionese', 19, 1, 6);
 
-INSERT INTO payment_method (id, description) VALUES (1, 'Cartão de crédito');
-INSERT INTO payment_method (id, description) VALUES (2, 'Cartão de débito');
-INSERT INTO payment_method (id, description) VALUES (3, 'Dinheiro');
+INSERT INTO payment_method (id, description, update_date) VALUES (1, 'Cartão de crédito', UTC_TIMESTAMP());
+INSERT INTO payment_method (id, description, update_date) VALUES (2, 'Cartão de débito', UTC_TIMESTAMP());
+INSERT INTO payment_method (id, description, update_date) VALUES (3, 'Dinheiro', UTC_TIMESTAMP());
 
 INSERT INTO restaurant_payment_method (restaurant_id, payment_method_id) VALUES (1, 1), (1, 2), (1, 3), (2, 3), (3, 2), (3, 3), (4, 1), (4, 2), (5, 1), (5, 2), (6, 3);
 
