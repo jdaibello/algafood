@@ -48,7 +48,12 @@ public class PaymentMethodController {
 		List<PaymentMethodDTO> paymentMethodsDTO = paymentMethodDTOAssembler
 				.toCollectionModel(paymentMethodRepository.findAll());
 
-		return ResponseEntity.ok().cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS)).body(paymentMethodsDTO);
+		return ResponseEntity.ok() // .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
+//				.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePrivate())
+				.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic())
+//				.cacheControl(CacheControl.noCache())
+//				.cacheControl(CacheControl.noStore())
+				.body(paymentMethodsDTO);
 	}
 
 	@GetMapping("/{paymentMethodId}")
@@ -56,7 +61,12 @@ public class PaymentMethodController {
 		PaymentMethod paymentMethod = service.findOrFail(paymentMethodId);
 		PaymentMethodDTO paymentMethodDTO = paymentMethodDTOAssembler.toModel(paymentMethod);
 
-		return ResponseEntity.ok().cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS)).body(paymentMethodDTO);
+		return ResponseEntity.ok() // .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
+//				.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePrivate())
+				.cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic())
+//				.cacheControl(CacheControl.noCache())
+//				.cacheControl(CacheControl.noStore())
+				.body(paymentMethodDTO);
 	}
 
 	@PostMapping
