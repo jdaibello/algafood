@@ -12,6 +12,7 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 
     @Bean
     public Docket apiDocket() {
-        return new Docket(DocumentationType.OAS_30).select().apis(RequestHandlerSelectors.any()).build();
+        return new Docket(DocumentationType.OAS_30).select()
+                .apis(RequestHandlerSelectors.basePackage("com.algaworks.algafood.api")).build();
     }
 }
