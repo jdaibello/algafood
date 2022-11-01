@@ -26,6 +26,9 @@ import com.algaworks.algafood.domain.model.User;
 import com.algaworks.algafood.domain.repository.UserRepository;
 import com.algaworks.algafood.domain.service.UserService;
 
+import io.swagger.annotations.Api;
+
+@Api(tags = "Usuários")
 @RestController
 @RequestMapping(value = "/users")
 public class UserController {

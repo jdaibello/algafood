@@ -24,6 +24,9 @@ import com.algaworks.algafood.domain.model.Group;
 import com.algaworks.algafood.domain.repository.GroupRepository;
 import com.algaworks.algafood.domain.service.GroupService;
 
+import io.swagger.annotations.Api;
+
+@Api(tags = "Grupos")
 @RestController
 @RequestMapping("/groups")
 public class GroupController {

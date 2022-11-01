@@ -35,6 +35,9 @@ import com.algaworks.algafood.domain.repository.OrderRepository;
 import com.algaworks.algafood.domain.service.OrderIssuanceService;
 import com.algaworks.algafood.infrastructure.repository.spec.OrderSpecs;
 
+import io.swagger.annotations.Api;
+
+@Api(tags = "Pedidos")
 @RestController
 @RequestMapping(value = "/orders")
 public class OrderController {

@@ -17,6 +17,9 @@ import com.algaworks.algafood.api.dto.UserDTO;
 import com.algaworks.algafood.domain.model.Restaurant;
 import com.algaworks.algafood.domain.service.RestaurantService;
 
+import io.swagger.annotations.Api;
+
+@Api(tags = "Responsáveis pelos Restaurantes")
 @RestController
 @RequestMapping(value = "/restaurants/{restaurantId}/responsibles")
 public class RestaurantResponsibleUserController {

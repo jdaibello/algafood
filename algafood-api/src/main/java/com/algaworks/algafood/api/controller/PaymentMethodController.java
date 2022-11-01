@@ -30,6 +30,9 @@ import com.algaworks.algafood.domain.model.PaymentMethod;
 import com.algaworks.algafood.domain.repository.PaymentMethodRepository;
 import com.algaworks.algafood.domain.service.PaymentMethodService;
 
+import io.swagger.annotations.Api;
+
+@Api(tags = "Formas de Pagamento")
 @RestController
 @RequestMapping("/payment-methods")
 public class PaymentMethodController {

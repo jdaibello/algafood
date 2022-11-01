@@ -24,6 +24,9 @@ import com.algaworks.algafood.domain.model.State;
 import com.algaworks.algafood.domain.repository.StateRepository;
 import com.algaworks.algafood.domain.service.StateService;
 
+import io.swagger.annotations.Api;
+
+@Api(tags = "Estados")
 @RestController
 @RequestMapping("/states")
 public class StateController {

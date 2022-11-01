@@ -16,6 +16,9 @@ import com.algaworks.algafood.domain.model.dto.DailySale;
 import com.algaworks.algafood.domain.service.SaleQueryService;
 import com.algaworks.algafood.domain.service.SaleReportService;
 
+import io.swagger.annotations.Api;
+
+@Api(tags = "Estatísticas")
 @RestController
 @RequestMapping(path = "/statistics")
 public class StatisticsController {
