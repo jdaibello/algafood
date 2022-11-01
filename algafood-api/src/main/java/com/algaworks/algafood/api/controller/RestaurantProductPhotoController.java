@@ -33,6 +33,7 @@ import com.algaworks.algafood.domain.service.ProductPhotoCatalogService;
 import com.algaworks.algafood.domain.service.ProductService;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @Api(tags = "Fotos dos Produtos dos Restaurantes")
 @RestController
@@ -51,6 +52,7 @@ public class RestaurantProductPhotoController {
 	@Autowired
 	private ProductPhotoDTOAssembler productPhotoDTOAssembler;
 
+	@ApiOperation("Buscar por ID do restaurante e do produto")
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ProductPhotoDTO find(@PathVariable Long restaurantId, @PathVariable Long productId) {
 		ProductPhoto productPhoto = productPhotoCatalogService.findOrFail(restaurantId, productId);
@@ -58,6 +60,7 @@ public class RestaurantProductPhotoController {
 		return productPhotoDTOAssembler.toModel(productPhoto);
 	}
 
+	@ApiOperation("Enviar")
 	@GetMapping
 	public ResponseEntity<?> servePhoto(@PathVariable Long restaurantId, @PathVariable Long productId,
 			@RequestHeader(name = "accept") String acceptHeader) throws HttpMediaTypeNotAcceptableException {
@@ -82,6 +85,7 @@ public class RestaurantProductPhotoController {
 		}
 	}
 
+	@ApiOperation("Atualizar")
 	@PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ProductPhotoDTO updatePhoto(@PathVariable Long restaurantId, @PathVariable Long productId,
 			@Valid ProductPhotoInput productPhotoInput) throws IOException {
@@ -100,6 +104,7 @@ public class RestaurantProductPhotoController {
 		return productPhotoDTOAssembler.toModel(savedPhoto);
 	}
 
+	@ApiOperation("Excluir")
 	@DeleteMapping
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable Long restaurantId, @PathVariable Long productId) {

@@ -27,6 +27,7 @@ import com.algaworks.algafood.domain.service.ProductService;
 import com.algaworks.algafood.domain.service.RestaurantService;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @Api(tags = "Produtos dos Restaurantes")
 @RestController
@@ -48,6 +49,7 @@ public class RestaurantProductController {
 	@Autowired
 	private ProductInputDisassembler productInputDisassembler;
 
+	@ApiOperation("Listar")
 	@GetMapping
 	public List<ProductDTO> fetchAll(@PathVariable Long restaurantId,
 			@RequestParam(required = false) boolean includeInactive) {
@@ -63,11 +65,13 @@ public class RestaurantProductController {
 		return productDTOAssembler.toCollectionModel(allProducts);
 	}
 
+	@ApiOperation("Buscar por ID")
 	@GetMapping("/{productId}")
 	public ProductDTO find(@PathVariable Long restaurantId, @PathVariable Long productId) {
 		return productDTOAssembler.toModel(service.findOrFail(restaurantId, productId));
 	}
 
+	@ApiOperation("Adicionar")
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public ProductDTO add(@PathVariable Long restaurantId, @RequestBody @Valid ProductInput productInput) {
@@ -79,6 +83,7 @@ public class RestaurantProductController {
 		return productDTOAssembler.toModel(product);
 	}
 
+	@ApiOperation("Atualizar")
 	@PutMapping("/{productId}")
 	public ProductDTO update(@PathVariable Long restaurantId, @PathVariable Long productId,
 			@RequestBody @Valid ProductInput productInput) {

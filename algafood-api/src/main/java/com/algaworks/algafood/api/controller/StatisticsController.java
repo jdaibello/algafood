@@ -17,6 +17,7 @@ import com.algaworks.algafood.domain.service.SaleQueryService;
 import com.algaworks.algafood.domain.service.SaleReportService;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @Api(tags = "Estatísticas")
 @RestController
@@ -29,12 +30,14 @@ public class StatisticsController {
 	@Autowired
 	private SaleReportService saleReportService;
 
+	@ApiOperation("Consultar")
 	@GetMapping(path = "/daily-sales", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<DailySale> queryDailySales(DailySaleFilter filter,
 			@RequestParam(required = false, defaultValue = "+00:00") String timeOffset) {
 		return saleQueryService.queryDailySales(filter, timeOffset);
 	}
 
+	@ApiOperation("Emitir")
 	@GetMapping(path = "/daily-sales", produces = MediaType.APPLICATION_PDF_VALUE)
 	public ResponseEntity<byte[]> queryDailySalesPdf(DailySaleFilter filter,
 			@RequestParam(required = false, defaultValue = "+00:00") String timeOffset) {

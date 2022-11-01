@@ -31,6 +31,7 @@ import com.algaworks.algafood.domain.repository.PaymentMethodRepository;
 import com.algaworks.algafood.domain.service.PaymentMethodService;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @Api(tags = "Formas de Pagamento")
 @RestController
@@ -49,6 +50,7 @@ public class PaymentMethodController {
 	@Autowired
 	private PaymentMethodInputDisassembler paymentMethodInputDisassembler;
 
+	@ApiOperation("Listar")
 	@GetMapping
 	public ResponseEntity<List<PaymentMethodDTO>> fetchAll(ServletWebRequest request) {
 		ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
@@ -71,6 +73,7 @@ public class PaymentMethodController {
 				.body(paymentMethodsDTO);
 	}
 
+	@ApiOperation("Buscar por ID")
 	@GetMapping("/{paymentMethodId}")
 	public ResponseEntity<PaymentMethodDTO> find(@PathVariable Long paymentMethodId, ServletWebRequest request) {
 		ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
@@ -93,6 +96,7 @@ public class PaymentMethodController {
 				.body(paymentMethodDTO);
 	}
 
+	@ApiOperation("Adicionar")
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public PaymentMethodDTO add(@RequestBody @Valid PaymentMethodInput paymentMethodInput) {
@@ -102,6 +106,7 @@ public class PaymentMethodController {
 		return paymentMethodDTOAssembler.toModel(paymentMethod);
 	}
 
+	@ApiOperation("Atualizar")
 	@PutMapping("/{paymentMethodId}")
 	public PaymentMethodDTO update(@PathVariable Long paymentMethodId,
 			@RequestBody @Valid PaymentMethodInput paymentMethodInput) {
@@ -112,6 +117,7 @@ public class PaymentMethodController {
 		return paymentMethodDTOAssembler.toModel(currentPaymentMethod);
 	}
 
+	@ApiOperation("Excluir")
 	@DeleteMapping("/{paymentMethodId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable Long paymentMethodId) {

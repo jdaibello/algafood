@@ -36,6 +36,7 @@ import com.algaworks.algafood.domain.service.OrderIssuanceService;
 import com.algaworks.algafood.infrastructure.repository.spec.OrderSpecs;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @Api(tags = "Pedidos")
 @RestController
@@ -57,6 +58,7 @@ public class OrderController {
 	@Autowired
 	private OrderInputDisassembler orderInputDisassembler;
 
+	@ApiOperation("Procurar com filtragem de cliente e restaurante")
 	@GetMapping
 	public Page<OrderSummaryDTO> search(OrderFilter filter, @PageableDefault(size = 10) Pageable pageable) {
 		pageable = translatePageable(pageable);
@@ -67,6 +69,7 @@ public class OrderController {
 		return new PageImpl<>(ordersSummaryDTO, pageable, ordersPage.getTotalElements());
 	}
 
+	@ApiOperation("Buscar por código do pedido")
 	@GetMapping("/{orderCode}")
 	public OrderDTO find(@PathVariable String orderCode) {
 		Order order = service.findOrFail(orderCode);
@@ -74,6 +77,7 @@ public class OrderController {
 		return orderDTOAssembler.toModel(order);
 	}
 
+	@ApiOperation("Adicionar")
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public OrderDTO add(@Valid @RequestBody OrderInput orderInput) {

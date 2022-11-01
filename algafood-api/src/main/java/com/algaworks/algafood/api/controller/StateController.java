@@ -25,6 +25,7 @@ import com.algaworks.algafood.domain.repository.StateRepository;
 import com.algaworks.algafood.domain.service.StateService;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @Api(tags = "Estados")
 @RestController
@@ -43,11 +44,13 @@ public class StateController {
 	@Autowired
 	private StateInputDisassembler stateInputDisassembler;
 
+	@ApiOperation("Listar")
 	@GetMapping
 	public List<StateDTO> fetchAll() {
 		return stateDTOAssembler.toCollectionModel(stateRepository.findAll());
 	}
 
+	@ApiOperation("Buscar por ID")
 	@GetMapping("/{stateId}")
 	public StateDTO find(@PathVariable Long stateId) {
 		State state = service.findOrFail(stateId);
@@ -55,6 +58,7 @@ public class StateController {
 		return stateDTOAssembler.toModel(state);
 	}
 
+	@ApiOperation("Adicionar")
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public StateDTO add(@RequestBody @Valid StateInput stateInput) {
@@ -64,6 +68,7 @@ public class StateController {
 		return stateDTOAssembler.toModel(state);
 	}
 
+	@ApiOperation("Atualizar")
 	@PutMapping("/{stateId}")
 	public StateDTO update(@PathVariable Long stateId, @RequestBody @Valid StateInput stateInput) {
 		State currentState = service.findOrFail(stateId);
@@ -73,6 +78,7 @@ public class StateController {
 		return stateDTOAssembler.toModel(currentState);
 	}
 
+	@ApiOperation("Excluir")
 	@DeleteMapping("/{stateId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable Long stateId) {

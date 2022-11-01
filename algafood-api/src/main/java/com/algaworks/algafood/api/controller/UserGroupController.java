@@ -18,6 +18,7 @@ import com.algaworks.algafood.domain.model.User;
 import com.algaworks.algafood.domain.service.UserService;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @Api(tags = "Grupos de Usuários")
 @RestController
@@ -30,6 +31,7 @@ public class UserGroupController {
 	@Autowired
 	private GroupDTOAssembler groupDTOAssembler;
 
+	@ApiOperation("Listar")
 	@GetMapping
 	public List<GroupDTO> fetchAll(@PathVariable Long userId) {
 		User user = service.findOrFail(userId);
@@ -37,12 +39,14 @@ public class UserGroupController {
 		return groupDTOAssembler.toCollectionModel(user.getGroups());
 	}
 
+	@ApiOperation("Anexar")
 	@PutMapping("/{groupId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void attach(@PathVariable Long userId, @PathVariable Long groupId) {
 		service.attachGroup(userId, groupId);
 	}
 
+	@ApiOperation("Desanexar")
 	@DeleteMapping("/{groupId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void detach(@PathVariable Long userId, @PathVariable Long groupId) {

@@ -28,6 +28,7 @@ import com.algaworks.algafood.domain.repository.KitchenRepository;
 import com.algaworks.algafood.domain.service.KitchenService;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @Api(tags = "Cozinhas")
 @RestController
@@ -46,6 +47,7 @@ public class KitchenController {
 	@Autowired
 	private KitchenInputDisassembler kitchenInputDisassembler;
 
+	@ApiOperation("Listar com paginação")
 	@GetMapping
 	public Page<KitchenDTO> fetchAll(Pageable pageable) {
 		Page<Kitchen> kitchensPage = kitchenRepository.findAll(pageable);
@@ -54,6 +56,7 @@ public class KitchenController {
 		return new PageImpl<>(kitchensDTO, pageable, kitchensPage.getTotalElements());
 	}
 
+	@ApiOperation("Buscar por ID")
 	@GetMapping("/{kitchenId}")
 	public KitchenDTO find(@PathVariable Long kitchenId) {
 		Kitchen kitchen = service.findOrFail(kitchenId);
@@ -61,6 +64,7 @@ public class KitchenController {
 		return kitchenDTOAssembler.toModel(kitchen);
 	}
 
+	@ApiOperation("Adicionar")
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public KitchenDTO add(@RequestBody @Valid KitchenInput kitchenInput) {
@@ -70,6 +74,7 @@ public class KitchenController {
 		return kitchenDTOAssembler.toModel(kitchen);
 	}
 
+	@ApiOperation("Atualizar")
 	@PutMapping("/{kitchenId}")
 	public KitchenDTO update(@PathVariable Long kitchenId, @RequestBody @Valid KitchenInput kitchenInput) {
 		Kitchen currentKitchen = service.findOrFail(kitchenId);
@@ -79,6 +84,7 @@ public class KitchenController {
 		return kitchenDTOAssembler.toModel(currentKitchen);
 	}
 
+	@ApiOperation("Excluir")
 	@DeleteMapping("/{kitchenId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable Long kitchenId) {

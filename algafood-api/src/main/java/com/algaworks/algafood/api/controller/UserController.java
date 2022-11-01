@@ -27,6 +27,7 @@ import com.algaworks.algafood.domain.repository.UserRepository;
 import com.algaworks.algafood.domain.service.UserService;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @Api(tags = "Usuários")
 @RestController
@@ -45,11 +46,13 @@ public class UserController {
 	@Autowired
 	private UserInputDisassembler userInputDisassembler;
 
+	@ApiOperation("Listar")
 	@GetMapping
 	public List<UserDTO> fetchAll() {
 		return userDTOAssembler.toCollectionModel(userRepository.findAll());
 	}
 
+	@ApiOperation("Buscar por ID")
 	@GetMapping("/{userId}")
 	public UserDTO find(@PathVariable Long userId) {
 		User user = service.findOrFail(userId);
@@ -57,6 +60,7 @@ public class UserController {
 		return userDTOAssembler.toModel(user);
 	}
 
+	@ApiOperation("Adicionar")
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public UserDTO add(@RequestBody @Valid UserWithPasswordInput userInput) {
@@ -66,6 +70,7 @@ public class UserController {
 		return userDTOAssembler.toModel(user);
 	}
 
+	@ApiOperation("Atualizar")
 	@PutMapping("/{userId}")
 	public UserDTO update(@PathVariable Long userId, @RequestBody @Valid UserInput userInput) {
 		User currentUser = service.findOrFail(userId);
@@ -75,6 +80,7 @@ public class UserController {
 		return userDTOAssembler.toModel(currentUser);
 	}
 
+	@ApiOperation("Atualizar senha")
 	@PatchMapping("/{userId}/reset-password")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void updatePassword(@PathVariable Long userId, @RequestBody @Valid PasswordInput passwordInput) {

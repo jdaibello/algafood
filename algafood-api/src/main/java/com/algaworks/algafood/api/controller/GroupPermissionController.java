@@ -18,6 +18,7 @@ import com.algaworks.algafood.domain.model.Group;
 import com.algaworks.algafood.domain.service.GroupService;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @Api(tags = "Permissões dos Grupos")
 @RestController
@@ -30,6 +31,7 @@ public class GroupPermissionController {
 	@Autowired
 	private PermissionDTOAssembler permissionDTOAssembler;
 
+	@ApiOperation("Listar")
 	@GetMapping
 	public List<PermissionDTO> fetchAll(@PathVariable Long groupId) {
 		Group group = service.findOrFail(groupId);
@@ -37,12 +39,14 @@ public class GroupPermissionController {
 		return permissionDTOAssembler.toCollectionModel(group.getPermissions());
 	}
 
+	@ApiOperation("Anexar")
 	@PutMapping("/{permissionId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void attach(@PathVariable Long groupId, @PathVariable Long permissionId) {
 		service.attachPermission(groupId, permissionId);
 	}
 
+	@ApiOperation("Desanexar")
 	@DeleteMapping("/{permissionId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void detach(@PathVariable Long groupId, @PathVariable Long permissionId) {

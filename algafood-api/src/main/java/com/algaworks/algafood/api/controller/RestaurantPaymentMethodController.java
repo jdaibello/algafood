@@ -18,6 +18,7 @@ import com.algaworks.algafood.domain.model.Restaurant;
 import com.algaworks.algafood.domain.service.RestaurantService;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @Api(tags = "Formas de Pagamento dos Restaurantes")
 @RestController
@@ -30,6 +31,7 @@ public class RestaurantPaymentMethodController {
 	@Autowired
 	private PaymentMethodDTOAssembler paymentMethodDTOAssembler;
 
+	@ApiOperation("Listar")
 	@GetMapping
 	public List<PaymentMethodDTO> fetchAll(@PathVariable Long restaurantId) {
 		Restaurant restaurant = service.findOrFail(restaurantId);
@@ -37,12 +39,14 @@ public class RestaurantPaymentMethodController {
 		return paymentMethodDTOAssembler.toCollectionModel(restaurant.getPaymentMethods());
 	}
 
+	@ApiOperation("Anexar")
 	@PutMapping("/{paymentMethodId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void attach(@PathVariable Long restaurantId, @PathVariable Long paymentMethodId) {
 		service.attachPaymentMethod(restaurantId, paymentMethodId);
 	}
 
+	@ApiOperation("Desanexar")
 	@DeleteMapping("/{paymentMethodId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void detach(@PathVariable Long restaurantId, @PathVariable Long paymentMethodId) {

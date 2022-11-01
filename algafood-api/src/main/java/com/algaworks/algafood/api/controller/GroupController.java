@@ -25,6 +25,7 @@ import com.algaworks.algafood.domain.repository.GroupRepository;
 import com.algaworks.algafood.domain.service.GroupService;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @Api(tags = "Grupos")
 @RestController
@@ -43,11 +44,13 @@ public class GroupController {
 	@Autowired
 	private GroupInputDisassembler groupInputDisassembler;
 
+	@ApiOperation("Listar")
 	@GetMapping
 	public List<GroupDTO> fetchAll() {
 		return groupDTOAssembler.toCollectionModel(groupRepository.findAll());
 	}
 
+	@ApiOperation("Buscar por ID")
 	@GetMapping("/{groupId}")
 	public GroupDTO find(@PathVariable Long groupId) {
 		Group group = service.findOrFail(groupId);
@@ -55,6 +58,7 @@ public class GroupController {
 		return groupDTOAssembler.toModel(group);
 	}
 
+	@ApiOperation("Adicionar")
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public GroupDTO add(@RequestBody @Valid GroupInput groupInput) {
@@ -64,6 +68,7 @@ public class GroupController {
 		return groupDTOAssembler.toModel(group);
 	}
 
+	@ApiOperation("Atualizar")
 	@PutMapping("/{groupId}")
 	public GroupDTO update(@PathVariable Long groupId, @RequestBody @Valid GroupInput groupInput) {
 		Group currentGroup = service.findOrFail(groupId);
@@ -73,6 +78,7 @@ public class GroupController {
 		return groupDTOAssembler.toModel(currentGroup);
 	}
 
+	@ApiOperation("Excluir")
 	@DeleteMapping("/{groupId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable Long groupId) {
