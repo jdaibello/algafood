@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -52,7 +53,7 @@ public class StateController {
 
 	@ApiOperation("Buscar por ID")
 	@GetMapping("/{stateId}")
-	public StateDTO find(@PathVariable Long stateId) {
+	public StateDTO find(@ApiParam(value = "ID do estado", example = "1") @PathVariable Long stateId) {
 		State state = service.findOrFail(stateId);
 
 		return stateDTOAssembler.toModel(state);
@@ -70,7 +71,7 @@ public class StateController {
 
 	@ApiOperation("Atualizar")
 	@PutMapping("/{stateId}")
-	public StateDTO update(@PathVariable Long stateId, @RequestBody @Valid StateInput stateInput) {
+	public StateDTO update(@ApiParam(value = "ID do estado", example = "1") @PathVariable Long stateId, @RequestBody @Valid StateInput stateInput) {
 		State currentState = service.findOrFail(stateId);
 		stateInputDisassembler.copyToDomainObject(stateInput, currentState);
 		currentState = service.save(currentState);
@@ -81,7 +82,7 @@ public class StateController {
 	@ApiOperation("Excluir")
 	@DeleteMapping("/{stateId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(@PathVariable Long stateId) {
+	public void delete(@ApiParam(value = "ID do estado", example = "1") @PathVariable Long stateId) {
 		service.delete(stateId);
 	}
 }

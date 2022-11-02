@@ -1,5 +1,6 @@
 package com.algaworks.algafood.api.controller;
 
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,21 +25,21 @@ public class OrderFlowController {
 	@ApiOperation("Confirmar")
 	@PutMapping("/confirmation")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void confirm(@PathVariable String orderCode) {
+	public void confirm(@ApiParam(value = "Código UUID do pedido", example = "123e4567-e89b-12d3-a456-426655440000") @PathVariable String orderCode) {
 		orderFlowService.confirm(orderCode);
 	}
 
 	@ApiOperation("Cancelar")
 	@PutMapping("/cancellation")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void cancel(@PathVariable String orderCode) {
+	public void cancel(@ApiParam(value = "Código UUID do pedido", example = "123e4567-e89b-12d3-a456-426655440000") @PathVariable String orderCode) {
 		orderFlowService.cancel(orderCode);
 	}
 
 	@ApiOperation("Entregar")
 	@PutMapping("/delivery")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delivery(@PathVariable String orderCode) {
+	public void delivery(@ApiParam(value = "Código UUID do pedido", example = "123e4567-e89b-12d3-a456-426655440000") @PathVariable String orderCode) {
 		orderFlowService.delivery(orderCode);
 	}
 }

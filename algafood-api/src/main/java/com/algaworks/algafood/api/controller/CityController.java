@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -54,7 +55,7 @@ public class CityController {
 
 	@ApiOperation("Buscar por ID")
 	@GetMapping("/{cityId}")
-	public CityDTO find(@PathVariable Long cityId) {
+	public CityDTO find(@ApiParam(value = "ID da cidade", example = "1") @PathVariable Long cityId) {
 		City city = service.findOrFail(cityId);
 
 		return cityDTOAssembler.toModel(city);
@@ -76,7 +77,8 @@ public class CityController {
 
 	@ApiOperation("Atualizar")
 	@PutMapping("/{cityId}")
-	public CityDTO update(@PathVariable Long cityId, @RequestBody @Valid CityInput city) {
+	public CityDTO update(@ApiParam(value = "ID da cidade", example = "1") @PathVariable Long cityId,
+						  @RequestBody @Valid CityInput city) {
 		try {
 			City currentCity = service.findOrFail(cityId);
 			cityInputDisassembler.copyToDomainObject(city, currentCity);
@@ -91,7 +93,7 @@ public class CityController {
 	@ApiOperation("Excluir")
 	@DeleteMapping("/{cityId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(@PathVariable Long cityId) {
+	public void delete(@ApiParam(value = "ID da cidade", example = "1") @PathVariable Long cityId) {
 		service.delete(cityId);
 	}
 }

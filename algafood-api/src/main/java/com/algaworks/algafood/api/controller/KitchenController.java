@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -58,7 +59,7 @@ public class KitchenController {
 
 	@ApiOperation("Buscar por ID")
 	@GetMapping("/{kitchenId}")
-	public KitchenDTO find(@PathVariable Long kitchenId) {
+	public KitchenDTO find(@ApiParam(value = "ID da cozinha", example = "1") @PathVariable Long kitchenId) {
 		Kitchen kitchen = service.findOrFail(kitchenId);
 
 		return kitchenDTOAssembler.toModel(kitchen);
@@ -76,7 +77,7 @@ public class KitchenController {
 
 	@ApiOperation("Atualizar")
 	@PutMapping("/{kitchenId}")
-	public KitchenDTO update(@PathVariable Long kitchenId, @RequestBody @Valid KitchenInput kitchenInput) {
+	public KitchenDTO update(@ApiParam(value = "ID da cozinha", example = "1") @PathVariable Long kitchenId, @RequestBody @Valid KitchenInput kitchenInput) {
 		Kitchen currentKitchen = service.findOrFail(kitchenId);
 		kitchenInputDisassembler.copyToDomainObject(kitchenInput, currentKitchen);
 		currentKitchen = service.save(currentKitchen);
@@ -87,7 +88,7 @@ public class KitchenController {
 	@ApiOperation("Excluir")
 	@DeleteMapping("/{kitchenId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(@PathVariable Long kitchenId) {
+	public void delete(@ApiParam(value = "ID da cozinha", example = "1") @PathVariable Long kitchenId) {
 		service.delete(kitchenId);
 	}
 }

@@ -2,6 +2,7 @@ package com.algaworks.algafood.api.controller;
 
 import java.util.List;
 
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,7 +34,7 @@ public class RestaurantResponsibleUserController {
 
 	@ApiOperation("Listar")
 	@GetMapping
-	public List<UserDTO> fetchAll(@PathVariable Long restaurantId) {
+	public List<UserDTO> fetchAll(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
 		Restaurant restaurant = service.findOrFail(restaurantId);
 
 		return userDTOAssembler.toCollectionModel(restaurant.getResponsibles());
@@ -42,14 +43,16 @@ public class RestaurantResponsibleUserController {
 	@ApiOperation("Anexar")
 	@PutMapping("/{userId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void attach(@PathVariable Long restaurantId, @PathVariable Long userId) {
+	public void attach(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
+					   @ApiParam(value = "ID do usuário", example = "1") @PathVariable Long userId) {
 		service.attachResponsible(restaurantId, userId);
 	}
 
 	@ApiOperation("Desanexar")
 	@DeleteMapping("/{userId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void detach(@PathVariable Long restaurantId, @PathVariable Long userId) {
+	public void detach(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
+					   @ApiParam(value = "ID do usuário", example = "1") @PathVariable Long userId) {
 		service.detachResponsible(restaurantId, userId);
 	}
 }

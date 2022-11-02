@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -54,7 +55,7 @@ public class UserController {
 
 	@ApiOperation("Buscar por ID")
 	@GetMapping("/{userId}")
-	public UserDTO find(@PathVariable Long userId) {
+	public UserDTO find(@ApiParam(value = "ID do usuário", example = "1") @PathVariable Long userId) {
 		User user = service.findOrFail(userId);
 
 		return userDTOAssembler.toModel(user);
@@ -72,7 +73,7 @@ public class UserController {
 
 	@ApiOperation("Atualizar")
 	@PutMapping("/{userId}")
-	public UserDTO update(@PathVariable Long userId, @RequestBody @Valid UserInput userInput) {
+	public UserDTO update(@ApiParam(value = "ID do usuário", example = "1") @PathVariable Long userId, @RequestBody @Valid UserInput userInput) {
 		User currentUser = service.findOrFail(userId);
 		userInputDisassembler.copyToDomainObject(userInput, currentUser);
 		currentUser = service.save(currentUser);
@@ -83,7 +84,7 @@ public class UserController {
 	@ApiOperation("Atualizar senha")
 	@PatchMapping("/{userId}/reset-password")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void updatePassword(@PathVariable Long userId, @RequestBody @Valid PasswordInput passwordInput) {
+	public void updatePassword(@ApiParam(value = "ID do usuário", example = "1") @PathVariable Long userId, @RequestBody @Valid PasswordInput passwordInput) {
 		service.updatePassword(userId, passwordInput.getCurrentPassword(), passwordInput.getNewPassword());
 	}
 }

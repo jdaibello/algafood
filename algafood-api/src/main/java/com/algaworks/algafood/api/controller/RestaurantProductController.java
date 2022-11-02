@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,7 +52,7 @@ public class RestaurantProductController {
 
 	@ApiOperation("Listar")
 	@GetMapping
-	public List<ProductDTO> fetchAll(@PathVariable Long restaurantId,
+	public List<ProductDTO> fetchAll(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
 			@RequestParam(required = false) boolean includeInactive) {
 		Restaurant restaurant = restaurantService.findOrFail(restaurantId);
 		List<Product> allProducts = null;
@@ -67,14 +68,15 @@ public class RestaurantProductController {
 
 	@ApiOperation("Buscar por ID")
 	@GetMapping("/{productId}")
-	public ProductDTO find(@PathVariable Long restaurantId, @PathVariable Long productId) {
+	public ProductDTO find(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
+						   @ApiParam(value = "ID do produto", example = "1") @PathVariable Long productId) {
 		return productDTOAssembler.toModel(service.findOrFail(restaurantId, productId));
 	}
 
 	@ApiOperation("Adicionar")
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ProductDTO add(@PathVariable Long restaurantId, @RequestBody @Valid ProductInput productInput) {
+	public ProductDTO add(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId, @RequestBody @Valid ProductInput productInput) {
 		Restaurant restaurant = restaurantService.findOrFail(restaurantId);
 		Product product = productInputDisassembler.toDomainObject(productInput);
 		product.setRestaurant(restaurant);
@@ -85,7 +87,8 @@ public class RestaurantProductController {
 
 	@ApiOperation("Atualizar")
 	@PutMapping("/{productId}")
-	public ProductDTO update(@PathVariable Long restaurantId, @PathVariable Long productId,
+	public ProductDTO update(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
+							 @ApiParam(value = "ID do produto", example = "1") @PathVariable Long productId,
 			@RequestBody @Valid ProductInput productInput) {
 		Product currentProduct = service.findOrFail(restaurantId, productId);
 		productInputDisassembler.copyToDomainObject(productInput, currentProduct);

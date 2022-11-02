@@ -2,6 +2,7 @@ package com.algaworks.algafood.api.controller;
 
 import java.util.List;
 
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,7 +34,7 @@ public class UserGroupController {
 
 	@ApiOperation("Listar")
 	@GetMapping
-	public List<GroupDTO> fetchAll(@PathVariable Long userId) {
+	public List<GroupDTO> fetchAll(@ApiParam(value = "ID do usuário", example = "1") @PathVariable Long userId) {
 		User user = service.findOrFail(userId);
 
 		return groupDTOAssembler.toCollectionModel(user.getGroups());
@@ -42,14 +43,16 @@ public class UserGroupController {
 	@ApiOperation("Anexar")
 	@PutMapping("/{groupId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void attach(@PathVariable Long userId, @PathVariable Long groupId) {
+	public void attach(@ApiParam(value = "ID do usuário", example = "1") @PathVariable Long userId, @ApiParam(value =
+			"ID do grupo", example = "1") @PathVariable Long groupId) {
 		service.attachGroup(userId, groupId);
 	}
 
 	@ApiOperation("Desanexar")
 	@DeleteMapping("/{groupId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void detach(@PathVariable Long userId, @PathVariable Long groupId) {
+	public void detach(@ApiParam(value = "ID do usuário", example = "1") @PathVariable Long userId, @ApiParam(value =
+			"ID do grupo", example = "1") @PathVariable Long groupId) {
 		service.detachGroup(userId, groupId);
 	}
 }

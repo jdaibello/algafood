@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -52,7 +53,7 @@ public class GroupController {
 
 	@ApiOperation("Buscar por ID")
 	@GetMapping("/{groupId}")
-	public GroupDTO find(@PathVariable Long groupId) {
+	public GroupDTO find(@ApiParam(value = "ID do grupo", example = "1") @PathVariable Long groupId) {
 		Group group = service.findOrFail(groupId);
 
 		return groupDTOAssembler.toModel(group);
@@ -70,7 +71,7 @@ public class GroupController {
 
 	@ApiOperation("Atualizar")
 	@PutMapping("/{groupId}")
-	public GroupDTO update(@PathVariable Long groupId, @RequestBody @Valid GroupInput groupInput) {
+	public GroupDTO update(@ApiParam(value = "ID do grupo", example = "1") @PathVariable Long groupId, @RequestBody @Valid GroupInput groupInput) {
 		Group currentGroup = service.findOrFail(groupId);
 		groupInputDisassembler.copyToDomainObject(groupInput, currentGroup);
 		currentGroup = service.save(currentGroup);
@@ -81,7 +82,7 @@ public class GroupController {
 	@ApiOperation("Excluir")
 	@DeleteMapping("/{groupId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(@PathVariable Long groupId) {
+	public void delete(@ApiParam(value = "ID do grupo", example = "1") @PathVariable Long groupId) {
 		service.delete(groupId);
 	}
 }

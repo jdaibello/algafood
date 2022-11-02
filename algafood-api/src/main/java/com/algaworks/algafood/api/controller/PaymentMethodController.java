@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.validation.Valid;
 
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
@@ -75,7 +76,7 @@ public class PaymentMethodController {
 
 	@ApiOperation("Buscar por ID")
 	@GetMapping("/{paymentMethodId}")
-	public ResponseEntity<PaymentMethodDTO> find(@PathVariable Long paymentMethodId, ServletWebRequest request) {
+	public ResponseEntity<PaymentMethodDTO> find(@ApiParam(value = "ID da forma de pagamento", example = "1") @PathVariable Long paymentMethodId, ServletWebRequest request) {
 		ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
 
 		String etag = "0";
@@ -108,7 +109,7 @@ public class PaymentMethodController {
 
 	@ApiOperation("Atualizar")
 	@PutMapping("/{paymentMethodId}")
-	public PaymentMethodDTO update(@PathVariable Long paymentMethodId,
+	public PaymentMethodDTO update(@ApiParam(value = "ID da forma de pagamento", example = "1") @PathVariable Long paymentMethodId,
 			@RequestBody @Valid PaymentMethodInput paymentMethodInput) {
 		PaymentMethod currentPaymentMethod = service.findOrFail(paymentMethodId);
 		paymentMethodInputDisassembler.copyToDomainObject(paymentMethodInput, currentPaymentMethod);
@@ -120,7 +121,7 @@ public class PaymentMethodController {
 	@ApiOperation("Excluir")
 	@DeleteMapping("/{paymentMethodId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(@PathVariable Long paymentMethodId) {
+	public void delete(@ApiParam(value = "ID da forma de pagamento", example = "1") @PathVariable Long paymentMethodId) {
 		service.delete(paymentMethodId);
 	}
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -59,7 +60,7 @@ public class RestaurantController {
 
 	@ApiOperation("Buscar por ID")
 	@GetMapping("/{restaurantId}")
-	public RestaurantDTO find(@PathVariable Long restaurantId) {
+	public RestaurantDTO find(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
 		Restaurant restaurant = service.findOrFail(restaurantId);
 
 		return restaurantDTOAssembler.toModel(restaurant);
@@ -80,7 +81,7 @@ public class RestaurantController {
 
 	@ApiOperation("Atualizar")
 	@PutMapping("/{restaurantId}")
-	public RestaurantDTO update(@PathVariable Long restaurantId, @RequestBody @Valid RestaurantInput restaurantInput) {
+	public RestaurantDTO update(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId, @RequestBody @Valid RestaurantInput restaurantInput) {
 		try {
 			Restaurant currentRestaurant = service.findOrFail(restaurantId);
 			restaurantInputDisassembler.copyToDomainObject(restaurantInput, currentRestaurant);
@@ -94,14 +95,14 @@ public class RestaurantController {
 	@ApiOperation("Ativar")
 	@PutMapping("/{restaurantId}/active")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void activate(@PathVariable Long restaurantId) {
+	public void activate(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
 		service.activate(restaurantId);
 	}
 
 	@ApiOperation("Desativar")
 	@DeleteMapping("/{restaurantId}/active")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void inactivate(@PathVariable Long restaurantId) {
+	public void inactivate(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
 		service.inactivate(restaurantId);
 	}
 
@@ -130,14 +131,14 @@ public class RestaurantController {
 	@ApiOperation("Abrir")
 	@PutMapping("/{restaurantId}/opening")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void open(@PathVariable Long restaurantId) {
+	public void open(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
 		service.open(restaurantId);
 	}
 
 	@ApiOperation("Fechar")
 	@PutMapping("/{restaurantId}/closing")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void close(@PathVariable Long restaurantId) {
+	public void close(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
 		service.close(restaurantId);
 	}
 }

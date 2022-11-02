@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -54,7 +55,8 @@ public class RestaurantProductPhotoController {
 
 	@ApiOperation("Buscar por ID do restaurante e do produto")
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public ProductPhotoDTO find(@PathVariable Long restaurantId, @PathVariable Long productId) {
+	public ProductPhotoDTO find(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId
+			, @ApiParam(value = "ID do produto", example = "1") @PathVariable Long productId) {
 		ProductPhoto productPhoto = productPhotoCatalogService.findOrFail(restaurantId, productId);
 
 		return productPhotoDTOAssembler.toModel(productPhoto);
@@ -62,7 +64,7 @@ public class RestaurantProductPhotoController {
 
 	@ApiOperation("Enviar")
 	@GetMapping
-	public ResponseEntity<?> servePhoto(@PathVariable Long restaurantId, @PathVariable Long productId,
+	public ResponseEntity<?> servePhoto(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId, @ApiParam(value = "ID do produto", example = "1") @PathVariable Long productId,
 			@RequestHeader(name = "accept") String acceptHeader) throws HttpMediaTypeNotAcceptableException {
 		try {
 			ProductPhoto productPhoto = productPhotoCatalogService.findOrFail(restaurantId, productId);
@@ -87,7 +89,7 @@ public class RestaurantProductPhotoController {
 
 	@ApiOperation("Atualizar")
 	@PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public ProductPhotoDTO updatePhoto(@PathVariable Long restaurantId, @PathVariable Long productId,
+	public ProductPhotoDTO updatePhoto(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId, @ApiParam(value = "ID do produto", example = "1") @PathVariable Long productId,
 			@Valid ProductPhotoInput productPhotoInput) throws IOException {
 		Product product = productService.findOrFail(restaurantId, productId);
 		MultipartFile file = productPhotoInput.getFile();
@@ -107,7 +109,8 @@ public class RestaurantProductPhotoController {
 	@ApiOperation("Excluir")
 	@DeleteMapping
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(@PathVariable Long restaurantId, @PathVariable Long productId) {
+	public void delete(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
+					   @ApiParam(value = "ID do produto", example = "1") @PathVariable Long productId) {
 		productPhotoCatalogService.delete(restaurantId, productId);
 	}
 

@@ -2,6 +2,7 @@ package com.algaworks.algafood.api.controller;
 
 import java.util.List;
 
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,7 +34,7 @@ public class GroupPermissionController {
 
 	@ApiOperation("Listar")
 	@GetMapping
-	public List<PermissionDTO> fetchAll(@PathVariable Long groupId) {
+	public List<PermissionDTO> fetchAll(@ApiParam(value = "ID do grupo", example = "1") @PathVariable Long groupId) {
 		Group group = service.findOrFail(groupId);
 
 		return permissionDTOAssembler.toCollectionModel(group.getPermissions());
@@ -42,14 +43,16 @@ public class GroupPermissionController {
 	@ApiOperation("Anexar")
 	@PutMapping("/{permissionId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void attach(@PathVariable Long groupId, @PathVariable Long permissionId) {
+	public void attach(@ApiParam(value = "ID do grupo", example = "1") @PathVariable Long groupId,
+					   @ApiParam(value = "ID da permissão", example = "1") @PathVariable Long permissionId) {
 		service.attachPermission(groupId, permissionId);
 	}
 
 	@ApiOperation("Desanexar")
 	@DeleteMapping("/{permissionId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void detach(@PathVariable Long groupId, @PathVariable Long permissionId) {
+	public void detach(@ApiParam(value = "ID do grupo", example = "1") @PathVariable Long groupId, @ApiParam(value =
+			"ID da permissão", example = "1") @PathVariable Long permissionId) {
 		service.detachPermission(groupId, permissionId);
 	}
 }

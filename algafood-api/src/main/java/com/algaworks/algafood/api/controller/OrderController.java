@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -71,7 +72,7 @@ public class OrderController {
 
 	@ApiOperation("Buscar por código do pedido")
 	@GetMapping("/{orderCode}")
-	public OrderDTO find(@PathVariable String orderCode) {
+	public OrderDTO find(@ApiParam(value = "Código UUID do pedido", example = "123e4567-e89b-12d3-a456-426655440000") @PathVariable String orderCode) {
 		Order order = service.findOrFail(orderCode);
 
 		return orderDTOAssembler.toModel(order);
