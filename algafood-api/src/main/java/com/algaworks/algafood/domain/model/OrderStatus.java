@@ -6,7 +6,7 @@ import java.util.List;
 public enum OrderStatus {
 	CREATED("Criado"),
 	CONFIRMED("Confirmado", CREATED),
-	DELIVERED("Entegue", CONFIRMED),
+	DELIVERED("Entregue", CONFIRMED),
 	CANCELED("Cancelado", CREATED);
 
 	private final String description;

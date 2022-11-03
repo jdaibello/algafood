@@ -1,5 +1,6 @@
 package com.algaworks.algafood.api.dto.input;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,12 +11,15 @@ import javax.validation.constraints.PositiveOrZero;
 @Setter
 public class OrderItemInput {
 
+    @ApiModelProperty(example = "1")
     @NotNull
     private Long productId;
 
+    @ApiModelProperty(example = "1")
     @NotNull
     @PositiveOrZero
     private Integer quantity;
 
+    @ApiModelProperty(example = "")
     private String note;
 }
