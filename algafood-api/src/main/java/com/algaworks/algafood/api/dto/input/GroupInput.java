@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 public class GroupInput {
 
-	@ApiModelProperty(example = "Cozinheiros")
+	@ApiModelProperty(example = "Cozinheiros", required = true)
 	@NotBlank
 	private String name;
 }

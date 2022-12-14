@@ -10,11 +10,11 @@ import lombok.Setter;
 @Setter
 public class PasswordInput {
 
-	@ApiModelProperty(example = "ABCDEFGH")
+	@ApiModelProperty(example = "ABCDEFGH", required = true)
 	@NotBlank
 	private String currentPassword;
 
-	@ApiModelProperty(example = "12345678")
+	@ApiModelProperty(example = "12345678", required = true)
 	@NotBlank
 	private String newPassword;
 }

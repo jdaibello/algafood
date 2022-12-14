@@ -8,9 +8,9 @@ import lombok.Setter;
 @Setter
 public class PaymentMethodDTO {
 
-	@ApiModelProperty(example = "1")
+	@ApiModelProperty(example = "1", required = true)
 	private Long id;
 
-	@ApiModelProperty(example = "PIX")
+	@ApiModelProperty(example = "PIX", required = true)
 	private String description;
 }

@@ -15,11 +15,11 @@ import lombok.Setter;
 @Setter
 public class RestaurantInput {
 
-	@ApiModelProperty(example = "Pizzaria dos Devs")
+	@ApiModelProperty(example = "Pizzaria dos Devs", required = true)
 	@NotBlank
 	private String name;
 
-	@ApiModelProperty(example = "4.99")
+	@ApiModelProperty(example = "4.99", required = true)
 	@NotNull
 	@PositiveOrZero
 	private BigDecimal shippingFee;

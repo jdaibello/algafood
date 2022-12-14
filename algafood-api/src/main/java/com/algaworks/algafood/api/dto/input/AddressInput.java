@@ -12,22 +12,22 @@ import lombok.Setter;
 @Setter
 public class AddressInput {
 
-	@ApiModelProperty(example = "02542-121")
+	@ApiModelProperty(example = "02542-121", required = true)
 	@NotBlank
 	private String zipCode;
 
-	@ApiModelProperty(example = "Rua das Maças")
+	@ApiModelProperty(example = "Rua das Maças", required = true)
 	@NotBlank
 	private String street;
 
-	@ApiModelProperty(example = "125")
+	@ApiModelProperty(example = "125", required = true)
 	@NotBlank
 	private String number;
 
 	@ApiModelProperty(example = "")
 	private String complement;
 
-	@ApiModelProperty(example = "Bairro Novo Horizonte")
+	@ApiModelProperty(example = "Bairro Novo Horizonte", required = true)
 	@NotBlank
 	private String district;
 

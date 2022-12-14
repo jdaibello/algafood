@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 public class StateIdInput {
 
-	@ApiModelProperty(example = "1")
+	@ApiModelProperty(example = "1", required = true)
 	@NotNull
 	private Long id;
 }

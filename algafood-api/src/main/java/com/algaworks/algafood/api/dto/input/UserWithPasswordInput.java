@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 public class UserWithPasswordInput extends UserInput {
 
-	@ApiModelProperty(example = "abcdefgh")
+	@ApiModelProperty(example = "abcdefgh", required = true)
 	@NotBlank
 	private String password;
 }

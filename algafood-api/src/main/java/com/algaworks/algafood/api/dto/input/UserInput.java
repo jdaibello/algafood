@@ -11,11 +11,11 @@ import lombok.Setter;
 @Setter
 public class UserInput {
 
-	@ApiModelProperty(example = "Jonathan Pereira")
+	@ApiModelProperty(example = "Jonathan Pereira", required = true)
 	@NotBlank
 	private String name;
 
-	@ApiModelProperty(example = "jonathan.pereira@outlook.com")
+	@ApiModelProperty(example = "jonathan.pereira@outlook.com", required = true)
 	@NotBlank
 	@Email
 	private String email;

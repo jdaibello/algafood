@@ -8,9 +8,9 @@ import lombok.Setter;
 @Getter
 public class StateDTO {
 
-	@ApiModelProperty(example = "1")
+	@ApiModelProperty(example = "1", required = true)
 	private Long id;
 
-	@ApiModelProperty(example = "São Paulo")
+	@ApiModelProperty(example = "São Paulo", required = true)
 	private String name;
 }
