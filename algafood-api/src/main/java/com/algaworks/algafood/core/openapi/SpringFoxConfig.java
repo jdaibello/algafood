@@ -30,8 +30,10 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 		return new Docket(DocumentationType.OAS_30).select()
 				.apis(RequestHandlerSelectors.basePackage("com.algaworks.algafood.api")).build()
 				.useDefaultResponseMessages(false).globalResponses(HttpMethod.GET, globalGetResponseMessages())
-				.apiInfo(apiInfo()).tags(new Tag("Cidades", "Gerencia as cidades"))
-				.tags(new Tag("Grupos", "Gerencia os grupos"))
+				.globalResponses(HttpMethod.POST, globalPostPutResponseMessages())
+				.globalResponses(HttpMethod.PUT, globalPostPutResponseMessages())
+				.globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages()).apiInfo(apiInfo())
+				.tags(new Tag("Cidades", "Gerencia as cidades")).tags(new Tag("Grupos", "Gerencia os grupos"))
 				.tags(new Tag("Permissões dos Grupos", "Gerencia as permissões dos grupos"))
 				.tags(new Tag("Cozinhas", "Gerencia as cozinhas")).tags(new Tag("Pedidos", "Gerencia os pedidos"))
 				.tags(new Tag("Fluxos dos Pedidos", "Gerencia os fluxos (status) dos pedidos"))
@@ -55,6 +57,26 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 						.description("Erro interno do servidor").build(),
 				new ResponseBuilder().code(String.valueOf(HttpStatus.NOT_ACCEPTABLE.value()))
 						.description("Recurso não possui representação que pode ser aceita pelo consumidor").build());
+	}
+
+	private List<Response> globalPostPutResponseMessages() {
+		return Arrays.asList(
+				new ResponseBuilder().code(String.valueOf(HttpStatus.BAD_REQUEST.value()))
+						.description("Requisição inválida - erro do cliente").build(),
+				new ResponseBuilder().code(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()))
+						.description("Erro interno do servidor").build(),
+				new ResponseBuilder().code(String.valueOf(HttpStatus.NOT_ACCEPTABLE.value()))
+						.description("Recurso não possui representação que pode ser aceita pelo consumidor").build(),
+				new ResponseBuilder().code(String.valueOf(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value()))
+						.description("Requisição recusada porque o corpo está em um formato não suportado").build());
+	}
+
+	private List<Response> globalDeleteResponseMessages() {
+		return Arrays.asList(
+				new ResponseBuilder().code(String.valueOf(HttpStatus.BAD_REQUEST.value()))
+						.description("Requisição inválida - erro do cliente").build(),
+				new ResponseBuilder().code(String.valueOf(HttpStatus.INTERNAL_SERVER_ERROR.value()))
+						.description("Erro interno do servidor").build());
 	}
 
 	private ApiInfo apiInfo() {
