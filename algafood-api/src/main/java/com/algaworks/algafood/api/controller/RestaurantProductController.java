@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +20,7 @@ import com.algaworks.algafood.api.assembler.ProductDTOAssembler;
 import com.algaworks.algafood.api.assembler.ProductInputDisassembler;
 import com.algaworks.algafood.api.dto.ProductDTO;
 import com.algaworks.algafood.api.dto.input.ProductInput;
+import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.domain.model.Product;
 import com.algaworks.algafood.domain.model.Restaurant;
 import com.algaworks.algafood.domain.repository.ProductRepository;
@@ -29,6 +29,11 @@ import com.algaworks.algafood.domain.service.RestaurantService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @Api(tags = "Produtos dos Restaurantes")
 @RestController
@@ -52,7 +57,8 @@ public class RestaurantProductController {
 
 	@ApiOperation("Listar")
 	@GetMapping
-	public List<ProductDTO> fetchAll(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
+	public List<ProductDTO> fetchAll(
+			@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
 			@RequestParam(required = false) boolean includeInactive) {
 		Restaurant restaurant = restaurantService.findOrFail(restaurantId);
 		List<Product> allProducts = null;
@@ -67,16 +73,27 @@ public class RestaurantProductController {
 	}
 
 	@ApiOperation("Buscar por ID")
+	@ApiResponses({
+			@ApiResponse(
+				responseCode = "400",
+				description = "ID do restaurante/produto inválido(s)",
+				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
+			@ApiResponse(
+				responseCode = "404",
+				description = "Restaurante/produto não encontrado(s)",
+				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))) })
 	@GetMapping("/{productId}")
 	public ProductDTO find(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
-						   @ApiParam(value = "ID do produto", example = "1") @PathVariable Long productId) {
+			@ApiParam(value = "ID do produto", example = "1") @PathVariable Long productId) {
 		return productDTOAssembler.toModel(service.findOrFail(restaurantId, productId));
 	}
 
 	@ApiOperation("Adicionar")
+	@ApiResponses({ @ApiResponse(responseCode = "201", description = "Produto cadastrado") })
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ProductDTO add(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId, @RequestBody @Valid ProductInput productInput) {
+	public ProductDTO add(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
+			@RequestBody @Valid ProductInput productInput) {
 		Restaurant restaurant = restaurantService.findOrFail(restaurantId);
 		Product product = productInputDisassembler.toDomainObject(productInput);
 		product.setRestaurant(restaurant);
@@ -86,9 +103,18 @@ public class RestaurantProductController {
 	}
 
 	@ApiOperation("Atualizar")
+	@ApiResponses({ @ApiResponse(responseCode = "200", description = "Produto atualizado"),
+			@ApiResponse(
+				responseCode = "400",
+				description = "ID do restaurante/produto inválido(s)",
+				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
+			@ApiResponse(
+				responseCode = "404",
+				description = "Restaurante/produto não encontrado(s)",
+				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))) })
 	@PutMapping("/{productId}")
 	public ProductDTO update(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
-							 @ApiParam(value = "ID do produto", example = "1") @PathVariable Long productId,
+			@ApiParam(value = "ID do produto", example = "1") @PathVariable Long productId,
 			@RequestBody @Valid ProductInput productInput) {
 		Product currentProduct = service.findOrFail(restaurantId, productId);
 		productInputDisassembler.copyToDomainObject(productInput, currentProduct);

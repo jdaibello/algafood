@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -24,12 +23,18 @@ import com.algaworks.algafood.api.assembler.KitchenDTOAssembler;
 import com.algaworks.algafood.api.assembler.KitchenInputDisassembler;
 import com.algaworks.algafood.api.dto.KitchenDTO;
 import com.algaworks.algafood.api.dto.input.KitchenInput;
+import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.domain.model.Kitchen;
 import com.algaworks.algafood.domain.repository.KitchenRepository;
 import com.algaworks.algafood.domain.service.KitchenService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @Api(tags = "Cozinhas")
 @RestController
@@ -58,6 +63,15 @@ public class KitchenController {
 	}
 
 	@ApiOperation("Buscar por ID")
+	@ApiResponses({
+			@ApiResponse(
+				responseCode = "400",
+				description = "ID da cozinha inválido",
+				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
+			@ApiResponse(
+				responseCode = "404",
+				description = "Cozinha não encontrada",
+				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))) })
 	@GetMapping("/{kitchenId}")
 	public KitchenDTO find(@ApiParam(value = "ID da cozinha", example = "1") @PathVariable Long kitchenId) {
 		Kitchen kitchen = service.findOrFail(kitchenId);
@@ -66,6 +80,7 @@ public class KitchenController {
 	}
 
 	@ApiOperation("Adicionar")
+	@ApiResponses({ @ApiResponse(responseCode = "201", description = "Cozinha cadastrada") })
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public KitchenDTO add(@RequestBody @Valid KitchenInput kitchenInput) {
@@ -76,8 +91,18 @@ public class KitchenController {
 	}
 
 	@ApiOperation("Atualizar")
+	@ApiResponses({ @ApiResponse(responseCode = "200", description = "Cozinha atualizada"),
+			@ApiResponse(
+				responseCode = "400",
+				description = "ID da cozinha inválido",
+				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
+			@ApiResponse(
+				responseCode = "404",
+				description = "Cidade não encontrada",
+				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))) })
 	@PutMapping("/{kitchenId}")
-	public KitchenDTO update(@ApiParam(value = "ID da cozinha", example = "1") @PathVariable Long kitchenId, @RequestBody @Valid KitchenInput kitchenInput) {
+	public KitchenDTO update(@ApiParam(value = "ID da cozinha", example = "1") @PathVariable Long kitchenId,
+			@RequestBody @Valid KitchenInput kitchenInput) {
 		Kitchen currentKitchen = service.findOrFail(kitchenId);
 		kitchenInputDisassembler.copyToDomainObject(kitchenInput, currentKitchen);
 		currentKitchen = service.save(currentKitchen);
@@ -86,6 +111,15 @@ public class KitchenController {
 	}
 
 	@ApiOperation("Excluir")
+	@ApiResponses({ @ApiResponse(responseCode = "204", description = "Cozinha excluída"),
+			@ApiResponse(
+				responseCode = "400",
+				description = "ID da cozinha inválido",
+				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
+			@ApiResponse(
+				responseCode = "404",
+				description = "Cidade não encontrada",
+				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))) })
 	@DeleteMapping("/{kitchenId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@ApiParam(value = "ID da cozinha", example = "1") @PathVariable Long kitchenId) {

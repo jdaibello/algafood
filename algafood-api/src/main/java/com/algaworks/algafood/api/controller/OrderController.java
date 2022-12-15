@@ -5,7 +5,6 @@ import java.util.Map;
 
 import javax.validation.Valid;
 
-import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -26,6 +25,7 @@ import com.algaworks.algafood.api.assembler.OrderSummaryDTOAssembler;
 import com.algaworks.algafood.api.dto.OrderDTO;
 import com.algaworks.algafood.api.dto.OrderSummaryDTO;
 import com.algaworks.algafood.api.dto.input.OrderInput;
+import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.core.data.PageableTranslator;
 import com.algaworks.algafood.domain.exception.BusinessException;
 import com.algaworks.algafood.domain.exception.EntityNotFoundException;
@@ -38,6 +38,11 @@ import com.algaworks.algafood.infrastructure.repository.spec.OrderSpecs;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @Api(tags = "Pedidos")
 @RestController
@@ -71,14 +76,26 @@ public class OrderController {
 	}
 
 	@ApiOperation("Buscar por código do pedido")
+	@ApiResponses({
+			@ApiResponse(
+				responseCode = "400",
+				description = "Código UUID do pedido inválido",
+				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
+			@ApiResponse(
+				responseCode = "404",
+				description = "Pedido não encontrado",
+				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))) })
 	@GetMapping("/{orderCode}")
-	public OrderDTO find(@ApiParam(value = "Código UUID do pedido", example = "123e4567-e89b-12d3-a456-426655440000") @PathVariable String orderCode) {
+	public OrderDTO find(@ApiParam(
+		value = "Código UUID do pedido",
+		example = "123e4567-e89b-12d3-a456-426655440000") @PathVariable String orderCode) {
 		Order order = service.findOrFail(orderCode);
 
 		return orderDTOAssembler.toModel(order);
 	}
 
 	@ApiOperation("Adicionar")
+	@ApiResponses({ @ApiResponse(responseCode = "201", description = "Pedido cadastrado") })
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public OrderDTO add(@Valid @RequestBody OrderInput orderInput) {

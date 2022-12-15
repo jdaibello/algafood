@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,6 +21,7 @@ import com.algaworks.algafood.api.assembler.RestaurantInputDisassembler;
 import com.algaworks.algafood.api.dto.RestaurantDTO;
 import com.algaworks.algafood.api.dto.input.RestaurantInput;
 import com.algaworks.algafood.api.dto.view.RestaurantView;
+import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.domain.exception.BusinessException;
 import com.algaworks.algafood.domain.exception.CityNotFoundException;
 import com.algaworks.algafood.domain.exception.KitchenNotFoundException;
@@ -33,6 +33,11 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @Api(tags = "Restaurantes")
 @RestController
@@ -59,6 +64,15 @@ public class RestaurantController {
 	}
 
 	@ApiOperation("Buscar por ID")
+	@ApiResponses({
+			@ApiResponse(
+				responseCode = "400",
+				description = "ID do restaurante inválido",
+				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
+			@ApiResponse(
+				responseCode = "404",
+				description = "Restaurante não encontrado",
+				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))) })
 	@GetMapping("/{restaurantId}")
 	public RestaurantDTO find(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
 		Restaurant restaurant = service.findOrFail(restaurantId);
@@ -67,6 +81,7 @@ public class RestaurantController {
 	}
 
 	@ApiOperation("Adicionar")
+	@ApiResponses({ @ApiResponse(responseCode = "201", description = "Restaurante cadastrado") })
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public RestaurantDTO add(@RequestBody @Valid RestaurantInput restaurantInput) {
@@ -80,8 +95,18 @@ public class RestaurantController {
 	}
 
 	@ApiOperation("Atualizar")
+	@ApiResponses({ @ApiResponse(responseCode = "200", description = "Restaurante atualizado"),
+			@ApiResponse(
+				responseCode = "400",
+				description = "ID do restaurante inválido",
+				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
+			@ApiResponse(
+				responseCode = "404",
+				description = "Restaurante não encontrado",
+				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))) })
 	@PutMapping("/{restaurantId}")
-	public RestaurantDTO update(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId, @RequestBody @Valid RestaurantInput restaurantInput) {
+	public RestaurantDTO update(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
+			@RequestBody @Valid RestaurantInput restaurantInput) {
 		try {
 			Restaurant currentRestaurant = service.findOrFail(restaurantId);
 			restaurantInputDisassembler.copyToDomainObject(restaurantInput, currentRestaurant);
@@ -93,6 +118,15 @@ public class RestaurantController {
 	}
 
 	@ApiOperation("Ativar")
+	@ApiResponses({ @ApiResponse(responseCode = "204", description = "Restaurante ativado"),
+			@ApiResponse(
+				responseCode = "400",
+				description = "ID do restaurante inválido",
+				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
+			@ApiResponse(
+				responseCode = "404",
+				description = "Restaurante não encontrado",
+				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))) })
 	@PutMapping("/{restaurantId}/active")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void activate(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
@@ -100,6 +134,15 @@ public class RestaurantController {
 	}
 
 	@ApiOperation("Desativar")
+	@ApiResponses({ @ApiResponse(responseCode = "204", description = "Restaurante desativado"),
+			@ApiResponse(
+				responseCode = "400",
+				description = "ID do restaurante inválido",
+				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
+			@ApiResponse(
+				responseCode = "404",
+				description = "Restaurante não encontrado",
+				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))) })
 	@DeleteMapping("/{restaurantId}/active")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void inactivate(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
@@ -107,6 +150,15 @@ public class RestaurantController {
 	}
 
 	@ApiOperation("Ativar vários")
+	@ApiResponses({ @ApiResponse(responseCode = "204", description = "Restaurantes ativados"),
+			@ApiResponse(
+				responseCode = "400",
+				description = "IDs dos restaurantes inválidos",
+				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
+			@ApiResponse(
+				responseCode = "404",
+				description = "Restaurantes não encontrados",
+				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))) })
 	@PutMapping(value = "/activations")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void activateMultiples(@RequestBody List<Long> restaurantIds) {
@@ -118,6 +170,15 @@ public class RestaurantController {
 	}
 
 	@ApiOperation("Desativar vários")
+	@ApiResponses({ @ApiResponse(responseCode = "204", description = "Restaurantes desativados"),
+			@ApiResponse(
+				responseCode = "400",
+				description = "IDs dos restaurantes inválidos",
+				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
+			@ApiResponse(
+				responseCode = "404",
+				description = "Restaurantes não encontrados",
+				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))) })
 	@DeleteMapping(value = "/activations")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void inactivateMultiples(@RequestBody List<Long> restaurantIds) {
@@ -129,6 +190,15 @@ public class RestaurantController {
 	}
 
 	@ApiOperation("Abrir")
+	@ApiResponses({ @ApiResponse(responseCode = "204", description = "Restaurante aberto"),
+			@ApiResponse(
+				responseCode = "400",
+				description = "ID do restaurante inválidos",
+				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
+			@ApiResponse(
+				responseCode = "404",
+				description = "Restaurante não encontrado",
+				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))) })
 	@PutMapping("/{restaurantId}/opening")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void open(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
@@ -136,6 +206,15 @@ public class RestaurantController {
 	}
 
 	@ApiOperation("Fechar")
+	@ApiResponses({ @ApiResponse(responseCode = "204", description = "Restaurante fechado"),
+			@ApiResponse(
+				responseCode = "400",
+				description = "IDs do restaurante inválidos",
+				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
+			@ApiResponse(
+				responseCode = "404",
+				description = "Restaurante não encontrado",
+				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))) })
 	@PutMapping("/{restaurantId}/closing")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void close(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
