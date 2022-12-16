@@ -21,25 +21,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafood.api.assembler.KitchenDTOAssembler;
 import com.algaworks.algafood.api.assembler.KitchenInputDisassembler;
+import com.algaworks.algafood.api.controller.openapi.KitchenControllerOpenApi;
 import com.algaworks.algafood.api.dto.KitchenDTO;
 import com.algaworks.algafood.api.dto.input.KitchenInput;
-import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.domain.model.Kitchen;
 import com.algaworks.algafood.domain.repository.KitchenRepository;
 import com.algaworks.algafood.domain.service.KitchenService;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
-@Api(tags = "Cozinhas")
 @RestController
 @RequestMapping("/kitchens")
-public class KitchenController {
+public class KitchenController implements KitchenControllerOpenApi {
 
 	@Autowired
 	private KitchenRepository kitchenRepository;
@@ -53,7 +46,7 @@ public class KitchenController {
 	@Autowired
 	private KitchenInputDisassembler kitchenInputDisassembler;
 
-	@ApiOperation("Listar com paginação")
+	@Override
 	@GetMapping
 	public Page<KitchenDTO> fetchAll(Pageable pageable) {
 		Page<Kitchen> kitchensPage = kitchenRepository.findAll(pageable);
@@ -62,16 +55,7 @@ public class KitchenController {
 		return new PageImpl<>(kitchensDTO, pageable, kitchensPage.getTotalElements());
 	}
 
-	@ApiOperation("Buscar por ID")
-	@ApiResponses({
-			@ApiResponse(
-				responseCode = "400",
-				description = "ID da cozinha inválido",
-				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
-			@ApiResponse(
-				responseCode = "404",
-				description = "Cozinha não encontrada",
-				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))) })
+	@Override
 	@GetMapping("/{kitchenId}")
 	public KitchenDTO find(@ApiParam(value = "ID da cozinha", example = "1") @PathVariable Long kitchenId) {
 		Kitchen kitchen = service.findOrFail(kitchenId);
@@ -79,8 +63,7 @@ public class KitchenController {
 		return kitchenDTOAssembler.toModel(kitchen);
 	}
 
-	@ApiOperation("Adicionar")
-	@ApiResponses({ @ApiResponse(responseCode = "201", description = "Cozinha cadastrada") })
+	@Override
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public KitchenDTO add(@RequestBody @Valid KitchenInput kitchenInput) {
@@ -90,16 +73,7 @@ public class KitchenController {
 		return kitchenDTOAssembler.toModel(kitchen);
 	}
 
-	@ApiOperation("Atualizar")
-	@ApiResponses({ @ApiResponse(responseCode = "200", description = "Cozinha atualizada"),
-			@ApiResponse(
-				responseCode = "400",
-				description = "ID da cozinha inválido",
-				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
-			@ApiResponse(
-				responseCode = "404",
-				description = "Cidade não encontrada",
-				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))) })
+	@Override
 	@PutMapping("/{kitchenId}")
 	public KitchenDTO update(@ApiParam(value = "ID da cozinha", example = "1") @PathVariable Long kitchenId,
 			@RequestBody @Valid KitchenInput kitchenInput) {
@@ -110,16 +84,7 @@ public class KitchenController {
 		return kitchenDTOAssembler.toModel(currentKitchen);
 	}
 
-	@ApiOperation("Excluir")
-	@ApiResponses({ @ApiResponse(responseCode = "204", description = "Cozinha excluída"),
-			@ApiResponse(
-				responseCode = "400",
-				description = "ID da cozinha inválido",
-				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
-			@ApiResponse(
-				responseCode = "404",
-				description = "Cidade não encontrada",
-				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))) })
+	@Override
 	@DeleteMapping("/{kitchenId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@ApiParam(value = "ID da cozinha", example = "1") @PathVariable Long kitchenId) {

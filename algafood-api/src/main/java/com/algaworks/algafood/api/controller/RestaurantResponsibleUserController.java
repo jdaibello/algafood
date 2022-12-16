@@ -13,23 +13,16 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafood.api.assembler.UserDTOAssembler;
+import com.algaworks.algafood.api.controller.openapi.RestaurantResponsibleUserControllerOpenApi;
 import com.algaworks.algafood.api.dto.UserDTO;
-import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.domain.model.Restaurant;
 import com.algaworks.algafood.domain.service.RestaurantService;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
-@Api(tags = "Responsáveis pelos Restaurantes")
 @RestController
 @RequestMapping(value = "/restaurants/{restaurantId}/responsibles")
-public class RestaurantResponsibleUserController {
+public class RestaurantResponsibleUserController implements RestaurantResponsibleUserControllerOpenApi {
 
 	@Autowired
 	private RestaurantService service;
@@ -37,7 +30,7 @@ public class RestaurantResponsibleUserController {
 	@Autowired
 	private UserDTOAssembler userDTOAssembler;
 
-	@ApiOperation("Listar")
+	@Override
 	@GetMapping
 	public List<UserDTO> fetchAll(
 			@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
@@ -46,16 +39,7 @@ public class RestaurantResponsibleUserController {
 		return userDTOAssembler.toCollectionModel(restaurant.getResponsibles());
 	}
 
-	@ApiOperation("Anexar")
-	@ApiResponses({ @ApiResponse(responseCode = "204", description = "Restaurante e usuário anexados"),
-			@ApiResponse(
-				responseCode = "400",
-				description = "ID do restaurante/usuário inválido(s)",
-				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
-			@ApiResponse(
-				responseCode = "404",
-				description = "Restaurante/usuário não encontrado(s)",
-				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))) })
+	@Override
 	@PutMapping("/{userId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void attach(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
@@ -63,16 +47,7 @@ public class RestaurantResponsibleUserController {
 		service.attachResponsible(restaurantId, userId);
 	}
 
-	@ApiOperation("Desanexar")
-	@ApiResponses({ @ApiResponse(responseCode = "204", description = "Restaurante e usuário desanexados"),
-			@ApiResponse(
-				responseCode = "400",
-				description = "ID do restaurante/usuário inválido(s)",
-				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
-			@ApiResponse(
-				responseCode = "404",
-				description = "Restaurante/usuário não encontrado(s)",
-				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))) })
+	@Override
 	@DeleteMapping("/{userId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void detach(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,

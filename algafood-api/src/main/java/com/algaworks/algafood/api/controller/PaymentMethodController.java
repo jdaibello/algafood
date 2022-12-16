@@ -24,25 +24,18 @@ import org.springframework.web.filter.ShallowEtagHeaderFilter;
 
 import com.algaworks.algafood.api.assembler.PaymentMethodDTOAssembler;
 import com.algaworks.algafood.api.assembler.PaymentMethodInputDisassembler;
+import com.algaworks.algafood.api.controller.openapi.PaymentMethodControllerOpenApi;
 import com.algaworks.algafood.api.dto.PaymentMethodDTO;
 import com.algaworks.algafood.api.dto.input.PaymentMethodInput;
-import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.domain.model.PaymentMethod;
 import com.algaworks.algafood.domain.repository.PaymentMethodRepository;
 import com.algaworks.algafood.domain.service.PaymentMethodService;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
-@Api(tags = "Formas de Pagamento")
 @RestController
 @RequestMapping("/payment-methods")
-public class PaymentMethodController {
+public class PaymentMethodController implements PaymentMethodControllerOpenApi {
 
 	@Autowired
 	private PaymentMethodRepository paymentMethodRepository;
@@ -56,7 +49,7 @@ public class PaymentMethodController {
 	@Autowired
 	private PaymentMethodInputDisassembler paymentMethodInputDisassembler;
 
-	@ApiOperation("Listar")
+	@Override
 	@GetMapping
 	public ResponseEntity<List<PaymentMethodDTO>> fetchAll(ServletWebRequest request) {
 		ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
@@ -79,16 +72,7 @@ public class PaymentMethodController {
 				.body(paymentMethodsDTO);
 	}
 
-	@ApiOperation("Buscar por ID")
-	@ApiResponses({
-			@ApiResponse(
-				responseCode = "400",
-				description = "ID da forma de pagamento inválido",
-				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
-			@ApiResponse(
-				responseCode = "404",
-				description = "Forma de pagamento não encontrada",
-				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))) })
+	@Override
 	@GetMapping("/{paymentMethodId}")
 	public ResponseEntity<PaymentMethodDTO> find(
 			@ApiParam(value = "ID da forma de pagamento", example = "1") @PathVariable Long paymentMethodId,
@@ -113,8 +97,7 @@ public class PaymentMethodController {
 				.body(paymentMethodDTO);
 	}
 
-	@ApiOperation("Adicionar")
-	@ApiResponses({ @ApiResponse(responseCode = "201", description = "Forma de pagamento cadastrada") })
+	@Override
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public PaymentMethodDTO add(@RequestBody @Valid PaymentMethodInput paymentMethodInput) {
@@ -124,16 +107,7 @@ public class PaymentMethodController {
 		return paymentMethodDTOAssembler.toModel(paymentMethod);
 	}
 
-	@ApiOperation("Atualizar")
-	@ApiResponses({ @ApiResponse(responseCode = "200", description = "Forma de pagamento atualizada"),
-			@ApiResponse(
-				responseCode = "400",
-				description = "ID da forma de pagamento inválido",
-				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
-			@ApiResponse(
-				responseCode = "404",
-				description = "Forma de pagamento não encontrada",
-				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))) })
+	@Override
 	@PutMapping("/{paymentMethodId}")
 	public PaymentMethodDTO update(
 			@ApiParam(value = "ID da forma de pagamento", example = "1") @PathVariable Long paymentMethodId,
@@ -145,16 +119,7 @@ public class PaymentMethodController {
 		return paymentMethodDTOAssembler.toModel(currentPaymentMethod);
 	}
 
-	@ApiOperation("Excluir")
-	@ApiResponses({ @ApiResponse(responseCode = "204", description = "Forma de pagamento excluída"),
-			@ApiResponse(
-				responseCode = "400",
-				description = "ID da forma de pagamento inválido",
-				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
-			@ApiResponse(
-				responseCode = "404",
-				description = "Forma de pagamento não encontrada",
-				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))) })
+	@Override
 	@DeleteMapping("/{paymentMethodId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(

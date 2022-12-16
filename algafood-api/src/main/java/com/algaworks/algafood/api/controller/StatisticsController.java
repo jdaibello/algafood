@@ -11,18 +11,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.algaworks.algafood.api.controller.openapi.StatisticsControllerOpenApi;
 import com.algaworks.algafood.domain.filter.DailySaleFilter;
 import com.algaworks.algafood.domain.model.dto.DailySale;
 import com.algaworks.algafood.domain.service.SaleQueryService;
 import com.algaworks.algafood.domain.service.SaleReportService;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-
-@Api(tags = "Estatísticas")
 @RestController
 @RequestMapping(path = "/statistics")
-public class StatisticsController {
+public class StatisticsController implements StatisticsControllerOpenApi {
 
 	@Autowired
 	private SaleQueryService saleQueryService;
@@ -30,14 +27,14 @@ public class StatisticsController {
 	@Autowired
 	private SaleReportService saleReportService;
 
-	@ApiOperation("Consultar")
+	@Override
 	@GetMapping(path = "/daily-sales", produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<DailySale> queryDailySales(DailySaleFilter filter,
 			@RequestParam(required = false, defaultValue = "+00:00") String timeOffset) {
 		return saleQueryService.queryDailySales(filter, timeOffset);
 	}
 
-	@ApiOperation("Emitir")
+	@Override
 	@GetMapping(path = "/daily-sales", produces = MediaType.APPLICATION_PDF_VALUE)
 	public ResponseEntity<byte[]> queryDailySalesPdf(DailySaleFilter filter,
 			@RequestParam(required = false, defaultValue = "+00:00") String timeOffset) {

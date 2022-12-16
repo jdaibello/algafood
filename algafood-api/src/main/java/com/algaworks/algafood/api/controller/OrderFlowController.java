@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.algaworks.algafood.api.controller.openapi.OrderFlowControllerOpenApi;
 import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.domain.service.OrderFlowService;
 
@@ -22,11 +23,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 @Api(tags = "Fluxos dos Pedidos")
 @RestController
 @RequestMapping(value = "/orders/{orderCode}")
-public class OrderFlowController {
+public class OrderFlowController implements OrderFlowControllerOpenApi {
 
 	@Autowired
 	private OrderFlowService orderFlowService;
 
+	@Override
 	@ApiOperation("Confirmar")
 	@ApiResponses({ @ApiResponse(responseCode = "204", description = "Pedido confirmado"),
 			@ApiResponse(
@@ -45,6 +47,7 @@ public class OrderFlowController {
 		orderFlowService.confirm(orderCode);
 	}
 
+	@Override
 	@ApiOperation("Cancelar")
 	@ApiResponses({ @ApiResponse(responseCode = "204", description = "Pedido cancelado"),
 			@ApiResponse(
@@ -63,6 +66,7 @@ public class OrderFlowController {
 		orderFlowService.cancel(orderCode);
 	}
 
+	@Override
 	@ApiOperation("Entregar")
 	@ApiResponses({ @ApiResponse(responseCode = "204", description = "Pedido entregue"),
 			@ApiResponse(

@@ -18,27 +18,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafood.api.assembler.CityDTOAssembler;
 import com.algaworks.algafood.api.assembler.CityInputDisassembler;
+import com.algaworks.algafood.api.controller.openapi.CityControllerOpenApi;
 import com.algaworks.algafood.api.dto.CityDTO;
 import com.algaworks.algafood.api.dto.input.CityInput;
-import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.domain.exception.BusinessException;
 import com.algaworks.algafood.domain.exception.StateNotFoundException;
 import com.algaworks.algafood.domain.model.City;
 import com.algaworks.algafood.domain.repository.CityRepository;
 import com.algaworks.algafood.domain.service.CityService;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
-@Api(tags = "Cidades")
 @RestController
 @RequestMapping("/cities")
-public class CityController {
+public class CityController implements CityControllerOpenApi {
 
 	@Autowired
 	private CityRepository cityRepository;
@@ -52,22 +45,11 @@ public class CityController {
 	@Autowired
 	private CityInputDisassembler cityInputDisassembler;
 
-	@ApiOperation("Listar")
 	@GetMapping
 	public List<CityDTO> fetchAll() {
 		return cityDTOAssembler.toCollectionModel(cityRepository.findAll());
 	}
 
-	@ApiOperation("Buscar por ID")
-	@ApiResponses({
-			@ApiResponse(
-				responseCode = "400",
-				description = "ID da cidade inválido",
-				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
-			@ApiResponse(
-				responseCode = "404",
-				description = "Cidade não encontrada",
-				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))) })
 	@GetMapping("/{cityId}")
 	public CityDTO find(@ApiParam(value = "ID da cidade", example = "1") @PathVariable Long cityId) {
 		City city = service.findOrFail(cityId);
@@ -75,8 +57,6 @@ public class CityController {
 		return cityDTOAssembler.toModel(city);
 	}
 
-	@ApiOperation("Adicionar")
-	@ApiResponses({ @ApiResponse(responseCode = "201", description = "Cidade cadastrada") })
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public CityDTO add(@RequestBody @Valid CityInput cityInput) {
@@ -90,16 +70,6 @@ public class CityController {
 		}
 	}
 
-	@ApiOperation("Atualizar")
-	@ApiResponses({ @ApiResponse(responseCode = "200", description = "Cidade atualizada"),
-			@ApiResponse(
-				responseCode = "400",
-				description = "ID da cidade inválido",
-				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
-			@ApiResponse(
-				responseCode = "404",
-				description = "Cidade não encontrada",
-				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))) })
 	@PutMapping("/{cityId}")
 	public CityDTO update(@ApiParam(value = "ID da cidade", example = "1") @PathVariable Long cityId,
 			@RequestBody @Valid CityInput city) {
@@ -114,16 +84,6 @@ public class CityController {
 		}
 	}
 
-	@ApiOperation("Excluir")
-	@ApiResponses({ @ApiResponse(responseCode = "204", description = "Cidade excluída"),
-			@ApiResponse(
-				responseCode = "400",
-				description = "ID da cidade inválido",
-				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
-			@ApiResponse(
-				responseCode = "404",
-				description = "Cidade não encontrada",
-				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))) })
 	@DeleteMapping("/{cityId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@ApiParam(value = "ID da cidade", example = "1") @PathVariable Long cityId) {
