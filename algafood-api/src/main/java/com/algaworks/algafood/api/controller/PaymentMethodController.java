@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,7 +35,7 @@ import com.algaworks.algafood.domain.service.PaymentMethodService;
 import io.swagger.annotations.ApiParam;
 
 @RestController
-@RequestMapping("/payment-methods")
+@RequestMapping(value = "/payment-methods", produces = MediaType.APPLICATION_JSON_VALUE)
 public class PaymentMethodController implements PaymentMethodControllerOpenApi {
 
 	@Autowired
@@ -50,7 +51,7 @@ public class PaymentMethodController implements PaymentMethodControllerOpenApi {
 	private PaymentMethodInputDisassembler paymentMethodInputDisassembler;
 
 	@Override
-	@GetMapping
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<PaymentMethodDTO>> fetchAll(ServletWebRequest request) {
 		ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
 
@@ -73,7 +74,7 @@ public class PaymentMethodController implements PaymentMethodControllerOpenApi {
 	}
 
 	@Override
-	@GetMapping("/{paymentMethodId}")
+	@GetMapping(value = "/{paymentMethodId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<PaymentMethodDTO> find(
 			@ApiParam(value = "ID da forma de pagamento", example = "1") @PathVariable Long paymentMethodId,
 			ServletWebRequest request) {
@@ -98,7 +99,7 @@ public class PaymentMethodController implements PaymentMethodControllerOpenApi {
 	}
 
 	@Override
-	@PostMapping
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public PaymentMethodDTO add(@RequestBody @Valid PaymentMethodInput paymentMethodInput) {
 		PaymentMethod paymentMethod = paymentMethodInputDisassembler.toDomainObject(paymentMethodInput);
@@ -108,7 +109,7 @@ public class PaymentMethodController implements PaymentMethodControllerOpenApi {
 	}
 
 	@Override
-	@PutMapping("/{paymentMethodId}")
+	@PutMapping(value = "/{paymentMethodId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public PaymentMethodDTO update(
 			@ApiParam(value = "ID da forma de pagamento", example = "1") @PathVariable Long paymentMethodId,
 			@RequestBody @Valid PaymentMethodInput paymentMethodInput) {

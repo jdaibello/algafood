@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +29,7 @@ import com.algaworks.algafood.domain.service.StateService;
 import io.swagger.annotations.ApiParam;
 
 @RestController
-@RequestMapping("/states")
+@RequestMapping(value = "/states", produces = MediaType.APPLICATION_JSON_VALUE)
 public class StateController implements StateControllerOpenApi {
 
 	@Autowired
@@ -44,13 +45,13 @@ public class StateController implements StateControllerOpenApi {
 	private StateInputDisassembler stateInputDisassembler;
 
 	@Override
-	@GetMapping
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<StateDTO> fetchAll() {
 		return stateDTOAssembler.toCollectionModel(stateRepository.findAll());
 	}
 
 	@Override
-	@GetMapping("/{stateId}")
+	@GetMapping(value = "/{stateId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public StateDTO find(@ApiParam(value = "ID do estado", example = "1") @PathVariable Long stateId) {
 		State state = service.findOrFail(stateId);
 
@@ -58,7 +59,7 @@ public class StateController implements StateControllerOpenApi {
 	}
 
 	@Override
-	@PostMapping
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public StateDTO add(@RequestBody @Valid StateInput stateInput) {
 		State state = stateInputDisassembler.toDomainObject(stateInput);
@@ -68,7 +69,7 @@ public class StateController implements StateControllerOpenApi {
 	}
 
 	@Override
-	@PutMapping("/{stateId}")
+	@PutMapping(value = "/{stateId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public StateDTO update(@ApiParam(value = "ID do estado", example = "1") @PathVariable Long stateId,
 			@RequestBody @Valid StateInput stateInput) {
 		State currentState = service.findOrFail(stateId);

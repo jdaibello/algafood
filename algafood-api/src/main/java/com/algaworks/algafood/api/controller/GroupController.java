@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +29,7 @@ import com.algaworks.algafood.domain.service.GroupService;
 import io.swagger.annotations.ApiParam;
 
 @RestController
-@RequestMapping("/groups")
+@RequestMapping(value = "/groups", produces = MediaType.APPLICATION_JSON_VALUE)
 public class GroupController implements GroupControllerOpenApi {
 
 	@Autowired
@@ -50,7 +51,7 @@ public class GroupController implements GroupControllerOpenApi {
 	}
 
 	@Override
-	@GetMapping("/{groupId}")
+	@GetMapping(value = "/{groupId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public GroupDTO find(@ApiParam(value = "ID do grupo", example = "1") @PathVariable Long groupId) {
 		Group group = service.findOrFail(groupId);
 
@@ -58,7 +59,7 @@ public class GroupController implements GroupControllerOpenApi {
 	}
 
 	@Override
-	@PostMapping
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public GroupDTO add(@RequestBody @Valid GroupInput groupInput) {
 		Group group = groupInputDisassembler.toDomainObject(groupInput);
@@ -68,7 +69,7 @@ public class GroupController implements GroupControllerOpenApi {
 	}
 
 	@Override
-	@PutMapping("/{groupId}")
+	@PutMapping(value = "/{groupId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public GroupDTO update(@ApiParam(value = "ID do grupo", example = "1") @PathVariable Long groupId,
 			@RequestBody @Valid GroupInput groupInput) {
 		Group currentGroup = service.findOrFail(groupId);

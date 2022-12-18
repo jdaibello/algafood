@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,7 +40,7 @@ import com.algaworks.algafood.infrastructure.repository.spec.OrderSpecs;
 import io.swagger.annotations.ApiParam;
 
 @RestController
-@RequestMapping(value = "/orders")
+@RequestMapping(value = "/orders", produces = MediaType.APPLICATION_JSON_VALUE)
 public class OrderController implements OrderControllerOpenApi {
 
 	@Autowired
@@ -58,7 +59,7 @@ public class OrderController implements OrderControllerOpenApi {
 	private OrderInputDisassembler orderInputDisassembler;
 
 	@Override
-	@GetMapping
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public Page<OrderSummaryDTO> search(OrderFilter filter, @PageableDefault(size = 10) Pageable pageable) {
 		pageable = translatePageable(pageable);
 
@@ -69,7 +70,7 @@ public class OrderController implements OrderControllerOpenApi {
 	}
 
 	@Override
-	@GetMapping("/{orderCode}")
+	@GetMapping(value = "/{orderCode}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public OrderDTO find(@ApiParam(
 		value = "Código UUID do pedido",
 		example = "123e4567-e89b-12d3-a456-426655440000") @PathVariable String orderCode) {
@@ -79,7 +80,7 @@ public class OrderController implements OrderControllerOpenApi {
 	}
 
 	@Override
-	@PostMapping
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public OrderDTO add(@Valid @RequestBody OrderInput orderInput) {
 		try {

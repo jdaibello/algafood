@@ -88,7 +88,7 @@ public class RestaurantProductPhotoController implements RestaurantProductPhotoC
 	}
 
 	@Override
-	@PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@PutMapping(produces = MediaType.MULTIPART_FORM_DATA_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ProductPhotoDTO updatePhoto(
 			@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
 			@ApiParam(value = "ID do produto", example = "1") @PathVariable Long productId,

@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,7 +31,7 @@ import com.algaworks.algafood.domain.service.RestaurantService;
 import io.swagger.annotations.ApiParam;
 
 @RestController
-@RequestMapping("/restaurants/{restaurantId}/products")
+@RequestMapping(value = "/restaurants/{restaurantId}/products", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestaurantProductController implements RestaurantProductControllerOpenApi {
 
 	@Autowired
@@ -49,7 +50,7 @@ public class RestaurantProductController implements RestaurantProductControllerO
 	private ProductInputDisassembler productInputDisassembler;
 
 	@Override
-	@GetMapping
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<ProductDTO> fetchAll(
 			@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
 			@RequestParam(required = false) boolean includeInactive) {
@@ -66,14 +67,14 @@ public class RestaurantProductController implements RestaurantProductControllerO
 	}
 
 	@Override
-	@GetMapping("/{productId}")
+	@GetMapping(value = "/{productId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ProductDTO find(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
 			@ApiParam(value = "ID do produto", example = "1") @PathVariable Long productId) {
 		return productDTOAssembler.toModel(service.findOrFail(restaurantId, productId));
 	}
 
 	@Override
-	@PostMapping
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public ProductDTO add(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
 			@RequestBody @Valid ProductInput productInput) {
@@ -86,7 +87,7 @@ public class RestaurantProductController implements RestaurantProductControllerO
 	}
 
 	@Override
-	@PutMapping("/{productId}")
+	@PutMapping(value = "/{productId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ProductDTO update(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
 			@ApiParam(value = "ID do produto", example = "1") @PathVariable Long productId,
 			@RequestBody @Valid ProductInput productInput) {

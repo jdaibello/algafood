@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,7 +35,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.annotations.ApiParam;
 
 @RestController
-@RequestMapping(value = "/restaurants")
+@RequestMapping(value = "/restaurants", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestaurantController implements RestaurantControllerOpenApi {
 
 	@Autowired
@@ -57,7 +58,7 @@ public class RestaurantController implements RestaurantControllerOpenApi {
 	}
 
 	@Override
-	@GetMapping("/{restaurantId}")
+	@GetMapping(value = "/{restaurantId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public RestaurantDTO find(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
 		Restaurant restaurant = service.findOrFail(restaurantId);
 
@@ -65,7 +66,7 @@ public class RestaurantController implements RestaurantControllerOpenApi {
 	}
 
 	@Override
-	@PostMapping
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public RestaurantDTO add(@RequestBody @Valid RestaurantInput restaurantInput) {
 		try {
@@ -78,7 +79,7 @@ public class RestaurantController implements RestaurantControllerOpenApi {
 	}
 
 	@Override
-	@PutMapping("/{restaurantId}")
+	@PutMapping(value = "/{restaurantId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public RestaurantDTO update(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
 			@RequestBody @Valid RestaurantInput restaurantInput) {
 		try {

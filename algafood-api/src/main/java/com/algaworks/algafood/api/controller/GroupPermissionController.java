@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +22,7 @@ import com.algaworks.algafood.domain.service.GroupService;
 import io.swagger.annotations.ApiParam;
 
 @RestController
-@RequestMapping(value = "/groups/{groupId}/permissions")
+@RequestMapping(value = "/groups/{groupId}/permissions", produces = MediaType.APPLICATION_JSON_VALUE)
 public class GroupPermissionController implements GroupPermissionControllerOpenApi {
 
 	@Autowired
@@ -31,7 +32,7 @@ public class GroupPermissionController implements GroupPermissionControllerOpenA
 	private PermissionDTOAssembler permissionDTOAssembler;
 
 	@Override
-	@GetMapping
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<PermissionDTO> fetchAll(@ApiParam(value = "ID do grupo", example = "1") @PathVariable Long groupId) {
 		Group group = service.findOrFail(groupId);
 

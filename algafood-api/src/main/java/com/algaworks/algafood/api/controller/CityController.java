@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,7 +31,7 @@ import com.algaworks.algafood.domain.service.CityService;
 import io.swagger.annotations.ApiParam;
 
 @RestController
-@RequestMapping("/cities")
+@RequestMapping(value = "/cities", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CityController implements CityControllerOpenApi {
 
 	@Autowired
@@ -45,19 +46,19 @@ public class CityController implements CityControllerOpenApi {
 	@Autowired
 	private CityInputDisassembler cityInputDisassembler;
 
-	@GetMapping
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<CityDTO> fetchAll() {
 		return cityDTOAssembler.toCollectionModel(cityRepository.findAll());
 	}
 
-	@GetMapping("/{cityId}")
+	@GetMapping(value = "/{cityId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public CityDTO find(@ApiParam(value = "ID da cidade", example = "1") @PathVariable Long cityId) {
 		City city = service.findOrFail(cityId);
 
 		return cityDTOAssembler.toModel(city);
 	}
 
-	@PostMapping
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public CityDTO add(@RequestBody @Valid CityInput cityInput) {
 		try {
@@ -70,7 +71,7 @@ public class CityController implements CityControllerOpenApi {
 		}
 	}
 
-	@PutMapping("/{cityId}")
+	@PutMapping(value = "/{cityId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public CityDTO update(@ApiParam(value = "ID da cidade", example = "1") @PathVariable Long cityId,
 			@RequestBody @Valid CityInput city) {
 		try {

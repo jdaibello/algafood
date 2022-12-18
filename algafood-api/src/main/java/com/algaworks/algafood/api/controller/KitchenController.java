@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,7 +32,7 @@ import com.algaworks.algafood.domain.service.KitchenService;
 import io.swagger.annotations.ApiParam;
 
 @RestController
-@RequestMapping("/kitchens")
+@RequestMapping(value = "/kitchens", produces = MediaType.APPLICATION_JSON_VALUE)
 public class KitchenController implements KitchenControllerOpenApi {
 
 	@Autowired
@@ -56,7 +57,7 @@ public class KitchenController implements KitchenControllerOpenApi {
 	}
 
 	@Override
-	@GetMapping("/{kitchenId}")
+	@GetMapping(value = "/{kitchenId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public KitchenDTO find(@ApiParam(value = "ID da cozinha", example = "1") @PathVariable Long kitchenId) {
 		Kitchen kitchen = service.findOrFail(kitchenId);
 
@@ -64,7 +65,7 @@ public class KitchenController implements KitchenControllerOpenApi {
 	}
 
 	@Override
-	@PostMapping
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public KitchenDTO add(@RequestBody @Valid KitchenInput kitchenInput) {
 		Kitchen kitchen = kitchenInputDisassembler.toDomainObject(kitchenInput);
@@ -74,7 +75,7 @@ public class KitchenController implements KitchenControllerOpenApi {
 	}
 
 	@Override
-	@PutMapping("/{kitchenId}")
+	@PutMapping(value = "/{kitchenId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public KitchenDTO update(@ApiParam(value = "ID da cozinha", example = "1") @PathVariable Long kitchenId,
 			@RequestBody @Valid KitchenInput kitchenInput) {
 		Kitchen currentKitchen = service.findOrFail(kitchenId);

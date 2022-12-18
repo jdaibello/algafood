@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +22,7 @@ import com.algaworks.algafood.domain.service.UserService;
 import io.swagger.annotations.ApiParam;
 
 @RestController
-@RequestMapping(value = "/users/{userId}/groups")
+@RequestMapping(value = "/users/{userId}/groups", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserGroupController implements UserGroupControllerOpenApi {
 
 	@Autowired
@@ -31,7 +32,7 @@ public class UserGroupController implements UserGroupControllerOpenApi {
 	private GroupDTOAssembler groupDTOAssembler;
 
 	@Override
-	@GetMapping
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<GroupDTO> fetchAll(@ApiParam(value = "ID do usuário", example = "1") @PathVariable Long userId) {
 		User user = service.findOrFail(userId);
 
