@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafood.api.assembler.ProductDTOAssembler;
 import com.algaworks.algafood.api.assembler.ProductInputDisassembler;
-import com.algaworks.algafood.api.controller.openapi.RestaurantProductControllerOpenApi;
 import com.algaworks.algafood.api.dto.ProductDTO;
 import com.algaworks.algafood.api.dto.input.ProductInput;
+import com.algaworks.algafood.api.openapi.controller.RestaurantProductControllerOpenApi;
 import com.algaworks.algafood.domain.model.Product;
 import com.algaworks.algafood.domain.model.Restaurant;
 import com.algaworks.algafood.domain.repository.ProductRepository;

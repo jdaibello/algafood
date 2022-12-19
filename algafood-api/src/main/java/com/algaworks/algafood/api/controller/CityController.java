@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafood.api.assembler.CityDTOAssembler;
 import com.algaworks.algafood.api.assembler.CityInputDisassembler;
-import com.algaworks.algafood.api.controller.openapi.CityControllerOpenApi;
 import com.algaworks.algafood.api.dto.CityDTO;
 import com.algaworks.algafood.api.dto.input.CityInput;
+import com.algaworks.algafood.api.openapi.controller.CityControllerOpenApi;
 import com.algaworks.algafood.domain.exception.BusinessException;
 import com.algaworks.algafood.domain.exception.StateNotFoundException;
 import com.algaworks.algafood.domain.model.City;

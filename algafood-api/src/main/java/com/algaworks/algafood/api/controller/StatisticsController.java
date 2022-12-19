@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.algaworks.algafood.api.controller.openapi.StatisticsControllerOpenApi;
+import com.algaworks.algafood.api.openapi.controller.StatisticsControllerOpenApi;
 import com.algaworks.algafood.domain.filter.DailySaleFilter;
 import com.algaworks.algafood.domain.model.dto.DailySale;
 import com.algaworks.algafood.domain.service.SaleQueryService;

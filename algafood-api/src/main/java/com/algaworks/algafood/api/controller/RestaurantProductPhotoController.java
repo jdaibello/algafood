@@ -23,9 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.algaworks.algafood.api.assembler.ProductPhotoDTOAssembler;
-import com.algaworks.algafood.api.controller.openapi.RestaurantProductPhotoControllerOpenApi;
 import com.algaworks.algafood.api.dto.ProductPhotoDTO;
 import com.algaworks.algafood.api.dto.input.ProductPhotoInput;
+import com.algaworks.algafood.api.openapi.controller.RestaurantProductPhotoControllerOpenApi;
 import com.algaworks.algafood.domain.exception.EntityNotFoundException;
 import com.algaworks.algafood.domain.model.Product;
 import com.algaworks.algafood.domain.model.ProductPhoto;

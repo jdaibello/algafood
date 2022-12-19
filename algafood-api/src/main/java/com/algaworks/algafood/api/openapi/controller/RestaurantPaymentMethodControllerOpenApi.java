@@ -1,8 +1,8 @@
-package com.algaworks.algafood.api.controller.openapi;
+package com.algaworks.algafood.api.openapi.controller;
 
 import java.util.List;
 
-import com.algaworks.algafood.api.dto.UserDTO;
+import com.algaworks.algafood.api.dto.PaymentMethodDTO;
 import com.algaworks.algafood.api.exceptionhandler.Problem;
 
 import io.swagger.annotations.Api;
@@ -12,34 +12,34 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
-@Api(tags = "Responsáveis pelos Restaurantes")
-public interface RestaurantResponsibleUserControllerOpenApi {
+@Api(tags = "Formas de Pagamento dos Restaurantes")
+public interface RestaurantPaymentMethodControllerOpenApi {
 
 	@ApiOperation("Listar")
-	List<UserDTO> fetchAll(Long restaurantId);
+	List<PaymentMethodDTO> fetchAll(Long restaurantId);
 
 	@ApiOperation("Anexar")
-	@ApiResponses({ @ApiResponse(responseCode = "204", description = "Restaurante e usuário anexados"),
+	@ApiResponses({ @ApiResponse(responseCode = "204", description = "Restaurante e forma de pagamento anexados"),
 			@ApiResponse(
 				responseCode = "400",
-				description = "ID do restaurante/usuário inválido(s)",
+				description = "ID do restaurante/forma de pagamento inválido(s)",
 				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
 			@ApiResponse(
 				responseCode = "404",
-				description = "Restaurante/usuário não encontrado(s)",
+				description = "Restaurante/forma de pagamento não encontrado(s)",
 				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))) })
-	void attach(Long restaurantId, Long userId);
+	void attach(Long restaurantId, Long paymentMethodId);
 
 	@ApiOperation("Desanexar")
-	@ApiResponses({ @ApiResponse(responseCode = "204", description = "Restaurante e usuário desanexados"),
+	@ApiResponses({ @ApiResponse(responseCode = "204", description = "Restaurante e forma de pagamentos desanexados"),
 			@ApiResponse(
 				responseCode = "400",
-				description = "ID do restaurante/usuário inválido(s)",
+				description = "ID do restaurante/forma de pagamento inválido(s)",
 				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
 			@ApiResponse(
 				responseCode = "404",
-				description = "Restaurante/usuário não encontrado(s)",
+				description = "Restaurante/forma de pagamento não encontrado(s)",
 				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))) })
-	void detach(Long restaurantId, Long userId);
+	void detach(Long restaurantId, Long paymentMethodId);
 
 }

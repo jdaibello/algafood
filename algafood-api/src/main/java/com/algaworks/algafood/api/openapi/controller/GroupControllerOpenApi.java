@@ -1,61 +1,62 @@
-package com.algaworks.algafood.api.controller.openapi;
+package com.algaworks.algafood.api.openapi.controller;
 
 import java.util.List;
 
-import com.algaworks.algafood.api.dto.CityDTO;
-import com.algaworks.algafood.api.dto.input.CityInput;
+import com.algaworks.algafood.api.dto.GroupDTO;
+import com.algaworks.algafood.api.dto.input.GroupInput;
 import com.algaworks.algafood.api.exceptionhandler.Problem;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
-@Api(tags = "Cidades")
-public interface CityControllerOpenApi {
+@Api(tags = "Grupos")
+public interface GroupControllerOpenApi {
+
 	@ApiOperation("Listar")
-	public List<CityDTO> fetchAll();
+	List<GroupDTO> fetchAll();
 
 	@ApiOperation("Buscar por ID")
 	@ApiResponses({
 			@ApiResponse(
 				responseCode = "400",
-				description = "ID da cidade inválido",
+				description = "ID do grupo inválido",
 				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
 			@ApiResponse(
 				responseCode = "404",
-				description = "Cidade não encontrada",
+				description = "Grupo não encontrado",
 				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))) })
-	public CityDTO find(@ApiParam(value = "ID da cidade", example = "1") Long cityId);
+	GroupDTO find(Long groupId);
 
 	@ApiOperation("Adicionar")
-	@ApiResponses({ @ApiResponse(responseCode = "201", description = "Cidade cadastrada") })
-	public CityDTO add(CityInput cityInput);
+	@ApiResponses({ @ApiResponse(responseCode = "201", description = "Grupo cadastrado") })
+	GroupDTO add(GroupInput groupInput);
 
 	@ApiOperation("Atualizar")
-	@ApiResponses({ @ApiResponse(responseCode = "200", description = "Cidade atualizada"),
+	@ApiResponses({ @ApiResponse(responseCode = "200", description = "Grupo atualizado"),
 			@ApiResponse(
 				responseCode = "400",
-				description = "ID da cidade inválido",
+				description = "ID do grupo inválido",
 				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
 			@ApiResponse(
 				responseCode = "404",
-				description = "Cidade não encontrada",
+				description = "Grupo não encontrado",
 				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))) })
-	public CityDTO update(@ApiParam(value = "ID da cidade", example = "1") Long cityId, CityInput city);
+	GroupDTO update(Long groupId, GroupInput groupInput);
 
 	@ApiOperation("Excluir")
-	@ApiResponses({ @ApiResponse(responseCode = "204", description = "Cidade excluída"),
+	@ApiResponses({ @ApiResponse(responseCode = "204", description = "Grupo excluído"),
 			@ApiResponse(
 				responseCode = "400",
-				description = "ID da cidade inválido",
+				description = "ID do grupo inválido",
 				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
 			@ApiResponse(
 				responseCode = "404",
-				description = "Cidade não encontrada",
+				description = "Grupo não encontrada",
 				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))) })
-	public void delete(@ApiParam(value = "ID da cidade", example = "1") Long cityId);
+	void delete(Long groupId);
+
 }

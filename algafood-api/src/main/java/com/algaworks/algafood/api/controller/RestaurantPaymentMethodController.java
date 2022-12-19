@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafood.api.assembler.PaymentMethodDTOAssembler;
-import com.algaworks.algafood.api.controller.openapi.RestaurantPaymentMethodControllerOpenApi;
 import com.algaworks.algafood.api.dto.PaymentMethodDTO;
+import com.algaworks.algafood.api.openapi.controller.RestaurantPaymentMethodControllerOpenApi;
 import com.algaworks.algafood.domain.model.Restaurant;
 import com.algaworks.algafood.domain.service.RestaurantService;
 

@@ -19,11 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafood.api.assembler.UserDTOAssembler;
 import com.algaworks.algafood.api.assembler.UserInputDisassembler;
-import com.algaworks.algafood.api.controller.openapi.UserControllerOpenApi;
 import com.algaworks.algafood.api.dto.UserDTO;
 import com.algaworks.algafood.api.dto.input.PasswordInput;
 import com.algaworks.algafood.api.dto.input.UserInput;
 import com.algaworks.algafood.api.dto.input.UserWithPasswordInput;
+import com.algaworks.algafood.api.openapi.controller.UserControllerOpenApi;
 import com.algaworks.algafood.domain.model.User;
 import com.algaworks.algafood.domain.repository.UserRepository;
 import com.algaworks.algafood.domain.service.UserService;

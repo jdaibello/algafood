@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafood.api.assembler.RestaurantDTOAssembler;
 import com.algaworks.algafood.api.assembler.RestaurantInputDisassembler;
-import com.algaworks.algafood.api.controller.openapi.RestaurantControllerOpenApi;
 import com.algaworks.algafood.api.dto.RestaurantDTO;
 import com.algaworks.algafood.api.dto.input.RestaurantInput;
 import com.algaworks.algafood.api.dto.view.RestaurantView;
+import com.algaworks.algafood.api.openapi.controller.RestaurantControllerOpenApi;
 import com.algaworks.algafood.domain.exception.BusinessException;
 import com.algaworks.algafood.domain.exception.CityNotFoundException;
 import com.algaworks.algafood.domain.exception.KitchenNotFoundException;

@@ -1,10 +1,9 @@
-package com.algaworks.algafood.api.controller.openapi;
+package com.algaworks.algafood.api.openapi.controller;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import java.util.List;
 
-import com.algaworks.algafood.api.dto.KitchenDTO;
-import com.algaworks.algafood.api.dto.input.KitchenInput;
+import com.algaworks.algafood.api.dto.StateDTO;
+import com.algaworks.algafood.api.dto.input.StateInput;
 import com.algaworks.algafood.api.exceptionhandler.Problem;
 
 import io.swagger.annotations.Api;
@@ -14,50 +13,50 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
-@Api(tags = "Cozinhas")
-public interface KitchenControllerOpenApi {
+@Api(tags = "Estados")
+public interface StateControllerOpenApi {
 
-	@ApiOperation("Listar com paginação")
-	Page<KitchenDTO> fetchAll(Pageable pageable);
+	@ApiOperation("Listar")
+	List<StateDTO> fetchAll();
 
 	@ApiOperation("Buscar por ID")
 	@ApiResponses({
 			@ApiResponse(
 				responseCode = "400",
-				description = "ID da cozinha inválido",
+				description = "ID do estado inválido",
 				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
 			@ApiResponse(
 				responseCode = "404",
-				description = "Cozinha não encontrada",
+				description = "Estado não encontrado",
 				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))) })
-	KitchenDTO find(Long kitchenId);
+	StateDTO find(Long stateId);
 
 	@ApiOperation("Adicionar")
-	@ApiResponses({ @ApiResponse(responseCode = "201", description = "Cozinha cadastrada") })
-	KitchenDTO add(KitchenInput kitchenInput);
+	@ApiResponses({ @ApiResponse(responseCode = "201", description = "Estado cadastrado") })
+	StateDTO add(StateInput stateInput);
 
 	@ApiOperation("Atualizar")
-	@ApiResponses({ @ApiResponse(responseCode = "200", description = "Cozinha atualizada"),
+	@ApiResponses({ @ApiResponse(responseCode = "200", description = "Estado atualizado"),
 			@ApiResponse(
 				responseCode = "400",
-				description = "ID da cozinha inválido",
+				description = "ID do estado inválido",
 				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
 			@ApiResponse(
 				responseCode = "404",
-				description = "Cidade não encontrada",
+				description = "Estado não encontrado",
 				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))) })
-	KitchenDTO update(Long kitchenId, KitchenInput kitchenInput);
+	StateDTO update(Long stateId, StateInput stateInput);
 
 	@ApiOperation("Excluir")
-	@ApiResponses({ @ApiResponse(responseCode = "204", description = "Cozinha excluída"),
+	@ApiResponses({ @ApiResponse(responseCode = "204", description = "Estado excluído"),
 			@ApiResponse(
 				responseCode = "400",
-				description = "ID da cozinha inválido",
+				description = "ID do estado inválido",
 				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
 			@ApiResponse(
 				responseCode = "404",
-				description = "Cidade não encontrada",
+				description = "Estado não encontrado",
 				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))) })
-	void delete(Long kitchenId);
+	void delete(Long stateId);
 
 }

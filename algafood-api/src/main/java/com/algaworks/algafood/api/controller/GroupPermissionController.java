@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafood.api.assembler.PermissionDTOAssembler;
-import com.algaworks.algafood.api.controller.openapi.GroupPermissionControllerOpenApi;
 import com.algaworks.algafood.api.dto.PermissionDTO;
+import com.algaworks.algafood.api.openapi.controller.GroupPermissionControllerOpenApi;
 import com.algaworks.algafood.domain.model.Group;
 import com.algaworks.algafood.domain.service.GroupService;
 

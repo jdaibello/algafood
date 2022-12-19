@@ -25,9 +25,9 @@ import org.springframework.web.filter.ShallowEtagHeaderFilter;
 
 import com.algaworks.algafood.api.assembler.PaymentMethodDTOAssembler;
 import com.algaworks.algafood.api.assembler.PaymentMethodInputDisassembler;
-import com.algaworks.algafood.api.controller.openapi.PaymentMethodControllerOpenApi;
 import com.algaworks.algafood.api.dto.PaymentMethodDTO;
 import com.algaworks.algafood.api.dto.input.PaymentMethodInput;
+import com.algaworks.algafood.api.openapi.controller.PaymentMethodControllerOpenApi;
 import com.algaworks.algafood.domain.model.PaymentMethod;
 import com.algaworks.algafood.domain.repository.PaymentMethodRepository;
 import com.algaworks.algafood.domain.service.PaymentMethodService;

@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.algaworks.algafood.api.assembler.UserDTOAssembler;
-import com.algaworks.algafood.api.controller.openapi.RestaurantResponsibleUserControllerOpenApi;
 import com.algaworks.algafood.api.dto.UserDTO;
+import com.algaworks.algafood.api.openapi.controller.RestaurantResponsibleUserControllerOpenApi;
 import com.algaworks.algafood.domain.model.Restaurant;
 import com.algaworks.algafood.domain.service.RestaurantService;
 
