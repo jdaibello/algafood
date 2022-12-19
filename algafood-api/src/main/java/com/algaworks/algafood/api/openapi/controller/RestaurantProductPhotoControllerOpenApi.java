@@ -19,7 +19,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 @Api(tags = "Fotos dos Produtos dos Restaurantes")
 public interface RestaurantProductPhotoControllerOpenApi {
 
-	@ApiOperation("Buscar por ID do restaurante e do produto")
+	@ApiOperation(
+		value = "Buscar por ID do restaurante e do produto",
+		produces = "application/json, image/jpeg, image/png")
 	@ApiResponses({
 			@ApiResponse(
 				responseCode = "400",
@@ -31,21 +33,12 @@ public interface RestaurantProductPhotoControllerOpenApi {
 				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))) })
 	ProductPhotoDTO find(Long restaurantId, Long productId);
 
-	@ApiOperation("Enviar")
-	@ApiResponses({ @ApiResponse(responseCode = "200", description = "Foto enviada"),
-			@ApiResponse(
-				responseCode = "400",
-				description = "ID do restaurante/produto inválido(s)",
-				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
-			@ApiResponse(
-				responseCode = "404",
-				description = "Restaurante/produto não encontrado(s)",
-				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))) })
+	@ApiOperation(value = "Buscar por ID do restaurante e do produto", hidden = true)
 	ResponseEntity<?> servePhoto(Long restaurantId, Long productId, String acceptHeader)
 			throws HttpMediaTypeNotAcceptableException;
 
 	@ApiOperation("Atualizar")
-	@ApiResponses({ @ApiResponse(responseCode = "200", description = "Foto atualizada"),
+	@ApiResponses({ @ApiResponse(responseCode = "200", description = "Foto do produto atualizada"),
 			@ApiResponse(
 				responseCode = "400",
 				description = "ID do restaurante/produto inválido(s)",
@@ -58,7 +51,7 @@ public interface RestaurantProductPhotoControllerOpenApi {
 			throws IOException;
 
 	@ApiOperation("Excluir")
-	@ApiResponses({ @ApiResponse(responseCode = "204", description = "Foto excluída"),
+	@ApiResponses({ @ApiResponse(responseCode = "204", description = "Foto do produto excluída"),
 			@ApiResponse(
 				responseCode = "400",
 				description = "ID do restaurante/produto inválido(s)",

@@ -36,7 +36,9 @@ import com.algaworks.algafood.domain.service.ProductService;
 import io.swagger.annotations.ApiParam;
 
 @RestController
-@RequestMapping("/restaurants/{restaurantId}/products/{productId}/photo")
+@RequestMapping(
+	value = "/restaurants/{restaurantId}/products/{productId}/photo",
+	produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestaurantProductPhotoController implements RestaurantProductPhotoControllerOpenApi {
 
 	@Autowired
@@ -52,7 +54,6 @@ public class RestaurantProductPhotoController implements RestaurantProductPhotoC
 	private ProductPhotoDTOAssembler productPhotoDTOAssembler;
 
 	@Override
-	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ProductPhotoDTO find(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
 			@ApiParam(value = "ID do produto", example = "1") @PathVariable Long productId) {
 		ProductPhoto productPhoto = productPhotoCatalogService.findOrFail(restaurantId, productId);
@@ -61,7 +62,7 @@ public class RestaurantProductPhotoController implements RestaurantProductPhotoC
 	}
 
 	@Override
-	@GetMapping
+	@GetMapping(produces = MediaType.ALL_VALUE)
 	public ResponseEntity<?> servePhoto(
 			@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
 			@ApiParam(value = "ID do produto", example = "1") @PathVariable Long productId,
