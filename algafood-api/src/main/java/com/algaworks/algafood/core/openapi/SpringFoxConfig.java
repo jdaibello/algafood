@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.algaworks.algafood.api.dto.KitchenDTO;
@@ -62,8 +63,8 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 						KitchensModelOpenApi.class))
 				.alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(Page.class, OrderSummaryDTO.class),
 						OrderSummariesModelOpenApi.class))
-				.apiInfo(apiInfo()).tags(new Tag("Cidades", "Gerencia as cidades"))
-				.tags(new Tag("Grupos", "Gerencia os grupos"))
+				.ignoredParameterTypes(ServletWebRequest.class).apiInfo(apiInfo())
+				.tags(new Tag("Cidades", "Gerencia as cidades")).tags(new Tag("Grupos", "Gerencia os grupos"))
 				.tags(new Tag("Permissões dos Grupos", "Gerencia as permissões dos grupos"))
 				.tags(new Tag("Cozinhas", "Gerencia as cozinhas")).tags(new Tag("Pedidos", "Gerencia os pedidos"))
 				.tags(new Tag("Fluxos dos Pedidos", "Gerencia os fluxos (status) dos pedidos"))
