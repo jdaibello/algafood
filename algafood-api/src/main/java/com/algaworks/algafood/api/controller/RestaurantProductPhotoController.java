@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -93,9 +94,9 @@ public class RestaurantProductPhotoController implements RestaurantProductPhotoC
 	public ProductPhotoDTO updatePhoto(
 			@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
 			@ApiParam(value = "ID do produto", example = "1") @PathVariable Long productId,
-			@Valid ProductPhotoInput productPhotoInput) throws IOException {
+			@Valid ProductPhotoInput productPhotoInput, @RequestPart(required = true) MultipartFile file)
+			throws IOException {
 		Product product = productService.findOrFail(restaurantId, productId);
-		MultipartFile file = productPhotoInput.getFile();
 		ProductPhoto photo = new ProductPhoto();
 
 		photo.setProduct(product);

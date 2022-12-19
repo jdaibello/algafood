@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.algaworks.algafood.api.dto.ProductPhotoDTO;
 import com.algaworks.algafood.api.dto.input.ProductPhotoInput;
@@ -11,6 +12,7 @@ import com.algaworks.algafood.api.exceptionhandler.Problem;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -33,7 +35,7 @@ public interface RestaurantProductPhotoControllerOpenApi {
 				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))) })
 	ProductPhotoDTO find(Long restaurantId, Long productId);
 
-	@ApiOperation(value = "Buscar por ID do restaurante e do produto", hidden = true)
+	@ApiOperation(value = "Buscar por ID do restaurante e do produto")
 	ResponseEntity<?> servePhoto(Long restaurantId, Long productId, String acceptHeader)
 			throws HttpMediaTypeNotAcceptableException;
 
@@ -47,7 +49,10 @@ public interface RestaurantProductPhotoControllerOpenApi {
 				responseCode = "404",
 				description = "Restaurante/produto não encontrado(s)",
 				content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))) })
-	ProductPhotoDTO updatePhoto(Long restaurantId, Long productId, ProductPhotoInput productPhotoInput)
+	ProductPhotoDTO updatePhoto(Long restaurantId, Long productId, ProductPhotoInput productPhotoInput,
+			@ApiParam(
+				value = "Arquivo da foto do produto (máximo 500KB, apenas JPG e PNG)",
+				required = true) MultipartFile file)
 			throws IOException;
 
 	@ApiOperation("Excluir")
