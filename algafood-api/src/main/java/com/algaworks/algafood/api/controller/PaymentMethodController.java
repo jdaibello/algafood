@@ -27,6 +27,7 @@ import com.algaworks.algafood.api.assembler.PaymentMethodDTOAssembler;
 import com.algaworks.algafood.api.assembler.PaymentMethodInputDisassembler;
 import com.algaworks.algafood.api.dto.PaymentMethodDTO;
 import com.algaworks.algafood.api.dto.input.PaymentMethodInput;
+import com.algaworks.algafood.api.helper.ResourceUriHelper;
 import com.algaworks.algafood.api.openapi.controller.PaymentMethodControllerOpenApi;
 import com.algaworks.algafood.domain.model.PaymentMethod;
 import com.algaworks.algafood.domain.repository.PaymentMethodRepository;
@@ -105,7 +106,10 @@ public class PaymentMethodController implements PaymentMethodControllerOpenApi {
 		PaymentMethod paymentMethod = paymentMethodInputDisassembler.toDomainObject(paymentMethodInput);
 		paymentMethod = service.save(paymentMethod);
 
-		return paymentMethodDTOAssembler.toModel(paymentMethod);
+		PaymentMethodDTO paymentMethodDTO = paymentMethodDTOAssembler.toModel(paymentMethod);
+		ResourceUriHelper.addUriInResponseHeader(paymentMethodDTO.getId());
+
+		return paymentMethodDTO;
 	}
 
 	@Override

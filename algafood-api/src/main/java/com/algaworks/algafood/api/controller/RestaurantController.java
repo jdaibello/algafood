@@ -22,6 +22,7 @@ import com.algaworks.algafood.api.assembler.RestaurantInputDisassembler;
 import com.algaworks.algafood.api.dto.RestaurantDTO;
 import com.algaworks.algafood.api.dto.input.RestaurantInput;
 import com.algaworks.algafood.api.dto.view.RestaurantView;
+import com.algaworks.algafood.api.helper.ResourceUriHelper;
 import com.algaworks.algafood.api.openapi.controller.RestaurantControllerOpenApi;
 import com.algaworks.algafood.domain.exception.BusinessException;
 import com.algaworks.algafood.domain.exception.CityNotFoundException;
@@ -72,7 +73,10 @@ public class RestaurantController implements RestaurantControllerOpenApi {
 		try {
 			Restaurant restaurant = restaurantInputDisassembler.toDomainObject(restaurantInput);
 
-			return restaurantDTOAssembler.toModel(service.save(restaurant));
+			RestaurantDTO restaurantDTO = restaurantDTOAssembler.toModel(service.save(restaurant));
+			ResourceUriHelper.addUriInResponseHeader(restaurantDTO.getId());
+
+			return restaurantDTO;
 		} catch (KitchenNotFoundException | CityNotFoundException e) {
 			throw new BusinessException(e.getMessage(), e);
 		}

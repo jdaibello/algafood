@@ -24,6 +24,7 @@ import com.algaworks.algafood.api.assembler.KitchenDTOAssembler;
 import com.algaworks.algafood.api.assembler.KitchenInputDisassembler;
 import com.algaworks.algafood.api.dto.KitchenDTO;
 import com.algaworks.algafood.api.dto.input.KitchenInput;
+import com.algaworks.algafood.api.helper.ResourceUriHelper;
 import com.algaworks.algafood.api.openapi.controller.KitchenControllerOpenApi;
 import com.algaworks.algafood.domain.model.Kitchen;
 import com.algaworks.algafood.domain.repository.KitchenRepository;
@@ -71,7 +72,10 @@ public class KitchenController implements KitchenControllerOpenApi {
 		Kitchen kitchen = kitchenInputDisassembler.toDomainObject(kitchenInput);
 		kitchen = service.save(kitchen);
 
-		return kitchenDTOAssembler.toModel(kitchen);
+		KitchenDTO kitchenDTO = kitchenDTOAssembler.toModel(kitchen);
+		ResourceUriHelper.addUriInResponseHeader(kitchenDTO.getId());
+
+		return kitchenDTO;
 	}
 
 	@Override

@@ -21,6 +21,7 @@ import com.algaworks.algafood.api.assembler.GroupDTOAssembler;
 import com.algaworks.algafood.api.assembler.GroupInputDisassembler;
 import com.algaworks.algafood.api.dto.GroupDTO;
 import com.algaworks.algafood.api.dto.input.GroupInput;
+import com.algaworks.algafood.api.helper.ResourceUriHelper;
 import com.algaworks.algafood.api.openapi.controller.GroupControllerOpenApi;
 import com.algaworks.algafood.domain.model.Group;
 import com.algaworks.algafood.domain.repository.GroupRepository;
@@ -65,7 +66,10 @@ public class GroupController implements GroupControllerOpenApi {
 		Group group = groupInputDisassembler.toDomainObject(groupInput);
 		group = service.save(group);
 
-		return groupDTOAssembler.toModel(group);
+		GroupDTO groupDTO = groupDTOAssembler.toModel(group);
+		ResourceUriHelper.addUriInResponseHeader(groupDTO.getId());
+
+		return groupDTO;
 	}
 
 	@Override

@@ -21,6 +21,7 @@ import com.algaworks.algafood.api.assembler.ProductDTOAssembler;
 import com.algaworks.algafood.api.assembler.ProductInputDisassembler;
 import com.algaworks.algafood.api.dto.ProductDTO;
 import com.algaworks.algafood.api.dto.input.ProductInput;
+import com.algaworks.algafood.api.helper.ResourceUriHelper;
 import com.algaworks.algafood.api.openapi.controller.RestaurantProductControllerOpenApi;
 import com.algaworks.algafood.domain.model.Product;
 import com.algaworks.algafood.domain.model.Restaurant;
@@ -83,7 +84,10 @@ public class RestaurantProductController implements RestaurantProductControllerO
 		product.setRestaurant(restaurant);
 		product = service.save(product);
 
-		return productDTOAssembler.toModel(product);
+		ProductDTO productDTO = productDTOAssembler.toModel(product);
+		ResourceUriHelper.addUriInResponseHeader(productDTO.getId());
+
+		return productDTO;
 	}
 
 	@Override

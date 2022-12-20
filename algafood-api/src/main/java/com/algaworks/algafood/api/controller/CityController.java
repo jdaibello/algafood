@@ -21,6 +21,7 @@ import com.algaworks.algafood.api.assembler.CityDTOAssembler;
 import com.algaworks.algafood.api.assembler.CityInputDisassembler;
 import com.algaworks.algafood.api.dto.CityDTO;
 import com.algaworks.algafood.api.dto.input.CityInput;
+import com.algaworks.algafood.api.helper.ResourceUriHelper;
 import com.algaworks.algafood.api.openapi.controller.CityControllerOpenApi;
 import com.algaworks.algafood.domain.exception.BusinessException;
 import com.algaworks.algafood.domain.exception.StateNotFoundException;
@@ -65,7 +66,10 @@ public class CityController implements CityControllerOpenApi {
 			City city = cityInputDisassembler.toDomainObject(cityInput);
 			city = service.save(city);
 
-			return cityDTOAssembler.toModel(city);
+			CityDTO cityDTO = cityDTOAssembler.toModel(city);
+			ResourceUriHelper.addUriInResponseHeader(cityDTO.getId());
+
+			return cityDTO;
 		} catch (StateNotFoundException e) {
 			throw new BusinessException(e.getMessage(), e);
 		}

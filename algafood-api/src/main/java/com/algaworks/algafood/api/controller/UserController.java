@@ -23,6 +23,7 @@ import com.algaworks.algafood.api.dto.UserDTO;
 import com.algaworks.algafood.api.dto.input.PasswordInput;
 import com.algaworks.algafood.api.dto.input.UserInput;
 import com.algaworks.algafood.api.dto.input.UserWithPasswordInput;
+import com.algaworks.algafood.api.helper.ResourceUriHelper;
 import com.algaworks.algafood.api.openapi.controller.UserControllerOpenApi;
 import com.algaworks.algafood.domain.model.User;
 import com.algaworks.algafood.domain.repository.UserRepository;
@@ -67,7 +68,10 @@ public class UserController implements UserControllerOpenApi {
 		User user = userInputDisassembler.toDomainObject(userInput);
 		user = service.save(user);
 
-		return userDTOAssembler.toModel(user);
+		UserDTO userDTO = userDTOAssembler.toModel(user);
+		ResourceUriHelper.addUriInResponseHeader(userDTO.getId());
+
+		return userDTO;
 	}
 
 	@Override

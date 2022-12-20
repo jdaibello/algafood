@@ -26,6 +26,7 @@ import com.algaworks.algafood.api.assembler.OrderSummaryDTOAssembler;
 import com.algaworks.algafood.api.dto.OrderDTO;
 import com.algaworks.algafood.api.dto.OrderSummaryDTO;
 import com.algaworks.algafood.api.dto.input.OrderInput;
+import com.algaworks.algafood.api.helper.ResourceUriHelper;
 import com.algaworks.algafood.api.openapi.controller.OrderControllerOpenApi;
 import com.algaworks.algafood.core.data.PageableTranslator;
 import com.algaworks.algafood.domain.exception.BusinessException;
@@ -92,7 +93,10 @@ public class OrderController implements OrderControllerOpenApi {
 
 			newOrder = service.issue(newOrder);
 
-			return orderDTOAssembler.toModel(newOrder);
+			OrderDTO orderDTO = orderDTOAssembler.toModel(newOrder);
+			ResourceUriHelper.addUriInResponseHeader(orderDTO.getCode());
+
+			return orderDTO;
 		} catch (EntityNotFoundException e) {
 			throw new BusinessException(e.getMessage(), e);
 		}

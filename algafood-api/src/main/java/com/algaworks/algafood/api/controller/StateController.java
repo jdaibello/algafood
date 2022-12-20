@@ -21,6 +21,7 @@ import com.algaworks.algafood.api.assembler.StateDTOAssembler;
 import com.algaworks.algafood.api.assembler.StateInputDisassembler;
 import com.algaworks.algafood.api.dto.StateDTO;
 import com.algaworks.algafood.api.dto.input.StateInput;
+import com.algaworks.algafood.api.helper.ResourceUriHelper;
 import com.algaworks.algafood.api.openapi.controller.StateControllerOpenApi;
 import com.algaworks.algafood.domain.model.State;
 import com.algaworks.algafood.domain.repository.StateRepository;
@@ -65,7 +66,10 @@ public class StateController implements StateControllerOpenApi {
 		State state = stateInputDisassembler.toDomainObject(stateInput);
 		state = service.save(state);
 
-		return stateDTOAssembler.toModel(state);
+		StateDTO stateDTO = stateDTOAssembler.toModel(state);
+		ResourceUriHelper.addUriInResponseHeader(stateDTO.getId());
+
+		return stateDTO;
 	}
 
 	@Override
