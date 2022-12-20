@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -56,7 +57,19 @@ public class CityController implements CityControllerOpenApi {
 	public CityDTO find(@ApiParam(value = "ID da cidade", example = "1") @PathVariable Long cityId) {
 		City city = service.findOrFail(cityId);
 
-		return cityDTOAssembler.toModel(city);
+		CityDTO cityDTO = cityDTOAssembler.toModel(city);
+
+		cityDTO.add(Link.of("http://localhost:8080/cities/1"));
+		// cityDTO.add(Link.of("http://localhost:8080/cities/1",
+		// IanaLinkRelations.SELF));
+
+		// cityDTO.add(Link.of("http://localhost:8080/cities",
+		// IanaLinkRelations.COLLECTION));
+		cityDTO.add(Link.of("http://localhost:8080/cities", "cities"));
+
+		cityDTO.getState().add(Link.of("http://localhost:8080/states/1"));
+
+		return cityDTO;
 	}
 
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
