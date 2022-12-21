@@ -1,6 +1,7 @@
 package com.algaworks.algafood.api.controller;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import java.util.List;
 
@@ -59,9 +60,9 @@ public class CityController implements CityControllerOpenApi {
 		City city = service.findOrFail(cityId);
 		CityDTO cityDTO = cityDTOAssembler.toModel(city);
 
-		cityDTO.add(linkTo(CityController.class).slash(cityDTO.getId()).withSelfRel());
-		cityDTO.add(linkTo(CityController.class).withRel("cities"));
-		cityDTO.getState().add(linkTo(StateController.class).slash(cityDTO.getState().getId()).withSelfRel());
+		cityDTO.add(linkTo(methodOn(CityController.class).find(cityDTO.getId())).withSelfRel());
+		cityDTO.add(linkTo(methodOn(CityController.class).fetchAll()).withRel("cities"));
+		cityDTO.getState().add(linkTo(methodOn(StateController.class).find(cityDTO.getState().getId())).withSelfRel());
 
 		return cityDTO;
 	}
