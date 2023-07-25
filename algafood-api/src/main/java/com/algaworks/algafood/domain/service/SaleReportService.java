@@ -4,5 +4,5 @@ import com.algaworks.algafood.domain.filter.DailySaleFilter;
 
 public interface SaleReportService {
 
-	byte[] issueDailySales(DailySaleFilter filter, String timeOffset);
+    byte[] issueDailySales(DailySaleFilter filter, String timeOffset);
 }

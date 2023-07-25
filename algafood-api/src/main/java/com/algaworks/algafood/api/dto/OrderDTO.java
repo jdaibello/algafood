@@ -1,55 +1,55 @@
 package com.algaworks.algafood.api.dto;
 
-import java.math.BigDecimal;
-import java.time.OffsetDateTime;
-import java.util.List;
-
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
+import java.util.List;
 
 @Getter
 @Setter
 public class OrderDTO {
 
-	@ApiModelProperty(example = "123e4567-e89b-12d3-a456-426655440000", required = true)
-	private String code;
+    @ApiModelProperty(example = "123e4567-e89b-12d3-a456-426655440000", required = true)
+    private String code;
 
-	@ApiModelProperty(example = "170.00", required = true)
-	private BigDecimal subtotal;
+    @ApiModelProperty(example = "170.00", required = true)
+    private BigDecimal subtotal;
 
-	@ApiModelProperty(example = "4.99", required = true)
-	private BigDecimal shippingFee;
+    @ApiModelProperty(example = "4.99", required = true)
+    private BigDecimal shippingFee;
 
-	@ApiModelProperty(example = "174.99", required = true)
-	private BigDecimal totalValue;
+    @ApiModelProperty(example = "174.99", required = true)
+    private BigDecimal totalValue;
 
-	@ApiModelProperty(example = "Confirmado", required = true)
-	private String status;
+    @ApiModelProperty(example = "Confirmado", required = true)
+    private String status;
 
-	@ApiModelProperty(required = true)
-	private OffsetDateTime creationDate;
+    @ApiModelProperty(required = true)
+    private OffsetDateTime creationDate;
 
-	private OffsetDateTime confirmationDate;
+    private OffsetDateTime confirmationDate;
 
-	@ApiModelProperty(example = "null")
-	private OffsetDateTime deliveryDate;
+    @ApiModelProperty(example = "null")
+    private OffsetDateTime deliveryDate;
 
-	@ApiModelProperty(example = "null")
-	private OffsetDateTime cancellationDate;
+    @ApiModelProperty(example = "null")
+    private OffsetDateTime cancellationDate;
 
-	@ApiModelProperty(required = true)
-	private RestaurantSummaryDTO restaurant;
+    @ApiModelProperty(required = true)
+    private RestaurantSummaryDTO restaurant;
 
-	@ApiModelProperty(required = true)
-	private UserDTO client;
+    @ApiModelProperty(required = true)
+    private UserDTO client;
 
-	@ApiModelProperty(required = true)
-	private PaymentMethodDTO paymentMethod;
+    @ApiModelProperty(required = true)
+    private PaymentMethodDTO paymentMethod;
 
-	@ApiModelProperty(required = true)
-	private AddressDTO deliveryAddress;
+    @ApiModelProperty(required = true)
+    private AddressDTO deliveryAddress;
 
-	@ApiModelProperty(required = true)
-	private List<OrderItemDTO> items;
+    @ApiModelProperty(required = true)
+    private List<OrderItemDTO> items;
 }

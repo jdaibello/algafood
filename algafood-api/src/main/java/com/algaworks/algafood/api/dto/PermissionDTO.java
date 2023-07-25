@@ -8,12 +8,12 @@ import lombok.Setter;
 @Setter
 public class PermissionDTO {
 
-	@ApiModelProperty(example = "1", required = true)
-	private Long id;
+    @ApiModelProperty(example = "1", required = true)
+    private Long id;
 
-	@ApiModelProperty(example = "ADICIONAR_RESTAURANTES", required = true)
-	private String name;
+    @ApiModelProperty(example = "ADICIONAR_RESTAURANTES", required = true)
+    private String name;
 
-	@ApiModelProperty(example = "Permite adicionar restaurantes", required = true)
-	private String description;
+    @ApiModelProperty(example = "Permite adicionar restaurantes", required = true)
+    private String description;
 }

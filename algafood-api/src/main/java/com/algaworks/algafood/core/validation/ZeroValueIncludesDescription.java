@@ -1,26 +1,25 @@
 package com.algaworks.algafood.core.validation;
 
+import javax.validation.Constraint;
+import javax.validation.Payload;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import javax.validation.Constraint;
-import javax.validation.Payload;
-
-@Target({ ElementType.TYPE })
+@Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = { ZeroValueIncludesDescriptionValidator.class })
+@Constraint(validatedBy = {ZeroValueIncludesDescriptionValidator.class})
 public @interface ZeroValueIncludesDescription {
-	String message() default "Descrição obrigatória inválida";
+    String message() default "Descrição obrigatória inválida";
 
-	Class<?>[] groups() default {};
+    Class<?>[] groups() default {};
 
-	Class<? extends Payload>[] payload() default {};
+    Class<? extends Payload>[] payload() default {};
 
-	String fieldValue();
+    String fieldValue();
 
-	String fieldDescription();
+    String fieldDescription();
 
-	String mandatoryDescription();
+    String mandatoryDescription();
 }

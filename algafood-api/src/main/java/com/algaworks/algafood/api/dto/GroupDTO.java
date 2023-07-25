@@ -8,9 +8,9 @@ import lombok.Setter;
 @Setter
 public class GroupDTO {
 
-	@ApiModelProperty(example = "1", required = true)
-	private Long id;
+    @ApiModelProperty(example = "1", required = true)
+    private Long id;
 
-	@ApiModelProperty(example = "Garçons", required = true)
-	private String name;
+    @ApiModelProperty(example = "Garçons", required = true)
+    private String name;
 }

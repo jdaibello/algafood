@@ -14,49 +14,49 @@ import java.util.Optional;
 @Service
 public class ProductPhotoCatalogService {
 
-	@Autowired
-	private ProductRepository productRepository;
+    @Autowired
+    private ProductRepository productRepository;
 
-	@Autowired
-	private PhotoStorageService photoStorageService;
+    @Autowired
+    private PhotoStorageService photoStorageService;
 
-	public ProductPhoto findOrFail(Long restaurantId, Long productId) {
-		return productRepository.findPhotoById(restaurantId, productId)
-				.orElseThrow(() -> new ProductPhotoNotFoundException(restaurantId, productId));
-	}
+    public ProductPhoto findOrFail(Long restaurantId, Long productId) {
+        return productRepository.findPhotoById(restaurantId, productId)
+                .orElseThrow(() -> new ProductPhotoNotFoundException(restaurantId, productId));
+    }
 
-	@Transactional
-	public ProductPhoto save(ProductPhoto photo, InputStream fileData) {
-		Long restaurantId = photo.getRestaurantId();
-		Long productId = photo.getProduct().getId();
-		String newFileName = photoStorageService.generateFileName(photo.getFileName());
-		String existingFileName = null;
+    @Transactional
+    public ProductPhoto save(ProductPhoto photo, InputStream fileData) {
+        Long restaurantId = photo.getRestaurantId();
+        Long productId = photo.getProduct().getId();
+        String newFileName = photoStorageService.generateFileName(photo.getFileName());
+        String existingFileName = null;
 
-		Optional<ProductPhoto> existingPhoto = productRepository.findPhotoById(restaurantId, productId);
-		if (existingPhoto.isPresent()) {
-			existingFileName = existingPhoto.get().getFileName();
-			productRepository.delete(existingPhoto.get());
-		}
+        Optional<ProductPhoto> existingPhoto = productRepository.findPhotoById(restaurantId, productId);
+        if (existingPhoto.isPresent()) {
+            existingFileName = existingPhoto.get().getFileName();
+            productRepository.delete(existingPhoto.get());
+        }
 
-		photo.setFileName(newFileName);
-		photo = productRepository.save(photo);
-		productRepository.flush();
+        photo.setFileName(newFileName);
+        photo = productRepository.save(photo);
+        productRepository.flush();
 
-		NewPhoto newPhoto = NewPhoto.builder().fileName(photo.getFileName()).contentType(photo.getContentType())
-						.inputStream(fileData).build();
+        NewPhoto newPhoto = NewPhoto.builder().fileName(photo.getFileName()).contentType(photo.getContentType())
+                .inputStream(fileData).build();
 
-		photoStorageService.substitute(existingFileName, newPhoto);
+        photoStorageService.substitute(existingFileName, newPhoto);
 
-		return photo;
-	}
+        return photo;
+    }
 
-	@Transactional
-	public void delete(Long restaurantId, Long productId) {
-		ProductPhoto photo = findOrFail(restaurantId, productId);
+    @Transactional
+    public void delete(Long restaurantId, Long productId) {
+        ProductPhoto photo = findOrFail(restaurantId, productId);
 
-		productRepository.delete(photo);
-		productRepository.flush();
+        productRepository.delete(photo);
+        productRepository.flush();
 
-		photoStorageService.remove(photo.getFileName());
-	}
+        photoStorageService.remove(photo.getFileName());
+    }
 }

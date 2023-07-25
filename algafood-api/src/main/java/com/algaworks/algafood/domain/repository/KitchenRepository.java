@@ -1,18 +1,17 @@
 package com.algaworks.algafood.domain.repository;
 
-import java.util.List;
-import java.util.Optional;
-
+import com.algaworks.algafood.domain.model.Kitchen;
 import org.springframework.stereotype.Repository;
 
-import com.algaworks.algafood.domain.model.Kitchen;
+import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface KitchenRepository extends CustomJpaRepository<Kitchen, Long> {
 
-	List<Kitchen> findAllByNameContaining(String name);
+    List<Kitchen> findAllByNameContaining(String name);
 
-	Optional<Kitchen> findByName(String name);
+    Optional<Kitchen> findByName(String name);
 
-	boolean existsByName(String name);
+    boolean existsByName(String name);
 }

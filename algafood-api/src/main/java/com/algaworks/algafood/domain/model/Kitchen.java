@@ -1,20 +1,13 @@
 package com.algaworks.algafood.domain.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.validation.constraints.NotBlank;
-
 import com.fasterxml.jackson.annotation.JsonRootName;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
+import java.util.List;
 
 @JsonRootName("kitchen")
 @Data
@@ -22,15 +15,15 @@ import lombok.EqualsAndHashCode;
 @Entity
 public class Kitchen {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@EqualsAndHashCode.Include
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
+    private Long id;
 
-	@NotBlank
-	@Column(nullable = false)
-	private String name;
+    @NotBlank
+    @Column(nullable = false)
+    private String name;
 
-	@OneToMany(mappedBy = "kitchen")
-	private List<Restaurant> restaurants = new ArrayList<>();
+    @OneToMany(mappedBy = "kitchen")
+    private List<Restaurant> restaurants = new ArrayList<>();
 }

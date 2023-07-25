@@ -1,27 +1,26 @@
 package com.algaworks.algafood.api.assembler;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
-
+import com.algaworks.algafood.api.dto.UserDTO;
+import com.algaworks.algafood.domain.model.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.algaworks.algafood.api.dto.UserDTO;
-import com.algaworks.algafood.domain.model.User;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class UserDTOAssembler {
 
-	@Autowired
-	private ModelMapper modelMapper;
+    @Autowired
+    private ModelMapper modelMapper;
 
-	public UserDTO toModel(User user) {
-		return modelMapper.map(user, UserDTO.class);
-	}
+    public UserDTO toModel(User user) {
+        return modelMapper.map(user, UserDTO.class);
+    }
 
-	public List<UserDTO> toCollectionModel(Collection<User> users) {
-		return users.stream().map(user -> toModel(user)).collect(Collectors.toList());
-	}
+    public List<UserDTO> toCollectionModel(Collection<User> users) {
+        return users.stream().map(user -> toModel(user)).collect(Collectors.toList());
+    }
 }

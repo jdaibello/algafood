@@ -1,20 +1,11 @@
 package com.algaworks.algafood.domain.model;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -22,26 +13,26 @@ import lombok.EqualsAndHashCode;
 @Table(name = "`group`")
 public class Group {
 
-	@EqualsAndHashCode.Include
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @EqualsAndHashCode.Include
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(nullable = false)
-	private String name;
+    @Column(nullable = false)
+    private String name;
 
-	@ManyToMany
-	@JoinTable(
-		name = "group_permission",
-		joinColumns = @JoinColumn(name = "group_id"),
-		inverseJoinColumns = @JoinColumn(name = "permission_id"))
-	private Set<Permission> permissions = new HashSet<>();
+    @ManyToMany
+    @JoinTable(
+            name = "group_permission",
+            joinColumns = @JoinColumn(name = "group_id"),
+            inverseJoinColumns = @JoinColumn(name = "permission_id"))
+    private Set<Permission> permissions = new HashSet<>();
 
-	public boolean removePermission(Permission permission) {
-		return getPermissions().remove(permission);
-	}
+    public boolean removePermission(Permission permission) {
+        return getPermissions().remove(permission);
+    }
 
-	public boolean addPermission(Permission permission) {
-		return getPermissions().add(permission);
-	}
+    public boolean addPermission(Permission permission) {
+        return getPermissions().add(permission);
+    }
 }

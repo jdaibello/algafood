@@ -1,13 +1,13 @@
 package com.algaworks.algafood.domain.exception;
 
 public class StateNotFoundException extends EntityNotFoundException {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public StateNotFoundException(String message) {
-		super(message);
-	}
+    public StateNotFoundException(String message) {
+        super(message);
+    }
 
-	public StateNotFoundException(Long stateId) {
-		this(String.format("Não existe um cadastro de estado com código %d", stateId));
-	}
+    public StateNotFoundException(Long stateId) {
+        this(String.format("Não existe um cadastro de estado com código %d", stateId));
+    }
 }

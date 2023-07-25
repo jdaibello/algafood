@@ -8,44 +8,44 @@ import java.util.UUID;
 
 public interface PhotoStorageService {
 
-	RecoveredPhoto recover(String fileName);
+    RecoveredPhoto recover(String fileName);
 
-	void store(NewPhoto newPhoto);
+    void store(NewPhoto newPhoto);
 
-	void remove(String fileName);
+    void remove(String fileName);
 
-	default void substitute(String oldFileName, NewPhoto newPhoto) {
-		this.store(newPhoto);
+    default void substitute(String oldFileName, NewPhoto newPhoto) {
+        this.store(newPhoto);
 
-		if (oldFileName != null) {
-			this.remove(oldFileName);
-		}
-	}
+        if (oldFileName != null) {
+            this.remove(oldFileName);
+        }
+    }
 
-	default String generateFileName(String originalName) {
-		return UUID.randomUUID().toString() + "_" + originalName;
-	}
+    default String generateFileName(String originalName) {
+        return UUID.randomUUID() + "_" + originalName;
+    }
 
-	@Builder
-	@Getter
-	class NewPhoto {
-		private String fileName;
-		private String contentType;
-		private InputStream inputStream;
-	}
+    @Builder
+    @Getter
+    class NewPhoto {
+        private String fileName;
+        private String contentType;
+        private InputStream inputStream;
+    }
 
-	@Builder
-	@Getter
-	class RecoveredPhoto {
-		private InputStream inputStream;
-		private String url;
+    @Builder
+    @Getter
+    class RecoveredPhoto {
+        private InputStream inputStream;
+        private String url;
 
-		public boolean hasInputStream() {
-			return inputStream != null;
-		}
+        public boolean hasInputStream() {
+            return inputStream != null;
+        }
 
-		public boolean hasUrl() {
-			return url != null;
-		}
-	}
+        public boolean hasUrl() {
+            return url != null;
+        }
+    }
 }

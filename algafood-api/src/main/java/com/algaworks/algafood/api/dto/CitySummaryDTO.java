@@ -8,12 +8,12 @@ import lombok.Setter;
 @Getter
 public class CitySummaryDTO {
 
-	@ApiModelProperty(example = "1", required = true)
-	private Long id;
+    @ApiModelProperty(example = "1", required = true)
+    private Long id;
 
-	@ApiModelProperty(example = "Fortaleza", required = true)
-	private String name;
+    @ApiModelProperty(example = "Fortaleza", required = true)
+    private String name;
 
-	@ApiModelProperty(example = "Ceará", required = true)
-	private String state;
+    @ApiModelProperty(example = "Ceará", required = true)
+    private String state;
 }
