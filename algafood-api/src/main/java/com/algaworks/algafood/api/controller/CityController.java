@@ -8,6 +8,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -50,11 +51,25 @@ public class CityController implements CityControllerOpenApi {
 	@Autowired
 	private CityInputDisassembler cityInputDisassembler;
 
+	@Override
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<CityDTO> fetchAll() {
-		return cityDTOAssembler.toCollectionModel(cityRepository.findAll());
+	public CollectionModel<CityDTO> fetchAll() {
+		List<CityDTO> citiesDTO = cityDTOAssembler.toCollectionModel(cityRepository.findAll());
+
+		citiesDTO.forEach(cityDTO -> {
+			cityDTO.add(linkTo(methodOn(CityController.class).find(cityDTO.getId())).withSelfRel());
+			cityDTO.add(linkTo(methodOn(CityController.class).fetchAll()).withRel("cities"));
+			cityDTO.getState().add(linkTo(methodOn(StateController.class).find(cityDTO.getState().getId())).withSelfRel());
+		});
+
+		CollectionModel<CityDTO> citiesCollectionModel = CollectionModel.of(citiesDTO);
+
+		citiesCollectionModel.add(linkTo(CityController.class).withSelfRel());
+
+		return citiesCollectionModel;
 	}
 
+	@Override
 	@GetMapping(value = "/{cityId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public CityDTO find(@ApiParam(value = "ID da cidade", example = "1") @PathVariable Long cityId) {
 		City city = service.findOrFail(cityId);
@@ -67,6 +82,7 @@ public class CityController implements CityControllerOpenApi {
 		return cityDTO;
 	}
 
+	@Override
 	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseStatus(HttpStatus.CREATED)
 	public CityDTO add(@RequestBody @Valid CityInput cityInput) {
@@ -83,6 +99,7 @@ public class CityController implements CityControllerOpenApi {
 		}
 	}
 
+	@Override
 	@PutMapping(value = "/{cityId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public CityDTO update(@ApiParam(value = "ID da cidade", example = "1") @PathVariable Long cityId,
 			@RequestBody @Valid CityInput city) {
@@ -97,6 +114,7 @@ public class CityController implements CityControllerOpenApi {
 		}
 	}
 
+	@Override
 	@DeleteMapping("/{cityId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@ApiParam(value = "ID da cidade", example = "1") @PathVariable Long cityId) {
