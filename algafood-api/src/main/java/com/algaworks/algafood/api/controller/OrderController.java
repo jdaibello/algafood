@@ -8,6 +8,7 @@ import com.algaworks.algafood.api.dto.OrderSummaryDTO;
 import com.algaworks.algafood.api.dto.input.OrderInput;
 import com.algaworks.algafood.api.helper.ResourceUriHelper;
 import com.algaworks.algafood.api.openapi.controller.OrderControllerOpenApi;
+import com.algaworks.algafood.core.data.PageWrapper;
 import com.algaworks.algafood.core.data.PageableTranslator;
 import com.algaworks.algafood.domain.exception.BusinessException;
 import com.algaworks.algafood.domain.exception.EntityNotFoundException;
@@ -56,9 +57,10 @@ public class OrderController implements OrderControllerOpenApi {
     @Override
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public PagedModel<OrderSummaryDTO> search(OrderFilter filter, @PageableDefault(size = 10) Pageable pageable) {
-        pageable = translatePageable(pageable);
+        Pageable translatedPageable = translatePageable(pageable);
 
-        Page<Order> ordersPage = orderRepository.findAll(OrderSpecs.usingFilter(filter), pageable);
+        Page<Order> ordersPage = orderRepository.findAll(OrderSpecs.usingFilter(filter), translatedPageable);
+        ordersPage = new PageWrapper<>(ordersPage, pageable);
 
         return pagedResourcesAssembler.toModel(ordersPage, orderSummaryDTOAssembler);
     }
