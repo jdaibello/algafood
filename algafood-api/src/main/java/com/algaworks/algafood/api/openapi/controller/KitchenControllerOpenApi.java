@@ -9,14 +9,14 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.PagedModel;
 
 @Api(tags = "Cozinhas")
 public interface KitchenControllerOpenApi {
 
     @ApiOperation("Listar com paginação")
-    Page<KitchenDTO> fetchAll(Pageable pageable);
+    PagedModel<KitchenDTO> fetchAll(Pageable pageable);
 
     @ApiOperation("Buscar por ID")
     @ApiResponses({
