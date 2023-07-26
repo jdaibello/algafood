@@ -11,14 +11,13 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
 
 @Api(tags = "Usuários")
 public interface UserControllerOpenApi {
 
     @ApiOperation("Listar")
-    List<UserDTO> fetchAll();
+    CollectionModel<UserDTO> fetchAll();
 
     @ApiOperation("Buscar por ID")
     @ApiResponses({

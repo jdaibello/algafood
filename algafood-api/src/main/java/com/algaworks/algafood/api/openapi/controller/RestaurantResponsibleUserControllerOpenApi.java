@@ -4,18 +4,18 @@ import com.algaworks.algafood.api.dto.UserDTO;
 import com.algaworks.algafood.api.exceptionhandler.Problem;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
 
 @Api(tags = "Responsáveis pelos Restaurantes")
 public interface RestaurantResponsibleUserControllerOpenApi {
 
     @ApiOperation("Listar")
-    List<UserDTO> fetchAll(Long restaurantId);
+    CollectionModel<UserDTO> fetchAll(@ApiParam(value = "ID do restaurante", example = "1", required = true) Long restaurantId);
 
     @ApiOperation("Anexar")
     @ApiResponses({@ApiResponse(responseCode = "204", description = "Restaurante e usuário anexados"),

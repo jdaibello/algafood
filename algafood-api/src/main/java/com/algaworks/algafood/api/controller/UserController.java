@@ -13,12 +13,12 @@ import com.algaworks.algafood.domain.repository.UserRepository;
 import com.algaworks.algafood.domain.service.UserService;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -38,7 +38,7 @@ public class UserController implements UserControllerOpenApi {
 
     @Override
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<UserDTO> fetchAll() {
+    public CollectionModel<UserDTO> fetchAll() {
         return userDTOAssembler.toCollectionModel(userRepository.findAll());
     }
 

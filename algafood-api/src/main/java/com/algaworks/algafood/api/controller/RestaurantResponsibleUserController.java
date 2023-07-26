@@ -7,11 +7,10 @@ import com.algaworks.algafood.domain.model.Restaurant;
 import com.algaworks.algafood.domain.service.RestaurantService;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/restaurants/{restaurantId}/responsibles", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -25,7 +24,7 @@ public class RestaurantResponsibleUserController implements RestaurantResponsibl
 
     @Override
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<UserDTO> fetchAll(
+    public CollectionModel<UserDTO> fetchAll(
             @ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
         Restaurant restaurant = service.findOrFail(restaurantId);
 
