@@ -6,19 +6,25 @@ import com.algaworks.algafood.api.dto.input.OrderInput;
 import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.domain.filter.OrderFilter;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.PagedModel;
 
 @Api(tags = "Pedidos")
 public interface OrderControllerOpenApi {
 
     @ApiOperation("Procurar com filtragem de cliente e restaurante")
-    Page<OrderSummaryDTO> search(OrderFilter filter, Pageable pageable);
+    @ApiImplicitParams({
+            @ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separados por vírgula",
+                    name = "fields", paramType = "query", type = "string")
+    })
+    PagedModel<OrderSummaryDTO> search(OrderFilter filter, Pageable pageable);
 
     @ApiOperation("Buscar por código do pedido")
     @ApiResponses({

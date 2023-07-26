@@ -20,15 +20,15 @@ import com.algaworks.algafood.infrastructure.repository.spec.OrderSpecs;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -50,15 +50,17 @@ public class OrderController implements OrderControllerOpenApi {
     @Autowired
     private OrderInputDisassembler orderInputDisassembler;
 
+    @Autowired
+    private PagedResourcesAssembler<Order> pagedResourcesAssembler;
+
     @Override
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Page<OrderSummaryDTO> search(OrderFilter filter, @PageableDefault(size = 10) Pageable pageable) {
+    public PagedModel<OrderSummaryDTO> search(OrderFilter filter, @PageableDefault(size = 10) Pageable pageable) {
         pageable = translatePageable(pageable);
 
         Page<Order> ordersPage = orderRepository.findAll(OrderSpecs.usingFilter(filter), pageable);
-        List<OrderSummaryDTO> ordersSummaryDTO = orderSummaryDTOAssembler.toCollectionModel(ordersPage.getContent());
 
-        return new PageImpl<>(ordersSummaryDTO, pageable, ordersPage.getTotalElements());
+        return pagedResourcesAssembler.toModel(ordersPage, orderSummaryDTOAssembler);
     }
 
     @Override
