@@ -12,6 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @RestController
 @RequestMapping(value = "/restaurants/{restaurantId}/responsibles", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestaurantResponsibleUserController implements RestaurantResponsibleUserControllerOpenApi {
@@ -28,7 +31,8 @@ public class RestaurantResponsibleUserController implements RestaurantResponsibl
             @ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
         Restaurant restaurant = service.findOrFail(restaurantId);
 
-        return userDTOAssembler.toCollectionModel(restaurant.getResponsibles());
+        return userDTOAssembler.toCollectionModel(restaurant.getResponsibles()).removeLinks()
+                .add(linkTo(methodOn(RestaurantResponsibleUserController.class).fetchAll(restaurantId)).withSelfRel());
     }
 
     @Override
