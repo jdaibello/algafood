@@ -27,7 +27,7 @@ public class OrderSummaryDTOAssembler extends RepresentationModelAssemblerSuppor
         OrderSummaryDTO orderSummaryDTO = createModelWithId(order.getCode(), order);
         modelMapper.map(order, orderSummaryDTO);
 
-        orderSummaryDTO.add(algaLinks.linkToOrders());
+        orderSummaryDTO.add(algaLinks.linkToOrders("orders"));
         orderSummaryDTO.getRestaurant().add(algaLinks.linkToRestaurant(order.getRestaurant().getId()));
         orderSummaryDTO.getClient().add(algaLinks.linkToUser(order.getClient().getId()));
 
