@@ -2,13 +2,10 @@ package com.algaworks.algafood.api.assembler;
 
 import com.algaworks.algafood.api.controller.*;
 import com.algaworks.algafood.api.dto.OrderDTO;
+import com.algaworks.algafood.api.helper.AlgaLinks;
 import com.algaworks.algafood.domain.model.Order;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Link;
-import org.springframework.hateoas.TemplateVariable;
-import org.springframework.hateoas.TemplateVariables;
-import org.springframework.hateoas.UriTemplate;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +18,9 @@ public class OrderDTOAssembler extends RepresentationModelAssemblerSupport<Order
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private AlgaLinks algaLinks;
+
     public OrderDTOAssembler() {
         super(OrderController.class, OrderDTO.class);
     }
@@ -30,19 +30,7 @@ public class OrderDTOAssembler extends RepresentationModelAssemblerSupport<Order
         OrderDTO orderDTO = createModelWithId(order.getCode(), order);
         modelMapper.map(order, orderDTO);
 
-        TemplateVariables pageVariables = new TemplateVariables(
-                new TemplateVariable("page", TemplateVariable.VariableType.REQUEST_PARAM),
-                new TemplateVariable("size", TemplateVariable.VariableType.REQUEST_PARAM),
-                new TemplateVariable("sort", TemplateVariable.VariableType.REQUEST_PARAM));
-
-        TemplateVariables filterVariables = new TemplateVariables(
-                new TemplateVariable("clientId", TemplateVariable.VariableType.REQUEST_PARAM),
-                new TemplateVariable("restaurantId", TemplateVariable.VariableType.REQUEST_PARAM),
-                new TemplateVariable("startCreationDate", TemplateVariable.VariableType.REQUEST_PARAM),
-                new TemplateVariable("endCreationDate", TemplateVariable.VariableType.REQUEST_PARAM));
-
-        String ordersUrl = linkTo(OrderController.class).toUri().toString();
-        orderDTO.add(Link.of(UriTemplate.of(ordersUrl, pageVariables.concat(filterVariables)), "orders"));
+        orderDTO.add(algaLinks.linkToOrders());
 
         orderDTO.getRestaurant().add(linkTo(methodOn(RestaurantController.class).find(order.getRestaurant()
                 .getId())).withSelfRel());
