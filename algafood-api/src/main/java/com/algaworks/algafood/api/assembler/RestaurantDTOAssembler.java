@@ -34,6 +34,22 @@ public class RestaurantDTOAssembler extends RepresentationModelAssemblerSupport<
         restaurantDTO.add(algaLinks.linkToRestaurantPaymentMethods(restaurant.getId(), "payment-methods"));
         restaurantDTO.add(algaLinks.linkToRestaurantResponsible(restaurant.getId(), "responsible"));
 
+        if (restaurant.allowedToActivate()) {
+            restaurantDTO.add(algaLinks.linkToRestaurantActivation(restaurant.getId(), "activate"));
+        }
+
+        if (restaurant.allowedToDeactivate()) {
+            restaurantDTO.add(algaLinks.linkToRestaurantDeactivation(restaurant.getId(), "deactivate"));
+        }
+
+        if (restaurant.allowedToOpen()) {
+            restaurantDTO.add(algaLinks.linkToRestaurantOpening(restaurant.getId(), "open"));
+        }
+
+        if (restaurant.allowedToClose()) {
+            restaurantDTO.add(algaLinks.linkToRestaurantClosing(restaurant.getId(), "close"));
+        }
+
         return restaurantDTO;
     }
 

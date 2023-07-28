@@ -104,6 +104,38 @@ public class Restaurant {
         return !acceptPaymentMethod(paymentMethod);
     }
 
+    public boolean isOpened() {
+        return this.opened;
+    }
+
+    public boolean isClosed() {
+        return !isOpened();
+    }
+
+    public boolean isActivated() {
+        return this.active;
+    }
+
+    public boolean isDeactivated() {
+        return !isActivated();
+    }
+
+    public boolean allowedToOpen() {
+        return isActivated() && isClosed();
+    }
+
+    public boolean allowedToActivate() {
+        return isDeactivated();
+    }
+
+    public boolean allowedToDeactivate() {
+        return isActivated();
+    }
+
+    public boolean allowedToClose() {
+        return isOpened();
+    }
+
     public boolean addResponsible(User user) {
         return getResponsibles().add(user);
     }
