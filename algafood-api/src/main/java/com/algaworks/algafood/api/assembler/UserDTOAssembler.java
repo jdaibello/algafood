@@ -1,8 +1,8 @@
 package com.algaworks.algafood.api.assembler;
 
 import com.algaworks.algafood.api.controller.UserController;
-import com.algaworks.algafood.api.controller.UserGroupController;
 import com.algaworks.algafood.api.dto.UserDTO;
+import com.algaworks.algafood.api.helper.AlgaLinks;
 import com.algaworks.algafood.domain.model.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +11,15 @@ import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSuppor
 import org.springframework.stereotype.Component;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
 public class UserDTOAssembler extends RepresentationModelAssemblerSupport<User, UserDTO> {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private AlgaLinks algaLinks;
 
     public UserDTOAssembler() {
         super(UserController.class, UserDTO.class);
@@ -28,8 +30,8 @@ public class UserDTOAssembler extends RepresentationModelAssemblerSupport<User, 
         UserDTO userDTO = createModelWithId(user.getId(), user);
         modelMapper.map(user, userDTO);
 
-        userDTO.add(linkTo(UserController.class).withRel("users"));
-        userDTO.add(linkTo(methodOn(UserGroupController.class).fetchAll(user.getId())).withRel("user-groups"));
+        userDTO.add(algaLinks.linkToUsers("users"));
+        userDTO.add(algaLinks.linkToUserGroups(user.getId(), "user-groups"));
 
         return userDTO;
     }

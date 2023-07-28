@@ -1,6 +1,6 @@
 package com.algaworks.algafood.api.assembler;
 
-import com.algaworks.algafood.api.controller.*;
+import com.algaworks.algafood.api.controller.OrderController;
 import com.algaworks.algafood.api.dto.OrderDTO;
 import com.algaworks.algafood.api.helper.AlgaLinks;
 import com.algaworks.algafood.domain.model.Order;
@@ -8,9 +8,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
 public class OrderDTOAssembler extends RepresentationModelAssemblerSupport<Order, OrderDTO> {
@@ -32,21 +29,13 @@ public class OrderDTOAssembler extends RepresentationModelAssemblerSupport<Order
 
         orderDTO.add(algaLinks.linkToOrders());
 
-        orderDTO.getRestaurant().add(linkTo(methodOn(RestaurantController.class).find(order.getRestaurant()
-                .getId())).withSelfRel());
-
-        orderDTO.getClient().add(linkTo(methodOn(UserController.class).find(order.getClient().getId()))
-                .withSelfRel());
-
-        orderDTO.getPaymentMethod().add(linkTo(methodOn(PaymentMethodController.class).find(order.getPaymentMethod()
-                .getId(), null)).withSelfRel());
-
-        orderDTO.getDeliveryAddress().getCity().add(linkTo(methodOn(CityController.class).find(order.getDeliveryAddress()
-                .getCity().getId())).withSelfRel());
+        orderDTO.getRestaurant().add(algaLinks.linkToRestaurant(order.getRestaurant().getId()));
+        orderDTO.getClient().add(algaLinks.linkToUser(order.getClient().getId()));
+        orderDTO.getPaymentMethod().add(algaLinks.linkToPaymentMethod(order.getPaymentMethod().getId()));
+        orderDTO.getDeliveryAddress().getCity().add(algaLinks.linkToCity(order.getDeliveryAddress().getCity().getId()));
 
         orderDTO.getItems().forEach(item -> {
-            item.add(linkTo(methodOn(RestaurantProductController.class).find(orderDTO.getRestaurant().getId(),
-                    item.getProductId())).withRel("product"));
+            item.add(algaLinks.linkToProduct(orderDTO.getRestaurant().getId(), item.getProductId(), "product"));
         });
 
         return orderDTO;

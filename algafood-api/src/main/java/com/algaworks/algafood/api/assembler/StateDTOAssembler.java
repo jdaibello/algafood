@@ -2,6 +2,7 @@ package com.algaworks.algafood.api.assembler;
 
 import com.algaworks.algafood.api.controller.StateController;
 import com.algaworks.algafood.api.dto.StateDTO;
+import com.algaworks.algafood.api.helper.AlgaLinks;
 import com.algaworks.algafood.domain.model.State;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ public class StateDTOAssembler extends RepresentationModelAssemblerSupport<State
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private AlgaLinks algaLinks;
+
     public StateDTOAssembler() {
         super(StateController.class, StateDTO.class);
     }
@@ -25,7 +29,7 @@ public class StateDTOAssembler extends RepresentationModelAssemblerSupport<State
         StateDTO stateDTO = createModelWithId(state.getId(), state);
         modelMapper.map(state, stateDTO);
 
-        stateDTO.add(linkTo(StateController.class).withRel("states"));
+        stateDTO.add(algaLinks.linkToStates("states"));
 
         return stateDTO;
     }

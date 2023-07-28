@@ -2,6 +2,7 @@ package com.algaworks.algafood.api.controller;
 
 import com.algaworks.algafood.api.assembler.UserDTOAssembler;
 import com.algaworks.algafood.api.dto.UserDTO;
+import com.algaworks.algafood.api.helper.AlgaLinks;
 import com.algaworks.algafood.api.openapi.controller.RestaurantResponsibleUserControllerOpenApi;
 import com.algaworks.algafood.domain.model.Restaurant;
 import com.algaworks.algafood.domain.service.RestaurantService;
@@ -11,9 +12,6 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping(value = "/restaurants/{restaurantId}/responsibles", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -25,6 +23,9 @@ public class RestaurantResponsibleUserController implements RestaurantResponsibl
     @Autowired
     private UserDTOAssembler userDTOAssembler;
 
+    @Autowired
+    private AlgaLinks algaLinks;
+
     @Override
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public CollectionModel<UserDTO> fetchAll(
@@ -32,7 +33,7 @@ public class RestaurantResponsibleUserController implements RestaurantResponsibl
         Restaurant restaurant = service.findOrFail(restaurantId);
 
         return userDTOAssembler.toCollectionModel(restaurant.getResponsibles()).removeLinks()
-                .add(linkTo(methodOn(RestaurantResponsibleUserController.class).fetchAll(restaurantId)).withSelfRel());
+                .add(algaLinks.linkToRestaurantResponsible(restaurantId));
     }
 
     @Override
