@@ -35,8 +35,14 @@ public class OrderDTOAssembler extends RepresentationModelAssemblerSupport<Order
                 new TemplateVariable("size", TemplateVariable.VariableType.REQUEST_PARAM),
                 new TemplateVariable("sort", TemplateVariable.VariableType.REQUEST_PARAM));
 
+        TemplateVariables filterVariables = new TemplateVariables(
+                new TemplateVariable("clientId", TemplateVariable.VariableType.REQUEST_PARAM),
+                new TemplateVariable("restaurantId", TemplateVariable.VariableType.REQUEST_PARAM),
+                new TemplateVariable("startCreationDate", TemplateVariable.VariableType.REQUEST_PARAM),
+                new TemplateVariable("endCreationDate", TemplateVariable.VariableType.REQUEST_PARAM));
+
         String ordersUrl = linkTo(OrderController.class).toUri().toString();
-        orderDTO.add(Link.of(UriTemplate.of(ordersUrl, pageVariables), "orders"));
+        orderDTO.add(Link.of(UriTemplate.of(ordersUrl, pageVariables.concat(filterVariables)), "orders"));
 
         orderDTO.getRestaurant().add(linkTo(methodOn(RestaurantController.class).find(order.getRestaurant()
                 .getId())).withSelfRel());
