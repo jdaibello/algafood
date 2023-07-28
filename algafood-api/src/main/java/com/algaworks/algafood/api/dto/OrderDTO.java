@@ -42,7 +42,7 @@ public class OrderDTO extends RepresentationModel<OrderDTO> {
     private OffsetDateTime cancellationDate;
 
     @ApiModelProperty(required = true)
-    private RestaurantSummaryDTO restaurant;
+    private RestaurantOnlyNameDTO restaurant;
 
     @ApiModelProperty(required = true)
     private UserDTO client;

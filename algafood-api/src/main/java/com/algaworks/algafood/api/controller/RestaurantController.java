@@ -1,10 +1,13 @@
 package com.algaworks.algafood.api.controller;
 
+import com.algaworks.algafood.api.assembler.RestaurantBasicDTOAssembler;
 import com.algaworks.algafood.api.assembler.RestaurantDTOAssembler;
 import com.algaworks.algafood.api.assembler.RestaurantInputDisassembler;
+import com.algaworks.algafood.api.assembler.RestaurantOnlyNameDTOAssembler;
+import com.algaworks.algafood.api.dto.RestaurantBasicDTO;
 import com.algaworks.algafood.api.dto.RestaurantDTO;
+import com.algaworks.algafood.api.dto.RestaurantOnlyNameDTO;
 import com.algaworks.algafood.api.dto.input.RestaurantInput;
-import com.algaworks.algafood.api.dto.view.RestaurantView;
 import com.algaworks.algafood.api.helper.ResourceUriHelper;
 import com.algaworks.algafood.api.openapi.controller.RestaurantControllerOpenApi;
 import com.algaworks.algafood.domain.exception.BusinessException;
@@ -14,11 +17,12 @@ import com.algaworks.algafood.domain.exception.RestaurantNotFoundException;
 import com.algaworks.algafood.domain.model.Restaurant;
 import com.algaworks.algafood.domain.repository.RestaurantRepository;
 import com.algaworks.algafood.domain.service.RestaurantService;
-import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -40,11 +44,22 @@ public class RestaurantController implements RestaurantControllerOpenApi {
     @Autowired
     private RestaurantInputDisassembler restaurantInputDisassembler;
 
+    @Autowired
+    private RestaurantBasicDTOAssembler restaurantBasicDTOAssembler;
+
+    @Autowired
+    private RestaurantOnlyNameDTOAssembler restaurantOnlyNameDTOAssembler;
+
     @Override
-    @JsonView(RestaurantView.Summary.class)
     @GetMapping
-    public List<RestaurantDTO> fetchAll() {
-        return restaurantDTOAssembler.toCollectionModel(restaurantRepository.findAll());
+    public CollectionModel<RestaurantBasicDTO> fetchAll() {
+        return restaurantBasicDTOAssembler.toCollectionModel(restaurantRepository.findAll());
+    }
+
+    @Override
+    @GetMapping(params = "projection=only-name")
+    public CollectionModel<RestaurantOnlyNameDTO> fetchAllOnlyNames() {
+        return restaurantOnlyNameDTOAssembler.toCollectionModel(restaurantRepository.findAll());
     }
 
     @Override
@@ -88,15 +103,19 @@ public class RestaurantController implements RestaurantControllerOpenApi {
     @Override
     @PutMapping("/{restaurantId}/active")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void activate(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
+    public ResponseEntity<Void> activate(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
         service.activate(restaurantId);
+
+        return ResponseEntity.noContent().build();
     }
 
     @Override
     @DeleteMapping("/{restaurantId}/active")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void inactivate(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
+    public ResponseEntity<Void> inactivate(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
         service.inactivate(restaurantId);
+
+        return ResponseEntity.noContent().build();
     }
 
     @Override
@@ -124,14 +143,18 @@ public class RestaurantController implements RestaurantControllerOpenApi {
     @Override
     @PutMapping("/{restaurantId}/opening")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void open(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
+    public ResponseEntity<Void> open(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
         service.open(restaurantId);
+
+        return ResponseEntity.noContent().build();
     }
 
     @Override
     @PutMapping("/{restaurantId}/closing")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void close(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
+    public ResponseEntity<Void> close(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
         service.close(restaurantId);
+
+        return ResponseEntity.noContent().build();
     }
 }

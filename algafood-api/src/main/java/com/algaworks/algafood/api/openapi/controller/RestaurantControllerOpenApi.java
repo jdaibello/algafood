@@ -1,6 +1,8 @@
 package com.algaworks.algafood.api.openapi.controller;
 
+import com.algaworks.algafood.api.dto.RestaurantBasicDTO;
 import com.algaworks.algafood.api.dto.RestaurantDTO;
+import com.algaworks.algafood.api.dto.RestaurantOnlyNameDTO;
 import com.algaworks.algafood.api.dto.input.RestaurantInput;
 import com.algaworks.algafood.api.exceptionhandler.Problem;
 import io.swagger.annotations.Api;
@@ -9,14 +11,19 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
 @Api(tags = "Restaurantes")
 public interface RestaurantControllerOpenApi {
 
-    @ApiOperation("Listar")
-    List<RestaurantDTO> fetchAll();
+    @ApiOperation(value = "Listar")
+    CollectionModel<RestaurantBasicDTO> fetchAll();
+
+    @ApiOperation(value = "Listar", hidden = true)
+    CollectionModel<RestaurantOnlyNameDTO> fetchAllOnlyNames();
 
     @ApiOperation("Buscar por ID")
     @ApiResponses({
@@ -56,7 +63,7 @@ public interface RestaurantControllerOpenApi {
                     responseCode = "404",
                     description = "Restaurante não encontrado",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))})
-    void activate(Long restaurantId);
+    ResponseEntity<Void> activate(Long restaurantId);
 
     @ApiOperation("Desativar")
     @ApiResponses({@ApiResponse(responseCode = "204", description = "Restaurante desativado"),
@@ -68,7 +75,7 @@ public interface RestaurantControllerOpenApi {
                     responseCode = "404",
                     description = "Restaurante não encontrado",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))})
-    void inactivate(Long restaurantId);
+    ResponseEntity<Void> inactivate(Long restaurantId);
 
     @ApiOperation("Ativar vários")
     @ApiResponses({@ApiResponse(responseCode = "204", description = "Restaurantes ativados"),
@@ -104,7 +111,7 @@ public interface RestaurantControllerOpenApi {
                     responseCode = "404",
                     description = "Restaurante não encontrado",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))})
-    void open(Long restaurantId);
+    ResponseEntity<Void> open(Long restaurantId);
 
     @ApiOperation("Fechar")
     @ApiResponses({@ApiResponse(responseCode = "204", description = "Restaurante fechado"),
@@ -116,6 +123,6 @@ public interface RestaurantControllerOpenApi {
                     responseCode = "404",
                     description = "Restaurante não encontrado",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))})
-    void close(Long restaurantId);
+    ResponseEntity<Void> close(Long restaurantId);
 
 }

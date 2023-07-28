@@ -1,7 +1,7 @@
 package com.algaworks.algafood.api.assembler;
 
 import com.algaworks.algafood.api.controller.RestaurantController;
-import com.algaworks.algafood.api.dto.RestaurantDTO;
+import com.algaworks.algafood.api.dto.RestaurantBasicDTO;
 import com.algaworks.algafood.api.helper.AlgaLinks;
 import com.algaworks.algafood.domain.model.Restaurant;
 import org.modelmapper.ModelMapper;
@@ -11,7 +11,7 @@ import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSuppor
 import org.springframework.stereotype.Component;
 
 @Component
-public class RestaurantDTOAssembler extends RepresentationModelAssemblerSupport<Restaurant, RestaurantDTO> {
+public class RestaurantBasicDTOAssembler extends RepresentationModelAssemblerSupport<Restaurant, RestaurantBasicDTO> {
 
     @Autowired
     private ModelMapper modelMapper;
@@ -19,26 +19,23 @@ public class RestaurantDTOAssembler extends RepresentationModelAssemblerSupport<
     @Autowired
     private AlgaLinks algaLinks;
 
-    public RestaurantDTOAssembler() {
-        super(RestaurantController.class, RestaurantDTO.class);
+    public RestaurantBasicDTOAssembler() {
+        super(RestaurantController.class, RestaurantBasicDTO.class);
     }
 
     @Override
-    public RestaurantDTO toModel(Restaurant restaurant) {
-        RestaurantDTO restaurantDTO = createModelWithId(restaurant.getId(), restaurant);
+    public RestaurantBasicDTO toModel(Restaurant restaurant) {
+        RestaurantBasicDTO restaurantDTO = createModelWithId(restaurant.getId(), restaurant);
         modelMapper.map(restaurant, restaurantDTO);
 
         restaurantDTO.add(algaLinks.linkToRestaurants("restaurants"));
         restaurantDTO.getKitchen().add(algaLinks.linkToKitchen(restaurant.getKitchen().getId()));
-        restaurantDTO.getAddress().getCity().add(algaLinks.linkToCity(restaurant.getAddress().getCity().getId()));
-        restaurantDTO.add(algaLinks.linkToRestaurantPaymentMethods(restaurant.getId(), "payment-methods"));
-        restaurantDTO.add(algaLinks.linkToRestaurantResponsible(restaurant.getId(), "responsible"));
 
         return restaurantDTO;
     }
 
     @Override
-    public CollectionModel<RestaurantDTO> toCollectionModel(Iterable<? extends Restaurant> entities) {
+    public CollectionModel<RestaurantBasicDTO> toCollectionModel(Iterable<? extends Restaurant> entities) {
         return super.toCollectionModel(entities).add(algaLinks.linkToRestaurants());
     }
 }

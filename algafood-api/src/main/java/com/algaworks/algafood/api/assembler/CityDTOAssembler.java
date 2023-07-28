@@ -10,8 +10,6 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-
 @Component
 public class CityDTOAssembler extends RepresentationModelAssemblerSupport<City, CityDTO> {
 
@@ -38,6 +36,6 @@ public class CityDTOAssembler extends RepresentationModelAssemblerSupport<City, 
 
     @Override
     public CollectionModel<CityDTO> toCollectionModel(Iterable<? extends City> entities) {
-        return super.toCollectionModel(entities).add(linkTo(CityController.class).withSelfRel());
+        return super.toCollectionModel(entities).add(algaLinks.linkToCities());
     }
 }

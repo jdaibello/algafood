@@ -10,8 +10,6 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-
 @Component
 public class UserDTOAssembler extends RepresentationModelAssemblerSupport<User, UserDTO> {
 
@@ -38,6 +36,6 @@ public class UserDTOAssembler extends RepresentationModelAssemblerSupport<User, 
 
     @Override
     public CollectionModel<UserDTO> toCollectionModel(Iterable<? extends User> entities) {
-        return super.toCollectionModel(entities).add(linkTo(UserController.class).withSelfRel());
+        return super.toCollectionModel(entities).add(algaLinks.linkToUsers());
     }
 }
