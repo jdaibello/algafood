@@ -5,6 +5,10 @@ import com.algaworks.algafood.api.dto.OrderDTO;
 import com.algaworks.algafood.domain.model.Order;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.TemplateVariable;
+import org.springframework.hateoas.TemplateVariables;
+import org.springframework.hateoas.UriTemplate;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +30,13 @@ public class OrderDTOAssembler extends RepresentationModelAssemblerSupport<Order
         OrderDTO orderDTO = createModelWithId(order.getCode(), order);
         modelMapper.map(order, orderDTO);
 
-        orderDTO.add(linkTo(OrderController.class).withRel("orders"));
+        TemplateVariables pageVariables = new TemplateVariables(
+                new TemplateVariable("page", TemplateVariable.VariableType.REQUEST_PARAM),
+                new TemplateVariable("size", TemplateVariable.VariableType.REQUEST_PARAM),
+                new TemplateVariable("sort", TemplateVariable.VariableType.REQUEST_PARAM));
+
+        String ordersUrl = linkTo(OrderController.class).toUri().toString();
+        orderDTO.add(Link.of(UriTemplate.of(ordersUrl, pageVariables), "orders"));
 
         orderDTO.getRestaurant().add(linkTo(methodOn(RestaurantController.class).find(order.getRestaurant()
                 .getId())).withSelfRel());
