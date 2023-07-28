@@ -4,6 +4,7 @@ import com.algaworks.algafood.api.assembler.PaymentMethodDTOAssembler;
 import com.algaworks.algafood.api.assembler.PaymentMethodInputDisassembler;
 import com.algaworks.algafood.api.dto.PaymentMethodDTO;
 import com.algaworks.algafood.api.dto.input.PaymentMethodInput;
+import com.algaworks.algafood.api.helper.AlgaLinks;
 import com.algaworks.algafood.api.helper.ResourceUriHelper;
 import com.algaworks.algafood.api.openapi.controller.PaymentMethodControllerOpenApi;
 import com.algaworks.algafood.domain.model.PaymentMethod;
@@ -11,6 +12,7 @@ import com.algaworks.algafood.domain.repository.PaymentMethodRepository;
 import com.algaworks.algafood.domain.service.PaymentMethodService;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,7 +23,6 @@ import org.springframework.web.filter.ShallowEtagHeaderFilter;
 
 import javax.validation.Valid;
 import java.time.OffsetDateTime;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @RestController
@@ -40,9 +41,12 @@ public class PaymentMethodController implements PaymentMethodControllerOpenApi {
     @Autowired
     private PaymentMethodInputDisassembler paymentMethodInputDisassembler;
 
+    @Autowired
+    private AlgaLinks algaLinks;
+
     @Override
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<PaymentMethodDTO>> fetchAll(ServletWebRequest request) {
+    public ResponseEntity<CollectionModel<PaymentMethodDTO>> fetchAll(ServletWebRequest request) {
         ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
 
         String etag = "0";
@@ -56,7 +60,7 @@ public class PaymentMethodController implements PaymentMethodControllerOpenApi {
             return null;
         }
 
-        List<PaymentMethodDTO> paymentMethodsDTO = paymentMethodDTOAssembler
+        CollectionModel<PaymentMethodDTO> paymentMethodsDTO = paymentMethodDTOAssembler
                 .toCollectionModel(paymentMethodRepository.findAll());
 
         return ResponseEntity.ok().cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic()).eTag(etag)
