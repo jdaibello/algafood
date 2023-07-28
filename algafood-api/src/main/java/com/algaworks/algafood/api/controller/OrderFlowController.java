@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,27 +19,33 @@ public class OrderFlowController implements OrderFlowControllerOpenApi {
     @Override
     @PutMapping("/confirmation")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void confirm(@ApiParam(
+    public ResponseEntity<Void> confirm(@ApiParam(
             value = "Código UUID do pedido",
             example = "123e4567-e89b-12d3-a456-426655440000") @PathVariable String orderCode) {
         orderFlowService.confirm(orderCode);
+
+        return  ResponseEntity.noContent().build();
     }
 
     @Override
     @PutMapping("/cancellation")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void cancel(@ApiParam(
+    public ResponseEntity<Void> cancel(@ApiParam(
             value = "Código UUID do pedido",
             example = "123e4567-e89b-12d3-a456-426655440000") @PathVariable String orderCode) {
         orderFlowService.cancel(orderCode);
+
+        return  ResponseEntity.noContent().build();
     }
 
     @Override
     @PutMapping("/delivery")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delivery(@ApiParam(
+    public ResponseEntity<Void> delivery(@ApiParam(
             value = "Código UUID do pedido",
             example = "123e4567-e89b-12d3-a456-426655440000") @PathVariable String orderCode) {
         orderFlowService.delivery(orderCode);
+
+        return  ResponseEntity.noContent().build();
     }
 }

@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.http.ResponseEntity;
 
 @Api(tags = "Fluxos dos Pedidos")
 public interface OrderFlowControllerOpenApi {
@@ -21,7 +22,7 @@ public interface OrderFlowControllerOpenApi {
                     responseCode = "404",
                     description = "Pedido não encontrado",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))})
-    void confirm(String orderCode);
+    ResponseEntity<Void> confirm(String orderCode);
 
     @ApiOperation("Cancelar")
     @ApiResponses({@ApiResponse(responseCode = "204", description = "Pedido cancelado"),
@@ -33,7 +34,7 @@ public interface OrderFlowControllerOpenApi {
                     responseCode = "404",
                     description = "Pedido não encontrado",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))})
-    void cancel(String orderCode);
+    ResponseEntity<Void> cancel(String orderCode);
 
     @ApiOperation("Entregar")
     @ApiResponses({@ApiResponse(responseCode = "204", description = "Pedido entregue"),
@@ -45,6 +46,6 @@ public interface OrderFlowControllerOpenApi {
                     responseCode = "404",
                     description = "Pedido não encontrado",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))})
-    void delivery(String orderCode);
+    ResponseEntity<Void> delivery(String orderCode);
 
 }
