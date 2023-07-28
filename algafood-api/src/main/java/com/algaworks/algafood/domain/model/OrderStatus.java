@@ -7,7 +7,7 @@ public enum OrderStatus {
     CREATED("Criado"),
     CONFIRMED("Confirmado", CREATED),
     DELIVERED("Entregue", CONFIRMED),
-    CANCELED("Cancelado", CREATED);
+    CANCELLED("Cancelado", CREATED);
 
     private final String description;
     private final List<OrderStatus> previousStatus;
@@ -19,6 +19,10 @@ public enum OrderStatus {
 
     public String getDescription() {
         return this.description;
+    }
+
+    public boolean canChangeTo(OrderStatus newStatus) {
+        return !cantChangeTo(newStatus);
     }
 
     public boolean cantChangeTo(OrderStatus newStatus) {

@@ -28,9 +28,18 @@ public class OrderDTOAssembler extends RepresentationModelAssemblerSupport<Order
         modelMapper.map(order, orderDTO);
 
         orderDTO.add(algaLinks.linkToOrders());
-        orderDTO.add(algaLinks.linkToOrderConfirmation(order.getCode(), "confirm"));
-        orderDTO.add(algaLinks.linkToOrderCancellation(order.getCode(), "cancel"));
-        orderDTO.add(algaLinks.linkToOrderDelivery(order.getCode(), "delivery"));
+
+        if (order.canBeConfirmed()) {
+            orderDTO.add(algaLinks.linkToOrderConfirmation(order.getCode(), "confirm"));
+        }
+
+        if (order.canBeCancelled()) {
+            orderDTO.add(algaLinks.linkToOrderCancellation(order.getCode(), "cancel"));
+        }
+
+        if (order.canBeDelivered()) {
+            orderDTO.add(algaLinks.linkToOrderDelivery(order.getCode(), "delivery"));
+        }
 
         orderDTO.getRestaurant().add(algaLinks.linkToRestaurant(order.getRestaurant().getId()));
         orderDTO.getClient().add(algaLinks.linkToUser(order.getClient().getId()));
