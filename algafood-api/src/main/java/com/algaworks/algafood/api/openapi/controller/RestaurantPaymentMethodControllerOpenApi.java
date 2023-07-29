@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
 
 @Api(tags = "Formas de Pagamento dos Restaurantes")
 public interface RestaurantPaymentMethodControllerOpenApi {
@@ -38,6 +39,6 @@ public interface RestaurantPaymentMethodControllerOpenApi {
                     responseCode = "404",
                     description = "Restaurante/forma de pagamento não encontrado(s)",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))})
-    void detach(Long restaurantId, Long paymentMethodId);
+    ResponseEntity<Void> detach(Long restaurantId, Long paymentMethodId);
 
 }

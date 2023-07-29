@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -32,8 +33,16 @@ public class RestaurantPaymentMethodController implements RestaurantPaymentMetho
             @ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
         Restaurant restaurant = service.findOrFail(restaurantId);
 
-        return paymentMethodDTOAssembler.toCollectionModel(restaurant.getPaymentMethods()).removeLinks()
+        CollectionModel<PaymentMethodDTO> paymentMethodsDTO = paymentMethodDTOAssembler
+                .toCollectionModel(restaurant.getPaymentMethods()).removeLinks()
                 .add(algaLinks.linkToRestaurantPaymentMethods(restaurantId));
+
+        paymentMethodsDTO.getContent().forEach(paymentMethodDTO -> {
+           paymentMethodDTO.add(algaLinks.linkToRestaurantPaymentMethodDetachment(restaurantId,
+                   paymentMethodDTO.getId(), "detach"));
+        });
+
+        return  paymentMethodsDTO;
     }
 
     @Override
@@ -47,8 +56,10 @@ public class RestaurantPaymentMethodController implements RestaurantPaymentMetho
     @Override
     @DeleteMapping("/{paymentMethodId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void detach(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
-                       @ApiParam(value = "ID da forma de pagamento", example = "1") @PathVariable Long paymentMethodId) {
+    public ResponseEntity<Void> detach(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
+                                 @ApiParam(value = "ID da forma de pagamento", example = "1") @PathVariable Long paymentMethodId) {
         service.detachPaymentMethod(restaurantId, paymentMethodId);
+
+        return ResponseEntity.noContent().build();
     }
 }
