@@ -8,14 +8,13 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
 
 @Api(tags = "Grupos de Usuários")
 public interface UserGroupControllerOpenApi {
 
     @ApiOperation("Listar")
-    List<GroupDTO> fetchAll(Long userId);
+    CollectionModel<GroupDTO> fetchAll(Long userId);
 
     @ApiOperation("Anexar")
     @ApiResponses({@ApiResponse(responseCode = "204", description = "Usuário e grupo anexados"),

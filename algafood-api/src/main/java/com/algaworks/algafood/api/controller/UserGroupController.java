@@ -7,11 +7,10 @@ import com.algaworks.algafood.domain.model.User;
 import com.algaworks.algafood.domain.service.UserService;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping(value = "/users/{userId}/groups", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -25,10 +24,10 @@ public class UserGroupController implements UserGroupControllerOpenApi {
 
     @Override
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<GroupDTO> fetchAll(@ApiParam(value = "ID do usuário", example = "1") @PathVariable Long userId) {
+    public CollectionModel<GroupDTO> fetchAll(@ApiParam(value = "ID do usuário", example = "1") @PathVariable Long userId) {
         User user = service.findOrFail(userId);
 
-        return groupDTOAssembler.toCollectionModel(user.getGroups());
+        return groupDTOAssembler.toCollectionModel(user.getGroups()).removeLinks();
     }
 
     @Override

@@ -218,4 +218,16 @@ public class AlgaLinks {
     public Link linkToKitchens() {
         return linkToKitchens(IanaLinkRelations.SELF.value());
     }
+
+    public Link linkToGroups(String rel) {
+        return linkTo(GroupController.class).withRel(rel);
+    }
+
+    public Link linkToGroups() {
+        return linkToGroups(IanaLinkRelations.SELF.value());
+    }
+
+    public Link linkToGroupPermissions(Long groupId, String rel) {
+        return linkTo(methodOn(GroupPermissionController.class).fetchAll(groupId)).withRel(rel);
+    }
 }
