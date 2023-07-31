@@ -27,7 +27,7 @@ public interface RestaurantPaymentMethodControllerOpenApi {
                     responseCode = "404",
                     description = "Restaurante/forma de pagamento não encontrado(s)",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))})
-    void attach(Long restaurantId, Long paymentMethodId);
+    ResponseEntity<Void> attach(Long restaurantId, Long paymentMethodId);
 
     @ApiOperation("Desanexar")
     @ApiResponses({@ApiResponse(responseCode = "204", description = "Restaurante e forma de pagamentos desanexados"),

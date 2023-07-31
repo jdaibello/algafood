@@ -35,7 +35,8 @@ public class RestaurantPaymentMethodController implements RestaurantPaymentMetho
 
         CollectionModel<PaymentMethodDTO> paymentMethodsDTO = paymentMethodDTOAssembler
                 .toCollectionModel(restaurant.getPaymentMethods()).removeLinks()
-                .add(algaLinks.linkToRestaurantPaymentMethods(restaurantId));
+                .add(algaLinks.linkToRestaurantPaymentMethods(restaurantId))
+                .add(algaLinks.linkToRestaurantPaymentMethodAttachment(restaurantId, "attach"));
 
         paymentMethodsDTO.getContent().forEach(paymentMethodDTO -> {
            paymentMethodDTO.add(algaLinks.linkToRestaurantPaymentMethodDetachment(restaurantId,
@@ -48,9 +49,11 @@ public class RestaurantPaymentMethodController implements RestaurantPaymentMetho
     @Override
     @PutMapping("/{paymentMethodId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void attach(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
+    public ResponseEntity<Void> attach(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
                        @ApiParam(value = "ID da forma de pagamento", example = "1") @PathVariable Long paymentMethodId) {
         service.attachPaymentMethod(restaurantId, paymentMethodId);
+
+        return ResponseEntity.noContent().build();
     }
 
     @Override

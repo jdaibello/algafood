@@ -83,6 +83,10 @@ public class AlgaLinks {
         return linkToRestaurantPaymentMethods(restaurantId, IanaLinkRelations.SELF.value());
     }
 
+    public Link linkToRestaurantPaymentMethodAttachment(Long restaurantId, String rel) {
+        return linkTo(methodOn(RestaurantPaymentMethodController.class).attach(restaurantId, null)).withRel(rel);
+    }
+
     public Link linkToRestaurantPaymentMethodDetachment(Long restaurantId, Long paymentMethodId, String rel) {
         return linkTo(methodOn(RestaurantPaymentMethodController.class).detach(restaurantId, paymentMethodId)).withRel(rel);
     }
