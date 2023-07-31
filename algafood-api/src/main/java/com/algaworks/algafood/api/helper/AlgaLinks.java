@@ -195,6 +195,14 @@ public class AlgaLinks {
         return linkToProducts(restaurantId, IanaLinkRelations.SELF.value());
     }
 
+    public Link linkToProductPhoto(Long restaurantId, Long productId, String rel) {
+        return linkTo(methodOn(RestaurantProductPhotoController.class).find(restaurantId, productId)).withRel(rel);
+    }
+
+    public Link linkToProductPhoto(Long restaurantId, Long productId) {
+        return linkToProductPhoto(restaurantId, productId, IanaLinkRelations.SELF.value());
+    }
+
     public Link linkToKitchen(Long kitchenId, String rel) {
         return linkTo(methodOn(KitchenController.class).find(kitchenId)).withRel(rel);
     }
