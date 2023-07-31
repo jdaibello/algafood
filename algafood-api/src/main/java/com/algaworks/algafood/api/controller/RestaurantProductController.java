@@ -4,6 +4,7 @@ import com.algaworks.algafood.api.assembler.ProductDTOAssembler;
 import com.algaworks.algafood.api.assembler.ProductInputDisassembler;
 import com.algaworks.algafood.api.dto.ProductDTO;
 import com.algaworks.algafood.api.dto.input.ProductInput;
+import com.algaworks.algafood.api.helper.AlgaLinks;
 import com.algaworks.algafood.api.helper.ResourceUriHelper;
 import com.algaworks.algafood.api.openapi.controller.RestaurantProductControllerOpenApi;
 import com.algaworks.algafood.domain.model.Product;
@@ -13,6 +14,7 @@ import com.algaworks.algafood.domain.service.ProductService;
 import com.algaworks.algafood.domain.service.RestaurantService;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -39,11 +41,14 @@ public class RestaurantProductController implements RestaurantProductControllerO
     @Autowired
     private ProductInputDisassembler productInputDisassembler;
 
+    @Autowired
+    private AlgaLinks algaLinks;
+
     @Override
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<ProductDTO> fetchAll(
+    public CollectionModel<ProductDTO> fetchAll(
             @ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
-            @RequestParam(required = false) boolean includeInactive) {
+            @RequestParam(required = false) Boolean includeInactive) {
         Restaurant restaurant = restaurantService.findOrFail(restaurantId);
         List<Product> allProducts = null;
 
@@ -53,7 +58,7 @@ public class RestaurantProductController implements RestaurantProductControllerO
             allProducts = productRepository.findActivesByRestaurant(restaurant);
         }
 
-        return productDTOAssembler.toCollectionModel(allProducts);
+        return productDTOAssembler.toCollectionModel(allProducts).add(algaLinks.linkToProducts(restaurantId));
     }
 
     @Override

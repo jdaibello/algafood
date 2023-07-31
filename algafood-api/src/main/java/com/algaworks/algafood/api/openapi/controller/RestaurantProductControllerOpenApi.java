@@ -9,14 +9,13 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
 
 @Api(tags = "Produtos dos Restaurantes")
 public interface RestaurantProductControllerOpenApi {
 
     @ApiOperation("Listar")
-    List<ProductDTO> fetchAll(Long restaurantId, boolean includeInactive);
+    CollectionModel<ProductDTO> fetchAll(Long restaurantId, Boolean includeInactive);
 
     @ApiOperation("Buscar por ID")
     @ApiResponses({

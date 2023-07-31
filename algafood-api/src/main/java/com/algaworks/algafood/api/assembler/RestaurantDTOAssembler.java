@@ -29,10 +29,14 @@ public class RestaurantDTOAssembler extends RepresentationModelAssemblerSupport<
         modelMapper.map(restaurant, restaurantDTO);
 
         restaurantDTO.add(algaLinks.linkToRestaurants("restaurants"));
+        restaurantDTO.add(algaLinks.linkToProducts(restaurant.getId(), "products"));
         restaurantDTO.getKitchen().add(algaLinks.linkToKitchen(restaurant.getKitchen().getId()));
-        restaurantDTO.getAddress().getCity().add(algaLinks.linkToCity(restaurant.getAddress().getCity().getId()));
         restaurantDTO.add(algaLinks.linkToRestaurantPaymentMethods(restaurant.getId(), "payment-methods"));
         restaurantDTO.add(algaLinks.linkToRestaurantResponsible(restaurant.getId(), "responsible"));
+
+        if (restaurantDTO.getAddress() != null && restaurantDTO.getAddress().getCity() != null) {
+            restaurantDTO.getAddress().getCity().add(algaLinks.linkToCity(restaurant.getAddress().getCity().getId()));
+        }
 
         if (restaurant.allowedToActivate()) {
             restaurantDTO.add(algaLinks.linkToRestaurantActivation(restaurant.getId(), "activate"));
