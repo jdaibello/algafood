@@ -123,6 +123,14 @@ public class AlgaLinks {
         return linkToRestaurantResponsible(restaurantId, IanaLinkRelations.SELF.value());
     }
 
+    public Link linkToRestaurantResponsibleAttachment(Long restaurantId, String rel) {
+        return linkTo(methodOn(RestaurantResponsibleUserController.class).attach(restaurantId, null)).withRel(rel);
+    }
+
+    public Link linkToRestaurantResponsibleDetachment(Long restaurantId, Long userId, String rel) {
+        return linkTo(methodOn(RestaurantResponsibleUserController.class).detach(restaurantId, userId)).withRel(rel);
+    }
+
     public Link linkToPaymentMethod(Long paymentMethodId, String rel) {
         return linkTo(methodOn(PaymentMethodController.class).find(paymentMethodId, null)).withRel(rel);
     }

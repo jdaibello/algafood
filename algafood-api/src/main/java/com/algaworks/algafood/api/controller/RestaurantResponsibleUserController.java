@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -32,23 +33,34 @@ public class RestaurantResponsibleUserController implements RestaurantResponsibl
             @ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
         Restaurant restaurant = service.findOrFail(restaurantId);
 
-        return userDTOAssembler.toCollectionModel(restaurant.getResponsibles()).removeLinks()
-                .add(algaLinks.linkToRestaurantResponsible(restaurantId));
+        CollectionModel<UserDTO> usersDTO = userDTOAssembler.toCollectionModel(restaurant.getResponsibles())
+                .removeLinks().add(algaLinks.linkToRestaurantResponsible(restaurantId))
+                .add(algaLinks.linkToRestaurantResponsibleAttachment(restaurantId, "attach"));
+
+        usersDTO.getContent().stream().forEach(userDTO -> {
+            userDTO.add(algaLinks.linkToRestaurantResponsibleDetachment(restaurantId, userDTO.getId(), "detach"));
+        });
+
+        return usersDTO;
     }
 
     @Override
     @PutMapping(value = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void attach(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
+    public ResponseEntity<Void> attach(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
                        @ApiParam(value = "ID do usuário", example = "1") @PathVariable Long userId) {
         service.attachResponsible(restaurantId, userId);
+
+        return ResponseEntity.noContent().build();
     }
 
     @Override
     @DeleteMapping("/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void detach(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
-                       @ApiParam(value = "ID do usuário", example = "1") @PathVariable Long userId) {
+    public ResponseEntity<Void> detach(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
+                                       @ApiParam(value = "ID do usuário", example = "1") @PathVariable Long userId) {
         service.detachResponsible(restaurantId, userId);
+
+        return ResponseEntity.noContent().build();
     }
 }

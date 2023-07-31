@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
 
 @Api(tags = "Responsáveis pelos Restaurantes")
 public interface RestaurantResponsibleUserControllerOpenApi {
@@ -27,7 +28,7 @@ public interface RestaurantResponsibleUserControllerOpenApi {
                     responseCode = "404",
                     description = "Restaurante/usuário não encontrado(s)",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))})
-    void attach(Long restaurantId, Long userId);
+    ResponseEntity<Void> attach(Long restaurantId, Long userId);
 
     @ApiOperation("Desanexar")
     @ApiResponses({@ApiResponse(responseCode = "204", description = "Restaurante e usuário desanexados"),
@@ -39,6 +40,6 @@ public interface RestaurantResponsibleUserControllerOpenApi {
                     responseCode = "404",
                     description = "Restaurante/usuário não encontrado(s)",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))})
-    void detach(Long restaurantId, Long userId);
+    ResponseEntity<Void> detach(Long restaurantId, Long userId);
 
 }
