@@ -8,14 +8,14 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
 
 @Api(tags = "Permissões dos Grupos")
 public interface GroupPermissionControllerOpenApi {
 
     @ApiOperation("Listar")
-    List<PermissionDTO> fetchAll(Long groupId);
+    CollectionModel<PermissionDTO> fetchAll(Long groupId);
 
     @ApiOperation("Anexar")
     @ApiResponses({@ApiResponse(responseCode = "204", description = "Grupo e permissão anexados"),
@@ -27,7 +27,7 @@ public interface GroupPermissionControllerOpenApi {
                     responseCode = "404",
                     description = "Grupo/permissão não encontrado(s)",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))})
-    void attach(Long groupId, Long permissionId);
+    ResponseEntity<Void> attach(Long groupId, Long permissionId);
 
     @ApiOperation("Desanexar")
     @ApiResponses({@ApiResponse(responseCode = "204", description = "Grupo e permissão desanexados"),
@@ -39,6 +39,6 @@ public interface GroupPermissionControllerOpenApi {
                     responseCode = "404",
                     description = "Grupo/permissão não encontrado(s)",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))})
-    void detach(Long groupId, Long permissionId);
+    ResponseEntity<Void> detach(Long groupId, Long permissionId);
 
 }

@@ -230,4 +230,24 @@ public class AlgaLinks {
     public Link linkToGroupPermissions(Long groupId, String rel) {
         return linkTo(methodOn(GroupPermissionController.class).fetchAll(groupId)).withRel(rel);
     }
+
+    public Link linkToGroupPermissions(Long groupId) {
+        return linkToGroupPermissions(groupId, IanaLinkRelations.SELF.value());
+    }
+
+    public Link linkToGroupPermissionAttachment(Long groupId, String rel) {
+        return linkTo(methodOn(GroupPermissionController.class).attach(groupId, null)).withRel(rel);
+    }
+
+    public Link linkToGroupPermissionDetachment(Long groupId, Long permissionId, String rel) {
+        return linkTo(methodOn(GroupPermissionController.class).detach(groupId, permissionId)).withRel(rel);
+    }
+
+    public Link linkToPermissions(String rel) {
+        return linkTo(PermissionController.class).withRel(rel);
+    }
+
+    public Link linkToPermissions() {
+        return linkToPermissions(IanaLinkRelations.SELF.value());
+    }
 }
