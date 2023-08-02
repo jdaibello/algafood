@@ -7,7 +7,9 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
+@ApiIgnore
 @RestController
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 public class RootEntryPointController {
@@ -16,23 +18,23 @@ public class RootEntryPointController {
     private AlgaLinks algaLinks;
 
     @GetMapping
-    public RootEntryPointModel root() {
-        var rootEntryPointModel = new RootEntryPointModel();
+    public RootEntryPointDTO root() {
+        var rootEntryPointDTO = new RootEntryPointDTO();
 
-        rootEntryPointModel.add(algaLinks.linkToKitchens("kitchens"));
-        rootEntryPointModel.add(algaLinks.linkToOrders("orders"));
-        rootEntryPointModel.add(algaLinks.linkToRestaurants("restaurants"));
-        rootEntryPointModel.add(algaLinks.linkToGroups("groups"));
-        rootEntryPointModel.add(algaLinks.linkToUsers("users"));
-        rootEntryPointModel.add(algaLinks.linkToPermissions("permissions"));
-        rootEntryPointModel.add(algaLinks.linkToPaymentMethods("payment-methods"));
-        rootEntryPointModel.add(algaLinks.linkToStates("states"));
-        rootEntryPointModel.add(algaLinks.linkToCities("cities"));
-        rootEntryPointModel.add(algaLinks.linkToStatistics("statistics"));
+        rootEntryPointDTO.add(algaLinks.linkToKitchens("kitchens"));
+        rootEntryPointDTO.add(algaLinks.linkToOrders("orders"));
+        rootEntryPointDTO.add(algaLinks.linkToRestaurants("restaurants"));
+        rootEntryPointDTO.add(algaLinks.linkToGroups("groups"));
+        rootEntryPointDTO.add(algaLinks.linkToUsers("users"));
+        rootEntryPointDTO.add(algaLinks.linkToPermissions("permissions"));
+        rootEntryPointDTO.add(algaLinks.linkToPaymentMethods("payment-methods"));
+        rootEntryPointDTO.add(algaLinks.linkToStates("states"));
+        rootEntryPointDTO.add(algaLinks.linkToCities("cities"));
+        rootEntryPointDTO.add(algaLinks.linkToStatistics("statistics"));
 
-        return rootEntryPointModel;
+        return rootEntryPointDTO;
     }
 
-    private static class RootEntryPointModel extends RepresentationModel<RootEntryPointModel> {
+    private static class RootEntryPointDTO extends RepresentationModel<RootEntryPointDTO> {
     }
 }
