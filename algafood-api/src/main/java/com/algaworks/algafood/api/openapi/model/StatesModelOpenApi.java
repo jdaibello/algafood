@@ -7,14 +7,14 @@ import org.springframework.hateoas.Links;
 
 import java.util.List;
 
-@ApiModel("EstadosModel")
+@ApiModel("StatesModel")
 @Data
 public class StatesModelOpenApi {
 
     private StatesEmbeddedModelOpenApi _embedded;
     private Links _links;
 
-    @ApiModel("EstadosEmbeddedModel")
+    @ApiModel("StatesEmbeddedModel")
     @Data
     public class StatesEmbeddedModelOpenApi {
 

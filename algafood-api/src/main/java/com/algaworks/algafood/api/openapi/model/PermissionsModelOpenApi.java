@@ -7,14 +7,14 @@ import org.springframework.hateoas.Links;
 
 import java.util.List;
 
-@ApiModel("PermissoesModel")
+@ApiModel("PermissionsModel")
 @Data
 public class PermissionsModelOpenApi {
 
     private PermissionsEmbeddedModelOpenApi _embedded;
     private Links _links;
 
-    @ApiModel("PermissoesEmbeddedModel")
+    @ApiModel("PermissionsEmbeddedModel")
     @Data
     public class PermissionsEmbeddedModelOpenApi {
 

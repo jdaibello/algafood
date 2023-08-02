@@ -7,14 +7,14 @@ import org.springframework.hateoas.Links;
 
 import java.util.List;
 
-@ApiModel("FormasDePagamentoModel")
+@ApiModel("PaymentMethodsModel")
 @Data
 public class PaymentMethodsModelOpenApi {
 
     private PaymentMethodEmbeddedModelOpenApi _embedded;
     private Links _links;
 
-    @ApiModel("FormasDePagamentoEmbeddedModel")
+    @ApiModel("PaymentMethodsEmbeddedModel")
     @Data
     public class PaymentMethodEmbeddedModelOpenApi {
 

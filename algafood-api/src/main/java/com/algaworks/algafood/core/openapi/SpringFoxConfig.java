@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.io.Resource;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Links;
@@ -66,8 +65,8 @@ public class SpringFoxConfig implements WebMvcConfigurer {
                 .directModelSubstitute(Links.class, LinksModelOpenApi.class)
                 .alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(PagedModel.class, KitchenDTO.class),
                         KitchensModelOpenApi.class))
-                .alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(Page.class, OrderSummaryDTO.class),
-                        OrderSummariesModelOpenApi.class))
+                .alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(PagedModel.class, OrderSummaryDTO.class),
+                        OrdersSummaryModelOpenApi.class))
                 .alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class,
                         CityDTO.class), CitiesModelOpenApi.class))
                 .alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class,
@@ -83,7 +82,8 @@ public class SpringFoxConfig implements WebMvcConfigurer {
                 .apiInfo(apiInfo()).tags(new Tag("Cidades", "Gerencia as cidades"))
                 .tags(new Tag("Grupos", "Gerencia os grupos"))
                 .tags(new Tag("Permissões dos Grupos", "Gerencia as permissões dos grupos"))
-                .tags(new Tag("Cozinhas", "Gerencia as cozinhas")).tags(new Tag("Pedidos", "Gerencia os pedidos"))
+                .tags(new Tag("Cozinhas", "Gerencia as cozinhas"))
+                .tags(new Tag("Pedidos", "Gerencia os pedidos"))
                 .tags(new Tag("Fluxos dos Pedidos", "Gerencia os fluxos (status) dos pedidos"))
                 .tags(new Tag("Formas de Pagamento", "Gerencia as formas de pagamento"))
                 .tags(new Tag("Restaurantes", "Gerencia os restaurantes"))

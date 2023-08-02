@@ -9,7 +9,7 @@ import org.springframework.hateoas.Links;
 
 import java.util.List;
 
-@ApiModel("KithensModel")
+@ApiModel("KitchensModel")
 @Getter
 @Setter
 public class KitchensModelOpenApi {
@@ -18,7 +18,7 @@ public class KitchensModelOpenApi {
     private Links _links;
     private PageModelOpenApi page;
 
-    @ApiModel("CozinhasEmbeddedModel")
+    @ApiModel("KitchensEmbeddedModel")
     @Data
     public class KitchensEmbeddedModelOpenApi {
 
