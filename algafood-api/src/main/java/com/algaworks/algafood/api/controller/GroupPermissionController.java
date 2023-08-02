@@ -31,6 +31,7 @@ public class GroupPermissionController implements GroupPermissionControllerOpenA
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public CollectionModel<PermissionDTO> fetchAll(@ApiParam(value = "ID do grupo", example = "1") @PathVariable Long groupId) {
         Group group = service.findOrFail(groupId);
+
         CollectionModel<PermissionDTO> permissionsDTO = permissionDTOAssembler.toCollectionModel(group.getPermissions())
                 .removeLinks().add(algaLinks.linkToGroupPermissions(groupId))
                 .add(algaLinks.linkToGroupPermissionAttachment(groupId, "attach"));

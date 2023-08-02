@@ -115,6 +115,14 @@ public class AlgaLinks {
         return linkToUserGroups(userId, IanaLinkRelations.SELF.value());
     }
 
+    public Link linkToUserGroupAttachment(Long userId, String rel) {
+        return linkTo(methodOn(UserGroupController.class).attach(userId, null)).withRel(rel);
+    }
+
+    public Link linkToUserGroupDetachment(Long userId, Long groupId, String rel) {
+        return linkTo(methodOn(UserGroupController.class).detach(userId, groupId)).withRel(rel);
+    }
+
     public Link linkToRestaurantResponsible(Long restaurantId, String rel) {
         return linkTo(methodOn(RestaurantResponsibleUserController.class).fetchAll(restaurantId)).withRel(rel);
     }

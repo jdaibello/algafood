@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
 
 @Api(tags = "Grupos de Usuários")
 public interface UserGroupControllerOpenApi {
@@ -26,7 +27,7 @@ public interface UserGroupControllerOpenApi {
                     responseCode = "404",
                     description = "Usuário/grupo não encontrado(s)",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))})
-    void attach(Long userId, Long groupId);
+    ResponseEntity<Void> attach(Long userId, Long groupId);
 
     @ApiOperation("Desanexar")
     @ApiResponses({@ApiResponse(responseCode = "204", description = "Usuário e grupo desanexados"),
@@ -38,6 +39,6 @@ public interface UserGroupControllerOpenApi {
                     responseCode = "404",
                     description = "Usuário/grupo não encontrado(s)",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))})
-    void detach(Long userId, Long groupId);
+    ResponseEntity<Void> detach(Long userId, Long groupId);
 
 }
