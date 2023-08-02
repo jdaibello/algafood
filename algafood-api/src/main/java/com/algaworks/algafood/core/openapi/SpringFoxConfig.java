@@ -1,12 +1,10 @@
 package com.algaworks.algafood.core.openapi;
 
+import com.algaworks.algafood.api.dto.CityDTO;
 import com.algaworks.algafood.api.dto.KitchenDTO;
 import com.algaworks.algafood.api.dto.OrderSummaryDTO;
 import com.algaworks.algafood.api.exceptionhandler.Problem;
-import com.algaworks.algafood.api.openapi.model.KitchensModelOpenApi;
-import com.algaworks.algafood.api.openapi.model.LinksModelOpenApi;
-import com.algaworks.algafood.api.openapi.model.OrderSummariesModelOpenApi;
-import com.algaworks.algafood.api.openapi.model.PageableModelOpenApi;
+import com.algaworks.algafood.api.openapi.model.*;
 import com.fasterxml.classmate.TypeResolver;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +13,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Links;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -70,6 +69,8 @@ public class SpringFoxConfig implements WebMvcConfigurer {
                         KitchensModelOpenApi.class))
                 .alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(Page.class, OrderSummaryDTO.class),
                         OrderSummariesModelOpenApi.class))
+                .alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class,
+                        CityDTO.class), CitiesModelOpenApi.class))
                 .ignoredParameterTypes(ServletWebRequest.class, URL.class, URI.class, URLStreamHandler.class,
                         Resource.class, File.class, InputStream.class)
                 .apiInfo(apiInfo()).tags(new Tag("Cidades", "Gerencia as cidades"))
