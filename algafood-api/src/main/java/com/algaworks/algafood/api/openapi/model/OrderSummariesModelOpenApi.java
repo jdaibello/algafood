@@ -4,5 +4,5 @@ import com.algaworks.algafood.api.dto.OrderSummaryDTO;
 import io.swagger.annotations.ApiModel;
 
 @ApiModel("OrderSummaries")
-public class OrderSummariesModelOpenApi extends PageModelOpenApi<OrderSummaryDTO> {
+public class OrderSummariesModelOpenApi extends PagedModelOpenApi<OrderSummaryDTO> {
 }
