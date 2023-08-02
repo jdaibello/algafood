@@ -1,11 +1,13 @@
 package com.algaworks.algafood.api.controller;
 
+import com.algaworks.algafood.api.helper.AlgaLinks;
 import com.algaworks.algafood.api.openapi.controller.StatisticsControllerOpenApi;
 import com.algaworks.algafood.domain.filter.DailySaleFilter;
 import com.algaworks.algafood.domain.model.dto.DailySale;
 import com.algaworks.algafood.domain.service.SaleQueryService;
 import com.algaworks.algafood.domain.service.SaleReportService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +22,27 @@ import java.util.List;
 @RequestMapping(value = "/statistics")
 public class StatisticsController implements StatisticsControllerOpenApi {
 
+    public static class StatisticsDTO extends RepresentationModel<StatisticsDTO> {
+    }
+
     @Autowired
     private SaleQueryService saleQueryService;
 
     @Autowired
     private SaleReportService saleReportService;
+
+    @Autowired
+    private AlgaLinks algaLinks;
+
+    @Override
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public StatisticsDTO statistics() {
+        var statisticsDTO = new StatisticsDTO();
+
+        statisticsDTO.add(algaLinks.linkToStatisticsDailySales("daily-sales"));
+
+        return statisticsDTO;
+    }
 
     @Override
     @GetMapping(path = "/daily-sales", produces = MediaType.APPLICATION_JSON_VALUE)
