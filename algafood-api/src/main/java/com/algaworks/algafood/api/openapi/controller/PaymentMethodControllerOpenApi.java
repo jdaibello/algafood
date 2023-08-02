@@ -3,6 +3,7 @@ package com.algaworks.algafood.api.openapi.controller;
 import com.algaworks.algafood.api.dto.PaymentMethodDTO;
 import com.algaworks.algafood.api.dto.input.PaymentMethodInput;
 import com.algaworks.algafood.api.exceptionhandler.Problem;
+import com.algaworks.algafood.api.openapi.model.PaymentMethodsModelOpenApi;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -16,7 +17,10 @@ import org.springframework.web.context.request.ServletWebRequest;
 @Api(tags = "Formas de Pagamento")
 public interface PaymentMethodControllerOpenApi {
 
-    @ApiOperation("Listar")
+    @ApiOperation(value = "Listar")
+    @io.swagger.annotations.ApiResponses(value = {
+            @io.swagger.annotations.ApiResponse(code = 200, message = "OK", response = PaymentMethodsModelOpenApi.class)
+    })
     ResponseEntity<CollectionModel<PaymentMethodDTO>> fetchAll(ServletWebRequest request);
 
     @ApiOperation("Buscar por ID")
