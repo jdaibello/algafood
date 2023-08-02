@@ -3,6 +3,7 @@ package com.algaworks.algafood.core.openapi;
 import com.algaworks.algafood.api.dto.CityDTO;
 import com.algaworks.algafood.api.dto.KitchenDTO;
 import com.algaworks.algafood.api.dto.OrderSummaryDTO;
+import com.algaworks.algafood.api.dto.StateDTO;
 import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.openapi.model.*;
 import com.fasterxml.classmate.TypeResolver;
@@ -72,6 +73,8 @@ public class SpringFoxConfig implements WebMvcConfigurer {
                         OrderSummariesModelOpenApi.class))
                 .alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class,
                         CityDTO.class), CitiesModelOpenApi.class))
+                .alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class,
+                        StateDTO.class), StatesModelOpenApi.class))
                 .ignoredParameterTypes(ServletWebRequest.class, URL.class, URI.class, URLStreamHandler.class,
                         Resource.class, File.class, InputStream.class)
                 .apiInfo(apiInfo()).tags(new Tag("Cidades", "Gerencia as cidades"))
