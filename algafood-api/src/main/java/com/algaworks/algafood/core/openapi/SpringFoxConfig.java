@@ -56,7 +56,8 @@ public class SpringFoxConfig implements WebMvcConfigurer {
 
         return new Docket(DocumentationType.OAS_30).select()
                 .apis(RequestHandlerSelectors.basePackage("com.algaworks.algafood.api")).build()
-                .useDefaultResponseMessages(false).globalResponses(HttpMethod.GET, globalGetResponseMessages())
+                .useDefaultResponseMessages(false)
+                .globalResponses(HttpMethod.GET, globalGetResponseMessages())
                 .globalResponses(HttpMethod.POST, globalPostPutResponseMessages())
                 .globalResponses(HttpMethod.PUT, globalPostPutResponseMessages())
                 .globalResponses(HttpMethod.DELETE, globalDeleteResponseMessages())
@@ -79,6 +80,10 @@ public class SpringFoxConfig implements WebMvcConfigurer {
                         GroupDTO.class), GroupsModelOpenApi.class))
                 .alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class,
                         ProductDTO.class), ProductsModelOpenApi.class))
+                .alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class,
+                        RestaurantBasicDTO.class), RestaurantsBasicModelOpenApi.class))
+                .alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(CollectionModel.class,
+                        UserDTO.class), UsersModelOpenApi.class))
                 .ignoredParameterTypes(ServletWebRequest.class, URL.class, URI.class, URLStreamHandler.class,
                         Resource.class, File.class, InputStream.class)
                 .apiInfo(apiInfo()).tags(new Tag("Cidades", "Gerencia as cidades"))

@@ -19,6 +19,5 @@ public class ProductsModelOpenApi {
     public class ProductsEmbeddedModelOpenApi {
 
         private List<ProductDTO> products;
-
     }
 }

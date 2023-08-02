@@ -19,6 +19,5 @@ public class GroupsModelOpenApi {
     public class GroupsEmbeddedModelOpenApi {
 
         private List<GroupDTO> groups;
-
     }
 }

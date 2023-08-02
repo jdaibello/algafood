@@ -19,6 +19,5 @@ public class StatesModelOpenApi {
     public class StatesEmbeddedModelOpenApi {
 
         private List<StateDTO> states;
-
     }
 }

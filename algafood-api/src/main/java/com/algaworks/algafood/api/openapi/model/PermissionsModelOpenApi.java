@@ -19,6 +19,5 @@ public class PermissionsModelOpenApi {
     public class PermissionsEmbeddedModelOpenApi {
 
         private List<PermissionDTO> permissions;
-
     }
 }
