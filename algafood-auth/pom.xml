@@ -16,7 +16,7 @@
 
 	<properties>
 		<java.version>11</java.version>
-		<spring-security-oauth2.version>2.3.7.RELEASE</spring-security-oauth2.version>
+		<spring-security-oauth2.version>2.5.2.RELEASE</spring-security-oauth2.version>
 	</properties>
 
 	<dependencies>
