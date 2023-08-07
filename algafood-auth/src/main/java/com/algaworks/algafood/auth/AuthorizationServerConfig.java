@@ -29,6 +29,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         clients.inMemory().withClient("algafood-mobile").secret(passwordEncoder.encode("mobile123"))
                 .authorizedGrantTypes("password", "refresh_token").scopes("write", "read")
                 .accessTokenValiditySeconds(6 * 60 * 60).refreshTokenValiditySeconds(60 * 24 * 60 * 60)
+                .and().withClient("billing").secret(passwordEncoder.encode("billing123"))
+                .authorizedGrantTypes("client_credentials").scopes("write", "read")
                 .and().withClient("checktoken").secret(passwordEncoder.encode("check123"));
     }
 
