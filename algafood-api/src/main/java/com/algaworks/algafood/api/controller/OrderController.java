@@ -10,6 +10,7 @@ import com.algaworks.algafood.api.helper.ResourceUriHelper;
 import com.algaworks.algafood.api.openapi.controller.OrderControllerOpenApi;
 import com.algaworks.algafood.core.data.PageWrapper;
 import com.algaworks.algafood.core.data.PageableTranslator;
+import com.algaworks.algafood.core.security.AlgaSecurity;
 import com.algaworks.algafood.domain.exception.BusinessException;
 import com.algaworks.algafood.domain.exception.EntityNotFoundException;
 import com.algaworks.algafood.domain.filter.OrderFilter;
@@ -54,6 +55,9 @@ public class OrderController implements OrderControllerOpenApi {
     @Autowired
     private PagedResourcesAssembler<Order> pagedResourcesAssembler;
 
+    @Autowired
+    private AlgaSecurity algaSecurity;
+
     @Override
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public PagedModel<OrderSummaryDTO> search(OrderFilter filter, @PageableDefault(size = 10) Pageable pageable) {
@@ -82,9 +86,8 @@ public class OrderController implements OrderControllerOpenApi {
         try {
             Order newOrder = orderInputDisassembler.toDomainObject(orderInput);
 
-            // TODO get authenticated user data
             newOrder.setClient(new User());
-            newOrder.getClient().setId(1L);
+            newOrder.getClient().setId(algaSecurity.getUserId());
 
             newOrder = service.issue(newOrder);
 
