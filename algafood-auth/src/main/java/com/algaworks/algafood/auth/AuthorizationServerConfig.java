@@ -35,6 +35,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Autowired
     private UserDetailsService userDetailsService;
 
+    @Autowired
+    private JwtKeyStoreProperties jwtKeyStoreProperties;
+
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory().withClient("algafood-mobile").secret(passwordEncoder.encode("mobile123"))
@@ -67,9 +70,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
         JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
 
-        var jksResource = new ClassPathResource("keystores/algafood.jks");
-        var keyStorePass = "12345678";
-        var keyPairAlias = "algafood";
+        var jksResource = new ClassPathResource(jwtKeyStoreProperties.getPath());
+        var keyStorePass = jwtKeyStoreProperties.getPassword();
+        var keyPairAlias = jwtKeyStoreProperties.getKeypairAlias();
 
         var keyStoreKeyFactory = new KeyStoreKeyFactory(jksResource, keyStorePass.toCharArray());
         var keyPair = keyStoreKeyFactory.getKeyPair(keyPairAlias);
