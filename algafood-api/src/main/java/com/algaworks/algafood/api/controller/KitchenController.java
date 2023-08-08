@@ -6,6 +6,7 @@ import com.algaworks.algafood.api.dto.KitchenDTO;
 import com.algaworks.algafood.api.dto.input.KitchenInput;
 import com.algaworks.algafood.api.helper.ResourceUriHelper;
 import com.algaworks.algafood.api.openapi.controller.KitchenControllerOpenApi;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Kitchen;
 import com.algaworks.algafood.domain.repository.KitchenRepository;
 import com.algaworks.algafood.domain.service.KitchenService;
@@ -17,7 +18,6 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -42,7 +42,7 @@ public class KitchenController implements KitchenControllerOpenApi {
     private PagedResourcesAssembler<Kitchen> pagedResourcesAssembler;
 
     @Override
-    @PreAuthorize("isAuthenticated()")
+    @CheckSecurity.Kitchens.CanQuery
     @GetMapping
     public PagedModel<KitchenDTO> fetchAll(Pageable pageable) {
         Page<Kitchen> kitchensPage = kitchenRepository.findAll(pageable);
@@ -51,7 +51,7 @@ public class KitchenController implements KitchenControllerOpenApi {
     }
 
     @Override
-    @PreAuthorize("isAuthenticated()")
+    @CheckSecurity.Kitchens.CanQuery
     @GetMapping(value = "/{kitchenId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public KitchenDTO find(@ApiParam(value = "ID da cozinha", example = "1") @PathVariable Long kitchenId) {
         Kitchen kitchen = service.findOrFail(kitchenId);
@@ -60,7 +60,7 @@ public class KitchenController implements KitchenControllerOpenApi {
     }
 
     @Override
-    @PreAuthorize("hasAuthority('EDITAR_COZINHAS')")
+    @CheckSecurity.Kitchens.CanEdit
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public KitchenDTO add(@RequestBody @Valid KitchenInput kitchenInput) {
@@ -74,7 +74,7 @@ public class KitchenController implements KitchenControllerOpenApi {
     }
 
     @Override
-    @PreAuthorize("hasAuthority('EDITAR_COZINHAS')")
+    @CheckSecurity.Kitchens.CanEdit
     @PutMapping(value = "/{kitchenId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public KitchenDTO update(@ApiParam(value = "ID da cozinha", example = "1") @PathVariable Long kitchenId,
                              @RequestBody @Valid KitchenInput kitchenInput) {
@@ -86,7 +86,7 @@ public class KitchenController implements KitchenControllerOpenApi {
     }
 
     @Override
-    @PreAuthorize("hasAuthority('EDITAR_COZINHAS')")
+    @CheckSecurity.Kitchens.CanEdit
     @DeleteMapping("/{kitchenId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@ApiParam(value = "ID da cozinha", example = "1") @PathVariable Long kitchenId) {
