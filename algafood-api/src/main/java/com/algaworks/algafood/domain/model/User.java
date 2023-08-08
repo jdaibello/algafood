@@ -40,12 +40,8 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "group_id"))
     private Set<Group> groups = new HashSet<>();
 
-    public boolean passwordMatches(String password) {
-        return getPassword().equals(password);
-    }
-
-    public boolean passwordDoesntMatch(String password) {
-        return !passwordMatches(password);
+    public boolean isNew() {
+        return getId() == null;
     }
 
     public boolean addGroup(Group group) {

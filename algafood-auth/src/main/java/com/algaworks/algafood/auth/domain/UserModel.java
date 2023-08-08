@@ -28,16 +28,4 @@ public class UserModel {
 
     @Column(nullable = false)
     private String password;
-
-    @CreationTimestamp
-    @Column(name = "creation_date", nullable = false, columnDefinition = "datetime")
-    private OffsetDateTime creationDate;
-
-    public boolean passwordMatches(String password) {
-        return getPassword().equals(password);
-    }
-
-    public boolean passwordDoesntMatch(String password) {
-        return !passwordMatches(password);
-    }
 }
