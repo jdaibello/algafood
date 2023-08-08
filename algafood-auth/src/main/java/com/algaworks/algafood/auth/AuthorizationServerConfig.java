@@ -1,6 +1,7 @@
 package com.algaworks.algafood.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -14,6 +15,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.provider.CompositeTokenGranter;
 import org.springframework.security.oauth2.provider.TokenGranter;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 import java.util.Arrays;
@@ -30,9 +32,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Autowired
     private UserDetailsService userDetailsService;
-
-    @Autowired
-    private RedisConnectionFactory redisConnectionFactory;
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
@@ -58,11 +57,16 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints.authenticationManager(authenticationConfiguration.getAuthenticationManager())
                 .userDetailsService(userDetailsService).reuseRefreshTokens(false)
-                .tokenGranter(tokenGranter(endpoints)).tokenStore(redisTokenStore());
+                .accessTokenConverter(jwtAccessTokenConverter())
+                .tokenGranter(tokenGranter(endpoints));
     }
 
-    private TokenStore redisTokenStore() {
-        return new RedisTokenStore(redisConnectionFactory);
+    @Bean
+    public JwtAccessTokenConverter jwtAccessTokenConverter() {
+        JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
+        jwtAccessTokenConverter.setSigningKey("algaworks");
+
+        return jwtAccessTokenConverter;
     }
 
     private TokenGranter tokenGranter(AuthorizationServerEndpointsConfigurer endpoints) {
