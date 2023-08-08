@@ -1,4 +1,4 @@
-package com.algaworks.algafood.domain.model;
+package com.algaworks.algafood.auth.domain;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -8,7 +8,8 @@ import javax.persistence.*;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-public class Permission {
+@Table(name = "permission")
+public class PermissionModel {
 
     @EqualsAndHashCode.Include
     @Id

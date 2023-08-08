@@ -100,7 +100,7 @@ INSERT INTO group_permission (group_id, permission_id) SELECT 4, id FROM permiss
 
 INSERT INTO `user` (id, name, email, password, creation_date) VALUES (1, 'João da Silva', 'joao.ger@algafood.com', '$2a$12$X4GgWFvO7LdUIx9UOnmANuGhx9JtM9ahxFXM6jyftlFA.6c715fe2', UTC_TIMESTAMP()), (2, 'Maria Joaquina', 'maria.vnd@algafood.com', '$2a$12$X4GgWFvO7LdUIx9UOnmANuGhx9JtM9ahxFXM6jyftlFA.6c715fe2', UTC_TIMESTAMP()), (3, 'José Souza', 'jose.aux@algafood.com', '$2a$12$X4GgWFvO7LdUIx9UOnmANuGhx9JtM9ahxFXM6jyftlFA.6c715fe2', UTC_TIMESTAMP()), (4, 'Sebastião Martins', 'sebastiao.cad@algafood.com', '$2a$12$X4GgWFvO7LdUIx9UOnmANuGhx9JtM9ahxFXM6jyftlFA.6c715fe2', UTC_TIMESTAMP()), (5, 'Manoel Lima', 'manoel.loja@gmail.com', '$2a$12$X4GgWFvO7LdUIx9UOnmANuGhx9JtM9ahxFXM6jyftlFA.6c715fe2', UTC_TIMESTAMP());
 
-INSERT INTO user_group (user_id, group_id) VALUES (1, 1), (1, 2), (2, 2);
+INSERT INTO user_group (user_id, group_id) VALUES (1, 1), (1, 2), (2, 2), (3, 3), (4, 4);
 
 INSERT INTO restaurant_responsible_user (restaurant_id, user_id) VALUES (1, 5), (3, 5);
 
