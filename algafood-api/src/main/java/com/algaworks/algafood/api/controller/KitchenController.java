@@ -17,6 +17,7 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -41,6 +42,7 @@ public class KitchenController implements KitchenControllerOpenApi {
     private PagedResourcesAssembler<Kitchen> pagedResourcesAssembler;
 
     @Override
+    @PreAuthorize("isAuthenticated()")
     @GetMapping
     public PagedModel<KitchenDTO> fetchAll(Pageable pageable) {
         Page<Kitchen> kitchensPage = kitchenRepository.findAll(pageable);
@@ -49,6 +51,7 @@ public class KitchenController implements KitchenControllerOpenApi {
     }
 
     @Override
+    @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/{kitchenId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public KitchenDTO find(@ApiParam(value = "ID da cozinha", example = "1") @PathVariable Long kitchenId) {
         Kitchen kitchen = service.findOrFail(kitchenId);
@@ -57,6 +60,7 @@ public class KitchenController implements KitchenControllerOpenApi {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('EDITAR_COZINHAS')")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public KitchenDTO add(@RequestBody @Valid KitchenInput kitchenInput) {
@@ -70,6 +74,7 @@ public class KitchenController implements KitchenControllerOpenApi {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('EDITAR_COZINHAS')")
     @PutMapping(value = "/{kitchenId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public KitchenDTO update(@ApiParam(value = "ID da cozinha", example = "1") @PathVariable Long kitchenId,
                              @RequestBody @Valid KitchenInput kitchenInput) {
@@ -81,6 +86,7 @@ public class KitchenController implements KitchenControllerOpenApi {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('EDITAR_COZINHAS')")
     @DeleteMapping("/{kitchenId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@ApiParam(value = "ID da cozinha", example = "1") @PathVariable Long kitchenId) {
