@@ -10,11 +10,13 @@ import java.util.Collections;
 public class AuthUser extends User {
     private static final long serialVersionUID = 1L;
 
+    private Long userId;
     private String fullName;
 
     public AuthUser(UserModel user) {
         super(user.getEmail(), user.getPassword(), Collections.emptyList());
 
+        this.userId = user.getId();
         this.fullName = user.getName();
     }
 }
