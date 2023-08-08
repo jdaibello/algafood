@@ -71,10 +71,32 @@ INSERT INTO restaurant_payment_method (restaurant_id, payment_method_id) VALUES 
 
 INSERT INTO permission (id, name, description) VALUES (1, 'CONSULTAR_COZINHAS', 'Permite consultar cozinhas');
 INSERT INTO permission (id, name, description) VALUES (2, 'EDITAR_COZINHAS', 'Permite editar cozinhas');
+INSERT INTO permission (id, name, description) VALUES (3, 'CONSULTAR_FORMAS_PAGAMENTO', 'Permite consultar formas de pagamento');
+INSERT INTO permission (id, name, description) VALUES (4, 'EDITAR_FORMAS_PAGAMENTO', 'Permite criar ou editar formas de pagamento');
+INSERT INTO permission (id, name, description) VALUES (5, 'CONSULTAR_CIDADES', 'Permite consultar cidades');
+INSERT INTO permission (id, name, description) VALUES (6, 'EDITAR_CIDADES', 'Permite criar ou editar cidades');
+INSERT INTO permission (id, name, description) VALUES (7, 'CONSULTAR_ESTADOS', 'Permite consultar estados');
+INSERT INTO permission (id, name, description) VALUES (8, 'EDITAR_ESTADOS', 'Permite criar ou editar estados');
+INSERT INTO permission (id, name, description) VALUES (9, 'CONSULTAR_USUARIOS', 'Permite consultar usuários');
+INSERT INTO permission (id, name, description) VALUES (10, 'EDITAR_USUARIOS', 'Permite criar ou editar usuários');
+INSERT INTO permission (id, name, description) VALUES (11, 'CONSULTAR_RESTAURANTES', 'Permite consultar restaurantes');
+INSERT INTO permission (id, name, description) VALUES (12, 'EDITAR_RESTAURANTES', 'Permite criar, editar ou gerenciar restaurantes');
+INSERT INTO permission (id, name, description) VALUES (13, 'CONSULTAR_PRODUTOS', 'Permite consultar produtos');
+INSERT INTO permission (id, name, description) VALUES (14, 'EDITAR_PRODUTOS', 'Permite criar ou editar produtos');
+INSERT INTO permission (id, name, description) VALUES (15, 'CONSULTAR_PEDIDOS', 'Permite consultar pedidos');
+INSERT INTO permission (id, name, description) VALUES (16, 'GERENCIAR_PEDIDOS', 'Permite gerenciar pedidos');
+INSERT INTO permission (id, name, description) VALUES (17, 'GERAR_RELATORIOS', 'Permite gerar relatórios');
 
 INSERT INTO `group` (id, name) VALUES (1, 'Gerente'), (2, 'Vendedor'), (3, 'Secretária'), (4, 'Cadastrador');
 
-INSERT INTO group_permission (group_id, permission_id) VALUES (1, 1), (1, 2), (2, 1), (2, 2), (3, 1);
+INSERT INTO group_permission (group_id, permission_id) SELECT 1, id FROM permission;
+
+INSERT INTO group_permission (group_id, permission_id) SELECT 2, id FROM permission WHERE name LIKE 'CONSULTAR_%';
+INSERT INTO group_permission (group_id, permission_id) VALUES (2, 14);
+
+INSERT INTO group_permission (group_id, permission_id) SELECT 3, id FROM permission WHERE name LIKE 'CONSULTAR_%';
+
+INSERT INTO group_permission (group_id, permission_id) SELECT 4, id FROM permission WHERE name LIKE '%_RESTAURANTES' OR name LIKE '%_PRODUTOS';
 
 INSERT INTO `user` (id, name, email, password, creation_date) VALUES (1, 'João da Silva', 'joao.ger@algafood.com', '$2a$12$X4GgWFvO7LdUIx9UOnmANuGhx9JtM9ahxFXM6jyftlFA.6c715fe2', UTC_TIMESTAMP()), (2, 'Maria Joaquina', 'maria.vnd@algafood.com', '$2a$12$X4GgWFvO7LdUIx9UOnmANuGhx9JtM9ahxFXM6jyftlFA.6c715fe2', UTC_TIMESTAMP()), (3, 'José Souza', 'jose.aux@algafood.com', '$2a$12$X4GgWFvO7LdUIx9UOnmANuGhx9JtM9ahxFXM6jyftlFA.6c715fe2', UTC_TIMESTAMP()), (4, 'Sebastião Martins', 'sebastiao.cad@algafood.com', '$2a$12$X4GgWFvO7LdUIx9UOnmANuGhx9JtM9ahxFXM6jyftlFA.6c715fe2', UTC_TIMESTAMP()), (5, 'Manoel Lima', 'manoel.loja@gmail.com', '$2a$12$X4GgWFvO7LdUIx9UOnmANuGhx9JtM9ahxFXM6jyftlFA.6c715fe2', UTC_TIMESTAMP());
 
