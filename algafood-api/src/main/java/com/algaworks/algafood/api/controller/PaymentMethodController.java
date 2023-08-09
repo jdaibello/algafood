@@ -7,6 +7,7 @@ import com.algaworks.algafood.api.dto.input.PaymentMethodInput;
 import com.algaworks.algafood.api.helper.AlgaLinks;
 import com.algaworks.algafood.api.helper.ResourceUriHelper;
 import com.algaworks.algafood.api.openapi.controller.PaymentMethodControllerOpenApi;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.PaymentMethod;
 import com.algaworks.algafood.domain.repository.PaymentMethodRepository;
 import com.algaworks.algafood.domain.service.PaymentMethodService;
@@ -45,6 +46,7 @@ public class PaymentMethodController implements PaymentMethodControllerOpenApi {
     private AlgaLinks algaLinks;
 
     @Override
+    @CheckSecurity.PaymentMethods.CanQuery
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CollectionModel<PaymentMethodDTO>> fetchAll(ServletWebRequest request) {
         ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
@@ -68,6 +70,7 @@ public class PaymentMethodController implements PaymentMethodControllerOpenApi {
     }
 
     @Override
+    @CheckSecurity.PaymentMethods.CanQuery
     @GetMapping(value = "/{paymentMethodId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PaymentMethodDTO> find(
             @ApiParam(value = "ID da forma de pagamento", example = "1") @PathVariable Long paymentMethodId,
@@ -93,6 +96,7 @@ public class PaymentMethodController implements PaymentMethodControllerOpenApi {
     }
 
     @Override
+    @CheckSecurity.PaymentMethods.CanEdit
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public PaymentMethodDTO add(@RequestBody @Valid PaymentMethodInput paymentMethodInput) {
@@ -106,6 +110,7 @@ public class PaymentMethodController implements PaymentMethodControllerOpenApi {
     }
 
     @Override
+    @CheckSecurity.PaymentMethods.CanEdit
     @PutMapping(value = "/{paymentMethodId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public PaymentMethodDTO update(
             @ApiParam(value = "ID da forma de pagamento", example = "1") @PathVariable Long paymentMethodId,
@@ -118,6 +123,7 @@ public class PaymentMethodController implements PaymentMethodControllerOpenApi {
     }
 
     @Override
+    @CheckSecurity.PaymentMethods.CanEdit
     @DeleteMapping("/{paymentMethodId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(
