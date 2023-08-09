@@ -6,6 +6,7 @@ import com.algaworks.algafood.api.dto.CityDTO;
 import com.algaworks.algafood.api.dto.input.CityInput;
 import com.algaworks.algafood.api.helper.ResourceUriHelper;
 import com.algaworks.algafood.api.openapi.controller.CityControllerOpenApi;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.exception.BusinessException;
 import com.algaworks.algafood.domain.exception.StateNotFoundException;
 import com.algaworks.algafood.domain.model.City;
@@ -37,12 +38,14 @@ public class CityController implements CityControllerOpenApi {
     private CityInputDisassembler cityInputDisassembler;
 
     @Override
+    @CheckSecurity.Cities.CanQuery
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public CollectionModel<CityDTO> fetchAll() {
         return cityDTOAssembler.toCollectionModel(cityRepository.findAll());
     }
 
     @Override
+    @CheckSecurity.Cities.CanQuery
     @GetMapping(value = "/{cityId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public CityDTO find(@ApiParam(value = "ID da cidade", example = "1") @PathVariable Long cityId) {
         City city = service.findOrFail(cityId);
@@ -51,6 +54,7 @@ public class CityController implements CityControllerOpenApi {
     }
 
     @Override
+    @CheckSecurity.Cities.CanEdit
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public CityDTO add(@RequestBody @Valid CityInput cityInput) {
@@ -68,6 +72,7 @@ public class CityController implements CityControllerOpenApi {
     }
 
     @Override
+    @CheckSecurity.Cities.CanEdit
     @PutMapping(value = "/{cityId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public CityDTO update(@ApiParam(value = "ID da cidade", example = "1") @PathVariable Long cityId,
                           @RequestBody @Valid CityInput city) {
@@ -83,6 +88,7 @@ public class CityController implements CityControllerOpenApi {
     }
 
     @Override
+    @CheckSecurity.Cities.CanEdit
     @DeleteMapping("/{cityId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@ApiParam(value = "ID da cidade", example = "1") @PathVariable Long cityId) {

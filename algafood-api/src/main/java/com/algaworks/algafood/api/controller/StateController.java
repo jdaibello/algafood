@@ -6,6 +6,7 @@ import com.algaworks.algafood.api.dto.StateDTO;
 import com.algaworks.algafood.api.dto.input.StateInput;
 import com.algaworks.algafood.api.helper.ResourceUriHelper;
 import com.algaworks.algafood.api.openapi.controller.StateControllerOpenApi;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.State;
 import com.algaworks.algafood.domain.repository.StateRepository;
 import com.algaworks.algafood.domain.service.StateService;
@@ -35,12 +36,14 @@ public class StateController implements StateControllerOpenApi {
     private StateInputDisassembler stateInputDisassembler;
 
     @Override
+    @CheckSecurity.States.CanQuery
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public CollectionModel<StateDTO> fetchAll() {
         return stateDTOAssembler.toCollectionModel(stateRepository.findAll());
     }
 
     @Override
+    @CheckSecurity.States.CanQuery
     @GetMapping(value = "/{stateId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public StateDTO find(@ApiParam(value = "ID do estado", example = "1") @PathVariable Long stateId) {
         State state = service.findOrFail(stateId);
@@ -49,6 +52,7 @@ public class StateController implements StateControllerOpenApi {
     }
 
     @Override
+    @CheckSecurity.States.CanEdit
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public StateDTO add(@RequestBody @Valid StateInput stateInput) {
@@ -62,6 +66,7 @@ public class StateController implements StateControllerOpenApi {
     }
 
     @Override
+    @CheckSecurity.States.CanEdit
     @PutMapping(value = "/{stateId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public StateDTO update(@ApiParam(value = "ID do estado", example = "1") @PathVariable Long stateId,
                            @RequestBody @Valid StateInput stateInput) {
@@ -73,6 +78,7 @@ public class StateController implements StateControllerOpenApi {
     }
 
     @Override
+    @CheckSecurity.States.CanEdit
     @DeleteMapping("/{stateId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@ApiParam(value = "ID do estado", example = "1") @PathVariable Long stateId) {
