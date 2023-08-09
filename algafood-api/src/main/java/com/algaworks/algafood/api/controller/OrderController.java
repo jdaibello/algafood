@@ -60,6 +60,7 @@ public class OrderController implements OrderControllerOpenApi {
     private AlgaSecurity algaSecurity;
 
     @Override
+    @CheckSecurity.Orders.CanSearch
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public PagedModel<OrderSummaryDTO> search(OrderFilter filter, @PageableDefault(size = 10) Pageable pageable) {
         Pageable translatedPageable = translatePageable(pageable);

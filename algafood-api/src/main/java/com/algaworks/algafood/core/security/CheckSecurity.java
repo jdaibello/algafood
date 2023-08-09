@@ -45,6 +45,13 @@ public @interface CheckSecurity {
 
     public @interface Orders {
 
+        @PreAuthorize("hasAuthority('SCOPE_READ') and (hasAuthority('CONSULTAR_PEDIDOS') or " +
+                "@algaSecurity.getUserId() == #filter.clientId or" +
+                "@algaSecurity.manageRestaurant(#filter.restaurantId))")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        public @interface CanSearch { }
+
         @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
         @PostAuthorize("hasAuthority('CONSULTAR_PEDIDOS') or " +
                 "@algaSecurity.getUserId() == returnObject.client.id or " +
