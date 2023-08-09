@@ -72,7 +72,7 @@ public class RestaurantProductController implements RestaurantProductControllerO
     }
 
     @Override
-    @CheckSecurity.Restaurants.CanEdit
+    @CheckSecurity.Restaurants.CanManageOperation
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ProductDTO add(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
@@ -89,7 +89,7 @@ public class RestaurantProductController implements RestaurantProductControllerO
     }
 
     @Override
-    @CheckSecurity.Restaurants.CanEdit
+    @CheckSecurity.Restaurants.CanManageOperation
     @PutMapping(value = "/{productId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ProductDTO update(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
                              @ApiParam(value = "ID do produto", example = "1") @PathVariable Long productId,

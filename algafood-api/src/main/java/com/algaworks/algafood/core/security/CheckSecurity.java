@@ -32,6 +32,13 @@ public @interface CheckSecurity {
         @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_RESTAURANTES')")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
-        public @interface CanEdit { }
+        public @interface CanManageRegistration { }
+
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and " +
+                "hasAuthority('EDITAR_RESTAURANTES') or " +
+                "@algaSecurity.manageRestaurant(#restaurantId)")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        public @interface CanManageOperation { }
     }
 }

@@ -75,7 +75,7 @@ public class RestaurantController implements RestaurantControllerOpenApi {
     }
 
     @Override
-    @CheckSecurity.Restaurants.CanEdit
+    @CheckSecurity.Restaurants.CanManageRegistration
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public RestaurantDTO add(@RequestBody @Valid RestaurantInput restaurantInput) {
@@ -92,7 +92,7 @@ public class RestaurantController implements RestaurantControllerOpenApi {
     }
 
     @Override
-    @CheckSecurity.Restaurants.CanEdit
+    @CheckSecurity.Restaurants.CanManageRegistration
     @PutMapping(value = "/{restaurantId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public RestaurantDTO update(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
                                 @RequestBody @Valid RestaurantInput restaurantInput) {
@@ -107,7 +107,7 @@ public class RestaurantController implements RestaurantControllerOpenApi {
     }
 
     @Override
-    @CheckSecurity.Restaurants.CanEdit
+    @CheckSecurity.Restaurants.CanManageRegistration
     @PutMapping("/{restaurantId}/active")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> activate(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
@@ -117,7 +117,7 @@ public class RestaurantController implements RestaurantControllerOpenApi {
     }
 
     @Override
-    @CheckSecurity.Restaurants.CanEdit
+    @CheckSecurity.Restaurants.CanManageRegistration
     @DeleteMapping("/{restaurantId}/active")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> inactivate(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
@@ -127,7 +127,7 @@ public class RestaurantController implements RestaurantControllerOpenApi {
     }
 
     @Override
-    @CheckSecurity.Restaurants.CanEdit
+    @CheckSecurity.Restaurants.CanManageRegistration
     @PutMapping(value = "/activations")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void activateMultiples(@RequestBody List<Long> restaurantIds) {
@@ -139,7 +139,7 @@ public class RestaurantController implements RestaurantControllerOpenApi {
     }
 
     @Override
-    @CheckSecurity.Restaurants.CanEdit
+    @CheckSecurity.Restaurants.CanManageRegistration
     @DeleteMapping(value = "/activations")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void inactivateMultiples(@RequestBody List<Long> restaurantIds) {
@@ -151,7 +151,7 @@ public class RestaurantController implements RestaurantControllerOpenApi {
     }
 
     @Override
-    @CheckSecurity.Restaurants.CanEdit
+    @CheckSecurity.Restaurants.CanManageOperation
     @PutMapping("/{restaurantId}/opening")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> open(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
@@ -161,7 +161,7 @@ public class RestaurantController implements RestaurantControllerOpenApi {
     }
 
     @Override
-    @CheckSecurity.Restaurants.CanEdit
+    @CheckSecurity.Restaurants.CanManageOperation
     @PutMapping("/{restaurantId}/closing")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> close(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {

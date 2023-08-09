@@ -81,7 +81,7 @@ public class RestaurantProductPhotoController implements RestaurantProductPhotoC
     }
 
     @Override
-    @CheckSecurity.Restaurants.CanEdit
+    @CheckSecurity.Restaurants.CanManageOperation
     @PutMapping(produces = MediaType.MULTIPART_FORM_DATA_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ProductPhotoDTO updatePhoto(
             @ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
@@ -103,7 +103,7 @@ public class RestaurantProductPhotoController implements RestaurantProductPhotoC
     }
 
     @Override
-    @CheckSecurity.Restaurants.CanEdit
+    @CheckSecurity.Restaurants.CanManageOperation
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
