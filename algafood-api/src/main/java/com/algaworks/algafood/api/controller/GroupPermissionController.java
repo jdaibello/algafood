@@ -4,6 +4,7 @@ import com.algaworks.algafood.api.assembler.PermissionDTOAssembler;
 import com.algaworks.algafood.api.dto.PermissionDTO;
 import com.algaworks.algafood.api.helper.AlgaLinks;
 import com.algaworks.algafood.api.openapi.controller.GroupPermissionControllerOpenApi;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Group;
 import com.algaworks.algafood.domain.service.GroupService;
 import io.swagger.annotations.ApiParam;
@@ -28,6 +29,7 @@ public class GroupPermissionController implements GroupPermissionControllerOpenA
     private AlgaLinks algaLinks;
 
     @Override
+    @CheckSecurity.UsersGroupsPermissions.CanQuery
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public CollectionModel<PermissionDTO> fetchAll(@ApiParam(value = "ID do grupo", example = "1") @PathVariable Long groupId) {
         Group group = service.findOrFail(groupId);
@@ -44,6 +46,7 @@ public class GroupPermissionController implements GroupPermissionControllerOpenA
     }
 
     @Override
+    @CheckSecurity.UsersGroupsPermissions.CanEdit
     @PutMapping("/{permissionId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> attach(@ApiParam(value = "ID do grupo", example = "1") @PathVariable Long groupId,
@@ -54,6 +57,7 @@ public class GroupPermissionController implements GroupPermissionControllerOpenA
     }
 
     @Override
+    @CheckSecurity.UsersGroupsPermissions.CanEdit
     @DeleteMapping("/{permissionId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> detach(@ApiParam(value = "ID do grupo", example = "1") @PathVariable Long groupId,

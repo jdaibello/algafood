@@ -8,6 +8,7 @@ import com.algaworks.algafood.api.dto.input.UserInput;
 import com.algaworks.algafood.api.dto.input.UserWithPasswordInput;
 import com.algaworks.algafood.api.helper.ResourceUriHelper;
 import com.algaworks.algafood.api.openapi.controller.UserControllerOpenApi;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.User;
 import com.algaworks.algafood.domain.repository.UserRepository;
 import com.algaworks.algafood.domain.service.UserService;
@@ -37,12 +38,14 @@ public class UserController implements UserControllerOpenApi {
     private UserInputDisassembler userInputDisassembler;
 
     @Override
+    @CheckSecurity.UsersGroupsPermissions.CanQuery
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public CollectionModel<UserDTO> fetchAll() {
         return userDTOAssembler.toCollectionModel(userRepository.findAll());
     }
 
     @Override
+    @CheckSecurity.UsersGroupsPermissions.CanFind
     @GetMapping(value = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public UserDTO find(@ApiParam(value = "ID do usuário", example = "1") @PathVariable Long userId) {
         User user = service.findOrFail(userId);
@@ -64,6 +67,7 @@ public class UserController implements UserControllerOpenApi {
     }
 
     @Override
+    @CheckSecurity.UsersGroupsPermissions.CanUpdate
     @PutMapping(value = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public UserDTO update(@ApiParam(value = "ID do usuário", example = "1") @PathVariable Long userId,
                           @RequestBody @Valid UserInput userInput) {
@@ -75,6 +79,7 @@ public class UserController implements UserControllerOpenApi {
     }
 
     @Override
+    @CheckSecurity.UsersGroupsPermissions.CanUpdateSelfPassword
     @PatchMapping("/{userId}/reset-password")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updatePassword(@ApiParam(value = "ID do usuário", example = "1") @PathVariable Long userId,

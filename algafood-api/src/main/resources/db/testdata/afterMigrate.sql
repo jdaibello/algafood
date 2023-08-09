@@ -73,8 +73,8 @@ INSERT INTO permission (id, name, description) VALUES (1, 'EDITAR_COZINHAS', 'Pe
 INSERT INTO permission (id, name, description) VALUES (2, 'EDITAR_FORMAS_PAGAMENTO', 'Permite criar ou editar formas de pagamento');
 INSERT INTO permission (id, name, description) VALUES (3, 'EDITAR_CIDADES', 'Permite criar ou editar cidades');
 INSERT INTO permission (id, name, description) VALUES (4, 'EDITAR_ESTADOS', 'Permite criar ou editar estados');
-INSERT INTO permission (id, name, description) VALUES (5, 'CONSULTAR_USUARIOS', 'Permite consultar usuários');
-INSERT INTO permission (id, name, description) VALUES (6, 'EDITAR_USUARIOS', 'Permite criar ou editar usuários');
+INSERT INTO permission (id, name, description) VALUES (5, 'CONSULTAR_USUARIOS_GRUPOS_PERMISSOES', 'Permite consultar usuários, grupos e permissões');
+INSERT INTO permission (id, name, description) VALUES (6, 'CONSULTAR_USUARIOS_GRUPOS_PERMISSOES', 'Permite criar ou editar usuários, grupos e permissões');
 INSERT INTO permission (id, name, description) VALUES (7, 'EDITAR_RESTAURANTES', 'Permite criar, editar ou gerenciar restaurantes');
 INSERT INTO permission (id, name, description) VALUES (8, 'CONSULTAR_PEDIDOS', 'Permite consultar pedidos');
 INSERT INTO permission (id, name, description) VALUES (9, 'GERENCIAR_PEDIDOS', 'Permite gerenciar pedidos');

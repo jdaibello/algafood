@@ -6,6 +6,7 @@ import com.algaworks.algafood.api.dto.GroupDTO;
 import com.algaworks.algafood.api.dto.input.GroupInput;
 import com.algaworks.algafood.api.helper.ResourceUriHelper;
 import com.algaworks.algafood.api.openapi.controller.GroupControllerOpenApi;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Group;
 import com.algaworks.algafood.domain.repository.GroupRepository;
 import com.algaworks.algafood.domain.service.GroupService;
@@ -35,12 +36,14 @@ public class GroupController implements GroupControllerOpenApi {
     private GroupInputDisassembler groupInputDisassembler;
 
     @Override
+    @CheckSecurity.UsersGroupsPermissions.CanQuery
     @GetMapping
     public CollectionModel<GroupDTO> fetchAll() {
         return groupDTOAssembler.toCollectionModel(groupRepository.findAll());
     }
 
     @Override
+    @CheckSecurity.UsersGroupsPermissions.CanQuery
     @GetMapping(value = "/{groupId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public GroupDTO find(@ApiParam(value = "ID do grupo", example = "1") @PathVariable Long groupId) {
         Group group = service.findOrFail(groupId);
@@ -49,6 +52,7 @@ public class GroupController implements GroupControllerOpenApi {
     }
 
     @Override
+    @CheckSecurity.UsersGroupsPermissions.CanEdit
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public GroupDTO add(@RequestBody @Valid GroupInput groupInput) {
@@ -62,6 +66,7 @@ public class GroupController implements GroupControllerOpenApi {
     }
 
     @Override
+    @CheckSecurity.UsersGroupsPermissions.CanEdit
     @PutMapping(value = "/{groupId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public GroupDTO update(@ApiParam(value = "ID do grupo", example = "1") @PathVariable Long groupId,
                            @RequestBody @Valid GroupInput groupInput) {
@@ -73,6 +78,7 @@ public class GroupController implements GroupControllerOpenApi {
     }
 
     @Override
+    @CheckSecurity.UsersGroupsPermissions.CanEdit
     @DeleteMapping("/{groupId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@ApiParam(value = "ID do grupo", example = "1") @PathVariable Long groupId) {

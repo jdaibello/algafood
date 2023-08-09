@@ -4,6 +4,7 @@ import com.algaworks.algafood.api.assembler.GroupDTOAssembler;
 import com.algaworks.algafood.api.dto.GroupDTO;
 import com.algaworks.algafood.api.helper.AlgaLinks;
 import com.algaworks.algafood.api.openapi.controller.UserGroupControllerOpenApi;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.User;
 import com.algaworks.algafood.domain.service.UserService;
 import io.swagger.annotations.ApiParam;
@@ -28,6 +29,7 @@ public class UserGroupController implements UserGroupControllerOpenApi {
     private AlgaLinks algaLinks;
 
     @Override
+    @CheckSecurity.UsersGroupsPermissions.CanQuery
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public CollectionModel<GroupDTO> fetchAll(@ApiParam(value = "ID do usuário", example = "1") @PathVariable Long userId) {
         User user = service.findOrFail(userId);
@@ -44,6 +46,7 @@ public class UserGroupController implements UserGroupControllerOpenApi {
     }
 
     @Override
+    @CheckSecurity.UsersGroupsPermissions.CanEdit
     @PutMapping("/{groupId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> attach(@ApiParam(value = "ID do usuário", example = "1") @PathVariable Long userId,
@@ -54,6 +57,7 @@ public class UserGroupController implements UserGroupControllerOpenApi {
     }
 
     @Override
+    @CheckSecurity.UsersGroupsPermissions.CanEdit
     @DeleteMapping("/{groupId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> detach(@ApiParam(value = "ID do usuário", example = "1") @PathVariable Long userId,

@@ -3,6 +3,7 @@ package com.algaworks.algafood.api.controller;
 import com.algaworks.algafood.api.assembler.PermissionDTOAssembler;
 import com.algaworks.algafood.api.dto.PermissionDTO;
 import com.algaworks.algafood.api.openapi.controller.PermissionControllerOpenApi;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.repository.PermissionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
@@ -22,6 +23,7 @@ public class PermissionController implements PermissionControllerOpenApi {
     private PermissionDTOAssembler permissionDTOAssembler;
 
     @Override
+    @CheckSecurity.UsersGroupsPermissions.CanQuery
     @GetMapping
     public CollectionModel<PermissionDTO> fetchAll() {
         return permissionDTOAssembler.toCollectionModel(permissionRepository.findAll());
