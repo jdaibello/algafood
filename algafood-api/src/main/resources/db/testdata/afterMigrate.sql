@@ -91,13 +91,13 @@ INSERT INTO group_permission (group_id, permission_id) SELECT 3, id FROM permiss
 
 INSERT INTO group_permission (group_id, permission_id) SELECT 4, id FROM permission WHERE name LIKE '%_RESTAURANTES' OR name LIKE '%_PRODUTOS';
 
-INSERT INTO `user` (id, name, email, password, creation_date) VALUES (1, 'João da Silva', 'joao.ger@algafood.com', '$2a$12$X4GgWFvO7LdUIx9UOnmANuGhx9JtM9ahxFXM6jyftlFA.6c715fe2', UTC_TIMESTAMP()), (2, 'Maria Joaquina', 'maria.vnd@algafood.com', '$2a$12$X4GgWFvO7LdUIx9UOnmANuGhx9JtM9ahxFXM6jyftlFA.6c715fe2', UTC_TIMESTAMP()), (3, 'José Souza', 'jose.aux@algafood.com', '$2a$12$X4GgWFvO7LdUIx9UOnmANuGhx9JtM9ahxFXM6jyftlFA.6c715fe2', UTC_TIMESTAMP()), (4, 'Sebastião Martins', 'sebastiao.cad@algafood.com', '$2a$12$X4GgWFvO7LdUIx9UOnmANuGhx9JtM9ahxFXM6jyftlFA.6c715fe2', UTC_TIMESTAMP()), (5, 'Manoel Lima', 'manoel.loja@gmail.com', '$2a$12$X4GgWFvO7LdUIx9UOnmANuGhx9JtM9ahxFXM6jyftlFA.6c715fe2', UTC_TIMESTAMP());
+INSERT INTO `user` (id, name, email, password, creation_date) VALUES (1, 'João da Silva', 'joao.ger@algafood.com', '$2a$12$X4GgWFvO7LdUIx9UOnmANuGhx9JtM9ahxFXM6jyftlFA.6c715fe2', UTC_TIMESTAMP()), (2, 'Maria Joaquina', 'maria.vnd@algafood.com', '$2a$12$X4GgWFvO7LdUIx9UOnmANuGhx9JtM9ahxFXM6jyftlFA.6c715fe2', UTC_TIMESTAMP()), (3, 'José Souza', 'jose.aux@algafood.com', '$2a$12$X4GgWFvO7LdUIx9UOnmANuGhx9JtM9ahxFXM6jyftlFA.6c715fe2', UTC_TIMESTAMP()), (4, 'Sebastião Martins', 'sebastiao.cad@algafood.com', '$2a$12$X4GgWFvO7LdUIx9UOnmANuGhx9JtM9ahxFXM6jyftlFA.6c715fe2', UTC_TIMESTAMP()), (5, 'Manoel Lima', 'manoel.loja@gmail.com', '$2a$12$X4GgWFvO7LdUIx9UOnmANuGhx9JtM9ahxFXM6jyftlFA.6c715fe2', UTC_TIMESTAMP()), (6, 'João', 'joao@gmail.com', '$2a$12$X4GgWFvO7LdUIx9UOnmANuGhx9JtM9ahxFXM6jyftlFA.6c715fe2', UTC_TIMESTAMP());
 
 INSERT INTO user_group (user_id, group_id) VALUES (1, 1), (1, 2), (2, 2), (3, 3), (4, 4);
 
 INSERT INTO restaurant_responsible_user (restaurant_id, user_id) VALUES (1, 5), (3, 5);
 
-INSERT INTO `order` (id, code, restaurant_id, user_client_id, payment_method_id, address_city_id, address_zipcode, address_street, address_number, address_complement, address_district, status, creation_date, subtotal, shipping_fee, total_value) VALUES (1, "be99f609-59dc-43a0-8557-8e3d4761aaaa", 1, 1, 1, 1, '38400-000', 'Rua Floriano Peixoto', '500', 'Apto 801', 'Brasil', 'CREATED', utc_timestamp, 298.90, 10, 308.90);
+INSERT INTO `order` (id, code, restaurant_id, user_client_id, payment_method_id, address_city_id, address_zipcode, address_street, address_number, address_complement, address_district, status, creation_date, subtotal, shipping_fee, total_value) VALUES (1, "be99f609-59dc-43a0-8557-8e3d4761aaaa", 1, 6, 1, 1, '38400-000', 'Rua Floriano Peixoto', '500', 'Apto 801', 'Brasil', 'CREATED', utc_timestamp, 298.90, 10, 308.90);
 
 INSERT INTO order_item (id, order_id, product_id, quantity, unit_price, total_price, note) VALUES (1, 1, 1, 1, 78.9, 78.9, null);
 INSERT INTO order_item (id, order_id, product_id, quantity, unit_price, total_price, note) VALUES (2, 1, 2, 2, 110, 220, 'Menos picante, por favor');

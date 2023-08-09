@@ -11,6 +11,7 @@ import com.algaworks.algafood.api.openapi.controller.OrderControllerOpenApi;
 import com.algaworks.algafood.core.data.PageWrapper;
 import com.algaworks.algafood.core.data.PageableTranslator;
 import com.algaworks.algafood.core.security.AlgaSecurity;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.exception.BusinessException;
 import com.algaworks.algafood.domain.exception.EntityNotFoundException;
 import com.algaworks.algafood.domain.filter.OrderFilter;
@@ -70,6 +71,7 @@ public class OrderController implements OrderControllerOpenApi {
     }
 
     @Override
+    @CheckSecurity.Orders.CanFind
     @GetMapping(value = "/{orderCode}", produces = MediaType.APPLICATION_JSON_VALUE)
     public OrderDTO find(@ApiParam(
             value = "Código UUID do pedido",
