@@ -83,6 +83,7 @@ public class OrderController implements OrderControllerOpenApi {
     }
 
     @Override
+    @CheckSecurity.Orders.CanCreate
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public OrderDTO add(@Valid @RequestBody OrderInput orderInput) {

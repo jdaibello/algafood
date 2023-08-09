@@ -59,5 +59,16 @@ public @interface CheckSecurity {
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface CanFind { }
+
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and isAuthenticated()")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        public @interface CanCreate { }
+
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and (hasAuthority('GERENCIAR_PEDIDOS') or " +
+                "@algaSecurity.manageRestaurantOrder(#orderCode))")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        public @interface CanManageOrders { }
     }
 }

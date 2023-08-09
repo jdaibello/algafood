@@ -14,4 +14,6 @@ public interface OrderRepository extends CustomJpaRepository<Order, Long>, JpaSp
 
     @Query("FROM Order o JOIN FETCH o.client JOIN FETCH o.restaurant r JOIN FETCH r.kitchen")
     List<Order> findAll();
+
+    boolean isOrderManagedBy(String orderCode, Long userId);
 }
