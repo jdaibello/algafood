@@ -7,6 +7,7 @@ import com.algaworks.algafood.api.dto.input.ProductInput;
 import com.algaworks.algafood.api.helper.AlgaLinks;
 import com.algaworks.algafood.api.helper.ResourceUriHelper;
 import com.algaworks.algafood.api.openapi.controller.RestaurantProductControllerOpenApi;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Product;
 import com.algaworks.algafood.domain.model.Restaurant;
 import com.algaworks.algafood.domain.repository.ProductRepository;
@@ -45,6 +46,7 @@ public class RestaurantProductController implements RestaurantProductControllerO
     private AlgaLinks algaLinks;
 
     @Override
+    @CheckSecurity.Restaurants.CanQuery
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public CollectionModel<ProductDTO> fetchAll(
             @ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
@@ -62,6 +64,7 @@ public class RestaurantProductController implements RestaurantProductControllerO
     }
 
     @Override
+    @CheckSecurity.Restaurants.CanQuery
     @GetMapping(value = "/{productId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ProductDTO find(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
                            @ApiParam(value = "ID do produto", example = "1") @PathVariable Long productId) {
@@ -69,6 +72,7 @@ public class RestaurantProductController implements RestaurantProductControllerO
     }
 
     @Override
+    @CheckSecurity.Restaurants.CanEdit
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ProductDTO add(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
@@ -85,6 +89,7 @@ public class RestaurantProductController implements RestaurantProductControllerO
     }
 
     @Override
+    @CheckSecurity.Restaurants.CanEdit
     @PutMapping(value = "/{productId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ProductDTO update(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
                              @ApiParam(value = "ID do produto", example = "1") @PathVariable Long productId,

@@ -10,6 +10,7 @@ import com.algaworks.algafood.api.dto.RestaurantOnlyNameDTO;
 import com.algaworks.algafood.api.dto.input.RestaurantInput;
 import com.algaworks.algafood.api.helper.ResourceUriHelper;
 import com.algaworks.algafood.api.openapi.controller.RestaurantControllerOpenApi;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.exception.BusinessException;
 import com.algaworks.algafood.domain.exception.CityNotFoundException;
 import com.algaworks.algafood.domain.exception.KitchenNotFoundException;
@@ -51,18 +52,21 @@ public class RestaurantController implements RestaurantControllerOpenApi {
     private RestaurantOnlyNameDTOAssembler restaurantOnlyNameDTOAssembler;
 
     @Override
+    @CheckSecurity.Restaurants.CanQuery
     @GetMapping
     public CollectionModel<RestaurantBasicDTO> fetchAll() {
         return restaurantBasicDTOAssembler.toCollectionModel(restaurantRepository.findAll());
     }
 
     @Override
+    @CheckSecurity.Restaurants.CanQuery
     @GetMapping(params = "projection=only-name")
     public CollectionModel<RestaurantOnlyNameDTO> fetchAllOnlyNames() {
         return restaurantOnlyNameDTOAssembler.toCollectionModel(restaurantRepository.findAll());
     }
 
     @Override
+    @CheckSecurity.Restaurants.CanQuery
     @GetMapping(value = "/{restaurantId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public RestaurantDTO find(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
         Restaurant restaurant = service.findOrFail(restaurantId);
@@ -71,6 +75,7 @@ public class RestaurantController implements RestaurantControllerOpenApi {
     }
 
     @Override
+    @CheckSecurity.Restaurants.CanEdit
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public RestaurantDTO add(@RequestBody @Valid RestaurantInput restaurantInput) {
@@ -87,6 +92,7 @@ public class RestaurantController implements RestaurantControllerOpenApi {
     }
 
     @Override
+    @CheckSecurity.Restaurants.CanEdit
     @PutMapping(value = "/{restaurantId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public RestaurantDTO update(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
                                 @RequestBody @Valid RestaurantInput restaurantInput) {
@@ -101,6 +107,7 @@ public class RestaurantController implements RestaurantControllerOpenApi {
     }
 
     @Override
+    @CheckSecurity.Restaurants.CanEdit
     @PutMapping("/{restaurantId}/active")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> activate(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
@@ -110,6 +117,7 @@ public class RestaurantController implements RestaurantControllerOpenApi {
     }
 
     @Override
+    @CheckSecurity.Restaurants.CanEdit
     @DeleteMapping("/{restaurantId}/active")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> inactivate(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
@@ -119,6 +127,7 @@ public class RestaurantController implements RestaurantControllerOpenApi {
     }
 
     @Override
+    @CheckSecurity.Restaurants.CanEdit
     @PutMapping(value = "/activations")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void activateMultiples(@RequestBody List<Long> restaurantIds) {
@@ -130,6 +139,7 @@ public class RestaurantController implements RestaurantControllerOpenApi {
     }
 
     @Override
+    @CheckSecurity.Restaurants.CanEdit
     @DeleteMapping(value = "/activations")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void inactivateMultiples(@RequestBody List<Long> restaurantIds) {
@@ -141,6 +151,7 @@ public class RestaurantController implements RestaurantControllerOpenApi {
     }
 
     @Override
+    @CheckSecurity.Restaurants.CanEdit
     @PutMapping("/{restaurantId}/opening")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> open(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
@@ -150,6 +161,7 @@ public class RestaurantController implements RestaurantControllerOpenApi {
     }
 
     @Override
+    @CheckSecurity.Restaurants.CanEdit
     @PutMapping("/{restaurantId}/closing")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> close(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {

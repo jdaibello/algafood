@@ -4,6 +4,7 @@ import com.algaworks.algafood.api.assembler.UserDTOAssembler;
 import com.algaworks.algafood.api.dto.UserDTO;
 import com.algaworks.algafood.api.helper.AlgaLinks;
 import com.algaworks.algafood.api.openapi.controller.RestaurantResponsibleUserControllerOpenApi;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Restaurant;
 import com.algaworks.algafood.domain.service.RestaurantService;
 import io.swagger.annotations.ApiParam;
@@ -28,6 +29,7 @@ public class RestaurantResponsibleUserController implements RestaurantResponsibl
     private AlgaLinks algaLinks;
 
     @Override
+    @CheckSecurity.Restaurants.CanQuery
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public CollectionModel<UserDTO> fetchAll(
             @ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
@@ -45,6 +47,7 @@ public class RestaurantResponsibleUserController implements RestaurantResponsibl
     }
 
     @Override
+    @CheckSecurity.Restaurants.CanEdit
     @PutMapping(value = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> attach(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
@@ -55,6 +58,7 @@ public class RestaurantResponsibleUserController implements RestaurantResponsibl
     }
 
     @Override
+    @CheckSecurity.Restaurants.CanEdit
     @DeleteMapping("/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> detach(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,

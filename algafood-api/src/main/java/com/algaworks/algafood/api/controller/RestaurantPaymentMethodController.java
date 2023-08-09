@@ -4,6 +4,7 @@ import com.algaworks.algafood.api.assembler.PaymentMethodDTOAssembler;
 import com.algaworks.algafood.api.dto.PaymentMethodDTO;
 import com.algaworks.algafood.api.helper.AlgaLinks;
 import com.algaworks.algafood.api.openapi.controller.RestaurantPaymentMethodControllerOpenApi;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Restaurant;
 import com.algaworks.algafood.domain.service.RestaurantService;
 import io.swagger.annotations.ApiParam;
@@ -28,6 +29,7 @@ public class RestaurantPaymentMethodController implements RestaurantPaymentMetho
     private AlgaLinks algaLinks;
 
     @Override
+    @CheckSecurity.Restaurants.CanQuery
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public CollectionModel<PaymentMethodDTO> fetchAll(
             @ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
@@ -47,6 +49,7 @@ public class RestaurantPaymentMethodController implements RestaurantPaymentMetho
     }
 
     @Override
+    @CheckSecurity.Restaurants.CanEdit
     @PutMapping("/{paymentMethodId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> attach(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
@@ -57,6 +60,7 @@ public class RestaurantPaymentMethodController implements RestaurantPaymentMetho
     }
 
     @Override
+    @CheckSecurity.Restaurants.CanEdit
     @DeleteMapping("/{paymentMethodId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> detach(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,

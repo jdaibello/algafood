@@ -21,4 +21,17 @@ public @interface CheckSecurity {
         @Target(ElementType.METHOD)
         public @interface CanEdit { }
     }
+
+    public @interface Restaurants {
+
+        @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        public @interface CanQuery { }
+
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_RESTAURANTES')")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        public @interface CanEdit { }
+    }
 }

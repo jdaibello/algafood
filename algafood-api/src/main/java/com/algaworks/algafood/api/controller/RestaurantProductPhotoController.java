@@ -4,6 +4,7 @@ import com.algaworks.algafood.api.assembler.ProductPhotoDTOAssembler;
 import com.algaworks.algafood.api.dto.ProductPhotoDTO;
 import com.algaworks.algafood.api.dto.input.ProductPhotoInput;
 import com.algaworks.algafood.api.openapi.controller.RestaurantProductPhotoControllerOpenApi;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.exception.EntityNotFoundException;
 import com.algaworks.algafood.domain.model.Product;
 import com.algaworks.algafood.domain.model.ProductPhoto;
@@ -44,6 +45,7 @@ public class RestaurantProductPhotoController implements RestaurantProductPhotoC
     private ProductPhotoDTOAssembler productPhotoDTOAssembler;
 
     @Override
+    @CheckSecurity.Restaurants.CanQuery
     public ProductPhotoDTO find(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
                                 @ApiParam(value = "ID do produto", example = "1") @PathVariable Long productId) {
         ProductPhoto productPhoto = productPhotoCatalogService.findOrFail(restaurantId, productId);
@@ -79,6 +81,7 @@ public class RestaurantProductPhotoController implements RestaurantProductPhotoC
     }
 
     @Override
+    @CheckSecurity.Restaurants.CanEdit
     @PutMapping(produces = MediaType.MULTIPART_FORM_DATA_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ProductPhotoDTO updatePhoto(
             @ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
@@ -100,6 +103,7 @@ public class RestaurantProductPhotoController implements RestaurantProductPhotoC
     }
 
     @Override
+    @CheckSecurity.Restaurants.CanEdit
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
