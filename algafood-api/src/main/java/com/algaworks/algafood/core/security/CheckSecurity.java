@@ -141,4 +141,12 @@ public @interface CheckSecurity {
         @Target(ElementType.METHOD)
         public @interface CanEdit { }
     }
+
+    public @interface Statistics {
+
+        @PreAuthorize("hasAuthority('SCOPE_READ') and hasAuthority('GERAR_RELATORIOS')")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        public @interface CanQuery { }
+    }
 }
