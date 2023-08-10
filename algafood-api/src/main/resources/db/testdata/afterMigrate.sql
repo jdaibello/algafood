@@ -16,6 +16,7 @@ DELETE FROM state;
 DELETE FROM user;
 DELETE FROM user_group;
 DELETE FROM restaurant_responsible_user;
+DELETE FROM aouth_client_details;
 
 SET foreign_key_checks = 1;
 
@@ -105,3 +106,36 @@ INSERT INTO order_item (id, order_id, product_id, quantity, unit_price, total_pr
 INSERT INTO `order` (id, code, restaurant_id, user_client_id, payment_method_id, address_city_id, address_zipcode, address_street, address_number, address_complement, address_district, status, creation_date, subtotal, shipping_fee, total_value) VALUES (2, "1fbcb039-bcc4-4bd6-9c92-20ad1646e184", 4, 1, 2, 1, '38400-111', 'Rua Acre', '300', 'Casa 2', 'Centro', 'DELIVERED', utc_timestamp, 79, 0, 79);
 
 INSERT INTO order_item (id, order_id, product_id, quantity, unit_price, total_price, note) VALUES (3, 2, 6, 1, 79, 79, 'Ao ponto');
+
+INSERT INTO oauth_client_details (
+  client_id, resource_ids, client_secret,
+  scope, authorized_grant_types, web_server_redirect_uri, authorities,
+  access_token_validity, refresh_token_validity, autoapprove
+)
+VALUES (
+  'algafood-mobile', null, '$2a$12$ZYaM2XvwexyDYoAfYPtK1OW688dISA1RRdJUPlnPNfAGH/pera9L2',
+  'READ,WRITE', 'password', null, null,
+  60 * 60 * 6, 60 * 24 * 60 * 60, null
+);
+
+INSERT INTO oauth_client_details (
+  client_id, resource_ids, client_secret,
+  scope, authorized_grant_types, web_server_redirect_uri, authorities,
+  access_token_validity, refresh_token_validity, autoapprove
+)
+VALUES (
+  'foodanalytics', null, '$2y$12$fahbH37S2pyk1RPuIHKP.earzFmgAJJGo26rE.59vf4wwiiTKHnzO',
+  'READ,WRITE', 'authorization_code', 'http://localhost:8082', null,
+  null, null, null
+);
+
+INSERT INTO oauth_client_details (
+  client_id, resource_ids, client_secret,
+  scope, authorized_grant_types, web_server_redirect_uri, authorities,
+  access_token_validity, refresh_token_validity, autoapprove
+)
+VALUES (
+  'faturamento', null, '$2y$12$fHixriC7yXX/i1/CmpnGH.RFyK/l5YapLCFOEbIktONjE8ZDykSnu',
+  'READ,WRITE', 'client_credentials', null, 'CONSULTAR_PEDIDOS,GERAR_RELATORIOS',
+  null, null, null
+);
