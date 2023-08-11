@@ -19,16 +19,11 @@ import org.springframework.http.MediaType;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.RepresentationBuilder;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.builders.ResponseBuilder;
+import springfox.documentation.builders.*;
 import springfox.documentation.schema.AlternateTypeRules;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
-import springfox.documentation.service.Response;
-import springfox.documentation.service.Tag;
+import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.json.JacksonModuleRegistrar;
 import springfox.documentation.spring.web.plugins.Docket;
 
@@ -86,7 +81,10 @@ public class SpringFoxConfig implements WebMvcConfigurer {
                         UserDTO.class), UsersModelOpenApi.class))
                 .ignoredParameterTypes(ServletWebRequest.class, URL.class, URI.class, URLStreamHandler.class,
                         Resource.class, File.class, InputStream.class)
-                .apiInfo(apiInfo()).tags(new Tag("Cidades", "Gerencia as cidades"))
+                .securitySchemes(Arrays.asList(securityScheme()))
+                .securityContexts(Arrays.asList(securityContext()))
+                .apiInfo(apiInfo())
+                .tags(new Tag("Cidades", "Gerencia as cidades"))
                 .tags(new Tag("Grupos", "Gerencia os grupos"))
                 .tags(new Tag("Permissões dos Grupos", "Gerencia as permissões dos grupos"))
                 .tags(new Tag("Cozinhas", "Gerencia as cozinhas"))
@@ -105,6 +103,27 @@ public class SpringFoxConfig implements WebMvcConfigurer {
                 .tags(new Tag("Usuários", "Gerencia os usuários"))
                 .tags(new Tag("Grupos de Usuários", "Gerencia os grupos de usuários"))
                 .tags(new Tag("Permissões", "Gerencia as permissões"));
+    }
+
+    private SecurityScheme securityScheme() {
+        return new OAuthBuilder().name("Algafood").grantTypes(grantTypes()).scopes(scopes()).build();
+    }
+
+    private SecurityContext securityContext() {
+        var securityReference = SecurityReference.builder().reference("Algafood")
+                .scopes(scopes().toArray(new AuthorizationScope[0])).build();
+
+        return SecurityContext.builder().securityReferences(Arrays.asList(securityReference))
+                .forPaths(PathSelectors.any()).build();
+    }
+
+    private List<AuthorizationScope> scopes() {
+        return Arrays.asList(new AuthorizationScope("READ", "Acesso de leitura"),
+                new AuthorizationScope("WRITE", "Acesso de escrita"));
+    }
+
+    private List<GrantType> grantTypes() {
+        return Arrays.asList(new ResourceOwnerPasswordCredentialsGrant("/oauth/token"));
     }
 
     private List<Response> globalGetResponseMessages() {
