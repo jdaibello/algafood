@@ -5,12 +5,13 @@ import com.algaworks.algafood.api.assembler.StateInputDisassembler;
 import com.algaworks.algafood.api.dto.StateDTO;
 import com.algaworks.algafood.api.dto.input.StateInput;
 import com.algaworks.algafood.api.helper.ResourceUriHelper;
-import com.algaworks.algafood.api.openapi.controller.StateControllerOpenApi;
+import com.algaworks.algafood.api.springdoc.controller.StateControllerOpenApi;
 import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.State;
 import com.algaworks.algafood.domain.repository.StateRepository;
 import com.algaworks.algafood.domain.service.StateService;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
@@ -37,6 +38,7 @@ public class StateController implements StateControllerOpenApi {
 
     @Override
     @CheckSecurity.States.CanQuery
+    @SecurityRequirement(name = "OAuth2")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public CollectionModel<StateDTO> fetchAll() {
         return stateDTOAssembler.toCollectionModel(stateRepository.findAll());
@@ -44,8 +46,9 @@ public class StateController implements StateControllerOpenApi {
 
     @Override
     @CheckSecurity.States.CanQuery
+    @SecurityRequirement(name = "OAuth2")
     @GetMapping(value = "/{stateId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public StateDTO find(@ApiParam(value = "ID do estado", example = "1") @PathVariable Long stateId) {
+    public StateDTO find(@Parameter(description = "ID do estado", example = "1") @PathVariable Long stateId) {
         State state = service.findOrFail(stateId);
 
         return stateDTOAssembler.toModel(state);
@@ -53,6 +56,7 @@ public class StateController implements StateControllerOpenApi {
 
     @Override
     @CheckSecurity.States.CanEdit
+    @SecurityRequirement(name = "OAuth2")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public StateDTO add(@RequestBody @Valid StateInput stateInput) {
@@ -67,8 +71,9 @@ public class StateController implements StateControllerOpenApi {
 
     @Override
     @CheckSecurity.States.CanEdit
+    @SecurityRequirement(name = "OAuth2")
     @PutMapping(value = "/{stateId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public StateDTO update(@ApiParam(value = "ID do estado", example = "1") @PathVariable Long stateId,
+    public StateDTO update(@Parameter(description = "ID do estado", example = "1") @PathVariable Long stateId,
                            @RequestBody @Valid StateInput stateInput) {
         State currentState = service.findOrFail(stateId);
         stateInputDisassembler.copyToDomainObject(stateInput, currentState);
@@ -79,9 +84,10 @@ public class StateController implements StateControllerOpenApi {
 
     @Override
     @CheckSecurity.States.CanEdit
+    @SecurityRequirement(name = "OAuth2")
     @DeleteMapping("/{stateId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@ApiParam(value = "ID do estado", example = "1") @PathVariable Long stateId) {
+    public void delete(@Parameter(description = "ID do estado", example = "1") @PathVariable Long stateId) {
         service.delete(stateId);
     }
 }

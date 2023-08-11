@@ -1,6 +1,6 @@
 package com.algaworks.algafood.api.dto.input;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,22 +12,22 @@ import javax.validation.constraints.NotNull;
 @Setter
 public class AddressInput {
 
-    @ApiModelProperty(example = "02542-121", required = true)
+    @Schema(example = "02542-121", required = true)
     @NotBlank
     private String zipCode;
 
-    @ApiModelProperty(example = "Rua das Maças", required = true)
+    @Schema(example = "Rua das Maças", required = true)
     @NotBlank
     private String street;
 
-    @ApiModelProperty(example = "125", required = true)
+    @Schema(example = "125", required = true)
     @NotBlank
     private String number;
 
-    @ApiModelProperty(example = "")
+    @Schema(example = "")
     private String complement;
 
-    @ApiModelProperty(example = "Bairro Novo Horizonte", required = true)
+    @Schema(example = "Bairro Novo Horizonte", required = true)
     @NotBlank
     private String district;
 

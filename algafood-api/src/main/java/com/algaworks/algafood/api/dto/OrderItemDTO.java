@@ -1,6 +1,6 @@
 package com.algaworks.algafood.api.dto;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
@@ -11,21 +11,21 @@ import java.math.BigDecimal;
 @Setter
 public class OrderItemDTO extends RepresentationModel<OrderItemDTO> {
 
-    @ApiModelProperty(example = "1", required = true)
+    @Schema(example = "1", required = true)
     private Long productId;
 
-    @ApiModelProperty(example = "X-Tudo", required = true)
+    @Schema(example = "X-Tudo", required = true)
     private String productName;
 
-    @ApiModelProperty(example = "2", required = true)
+    @Schema(example = "2", required = true)
     private Integer quantity;
 
-    @ApiModelProperty(example = "32.00", required = true)
+    @Schema(example = "32.00", required = true)
     private BigDecimal unitPrice;
 
-    @ApiModelProperty(example = "64.00", required = true)
+    @Schema(example = "64.00", required = true)
     private BigDecimal totalPrice;
 
-    @ApiModelProperty(example = "Sem alface")
+    @Schema(example = "Sem alface")
     private String note;
 }

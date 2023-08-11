@@ -2,15 +2,15 @@ package com.algaworks.algafood.api.controller;
 
 import com.algaworks.algafood.api.helper.AlgaLinks;
 import com.algaworks.algafood.core.security.AlgaSecurity;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import springfox.documentation.annotations.ApiIgnore;
 
-@ApiIgnore
+@Hidden
 @RestController
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 public class RootEntryPointController {

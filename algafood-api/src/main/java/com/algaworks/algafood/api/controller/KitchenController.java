@@ -5,12 +5,13 @@ import com.algaworks.algafood.api.assembler.KitchenInputDisassembler;
 import com.algaworks.algafood.api.dto.KitchenDTO;
 import com.algaworks.algafood.api.dto.input.KitchenInput;
 import com.algaworks.algafood.api.helper.ResourceUriHelper;
-import com.algaworks.algafood.api.openapi.controller.KitchenControllerOpenApi;
+import com.algaworks.algafood.api.springdoc.controller.KitchenControllerOpenApi;
 import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Kitchen;
 import com.algaworks.algafood.domain.repository.KitchenRepository;
 import com.algaworks.algafood.domain.service.KitchenService;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,6 +44,7 @@ public class KitchenController implements KitchenControllerOpenApi {
 
     @Override
     @CheckSecurity.Kitchens.CanQuery
+    @SecurityRequirement(name = "OAuth2")
     @GetMapping
     public PagedModel<KitchenDTO> fetchAll(Pageable pageable) {
         Page<Kitchen> kitchensPage = kitchenRepository.findAll(pageable);
@@ -52,8 +54,9 @@ public class KitchenController implements KitchenControllerOpenApi {
 
     @Override
     @CheckSecurity.Kitchens.CanQuery
+    @SecurityRequirement(name = "OAuth2")
     @GetMapping(value = "/{kitchenId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public KitchenDTO find(@ApiParam(value = "ID da cozinha", example = "1") @PathVariable Long kitchenId) {
+    public KitchenDTO find(@Parameter(description = "ID da cozinha", example = "1") @PathVariable Long kitchenId) {
         Kitchen kitchen = service.findOrFail(kitchenId);
 
         return kitchenDTOAssembler.toModel(kitchen);
@@ -61,6 +64,7 @@ public class KitchenController implements KitchenControllerOpenApi {
 
     @Override
     @CheckSecurity.Kitchens.CanEdit
+    @SecurityRequirement(name = "OAuth2")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public KitchenDTO add(@RequestBody @Valid KitchenInput kitchenInput) {
@@ -75,8 +79,9 @@ public class KitchenController implements KitchenControllerOpenApi {
 
     @Override
     @CheckSecurity.Kitchens.CanEdit
+    @SecurityRequirement(name = "OAuth2")
     @PutMapping(value = "/{kitchenId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public KitchenDTO update(@ApiParam(value = "ID da cozinha", example = "1") @PathVariable Long kitchenId,
+    public KitchenDTO update(@Parameter(description = "ID da cozinha", example = "1") @PathVariable Long kitchenId,
                              @RequestBody @Valid KitchenInput kitchenInput) {
         Kitchen currentKitchen = service.findOrFail(kitchenId);
         kitchenInputDisassembler.copyToDomainObject(kitchenInput, currentKitchen);
@@ -87,9 +92,10 @@ public class KitchenController implements KitchenControllerOpenApi {
 
     @Override
     @CheckSecurity.Kitchens.CanEdit
+    @SecurityRequirement(name = "OAuth2")
     @DeleteMapping("/{kitchenId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@ApiParam(value = "ID da cozinha", example = "1") @PathVariable Long kitchenId) {
+    public void delete(@Parameter(description = "ID da cozinha", example = "1") @PathVariable Long kitchenId) {
         service.delete(kitchenId);
     }
 }

@@ -3,12 +3,13 @@ package com.algaworks.algafood.api.controller;
 import com.algaworks.algafood.api.assembler.PaymentMethodDTOAssembler;
 import com.algaworks.algafood.api.dto.PaymentMethodDTO;
 import com.algaworks.algafood.api.helper.AlgaLinks;
-import com.algaworks.algafood.api.openapi.controller.RestaurantPaymentMethodControllerOpenApi;
+import com.algaworks.algafood.api.springdoc.controller.RestaurantPaymentMethodControllerOpenApi;
 import com.algaworks.algafood.core.security.AlgaSecurity;
 import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Restaurant;
 import com.algaworks.algafood.domain.service.RestaurantService;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
@@ -34,9 +35,10 @@ public class RestaurantPaymentMethodController implements RestaurantPaymentMetho
 
     @Override
     @CheckSecurity.Restaurants.CanQuery
+    @SecurityRequirement(name = "OAuth2")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public CollectionModel<PaymentMethodDTO> fetchAll(
-            @ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
+            @Parameter(description = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
         Restaurant restaurant = service.findOrFail(restaurantId);
 
         CollectionModel<PaymentMethodDTO> paymentMethodsDTO = paymentMethodDTOAssembler
@@ -58,10 +60,11 @@ public class RestaurantPaymentMethodController implements RestaurantPaymentMetho
 
     @Override
     @CheckSecurity.Restaurants.CanManageOperation
+    @SecurityRequirement(name = "OAuth2")
     @PutMapping("/{paymentMethodId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> attach(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
-                       @ApiParam(value = "ID da forma de pagamento", example = "1") @PathVariable Long paymentMethodId) {
+    public ResponseEntity<Void> attach(@Parameter(description = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
+                       @Parameter(description = "ID da forma de pagamento", example = "1") @PathVariable Long paymentMethodId) {
         service.attachPaymentMethod(restaurantId, paymentMethodId);
 
         return ResponseEntity.noContent().build();
@@ -69,10 +72,11 @@ public class RestaurantPaymentMethodController implements RestaurantPaymentMetho
 
     @Override
     @CheckSecurity.Restaurants.CanManageOperation
+    @SecurityRequirement(name = "OAuth2")
     @DeleteMapping("/{paymentMethodId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> detach(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
-                                 @ApiParam(value = "ID da forma de pagamento", example = "1") @PathVariable Long paymentMethodId) {
+    public ResponseEntity<Void> detach(@Parameter(description = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
+                                 @Parameter(description = "ID da forma de pagamento", example = "1") @PathVariable Long paymentMethodId) {
         service.detachPaymentMethod(restaurantId, paymentMethodId);
 
         return ResponseEntity.noContent().build();

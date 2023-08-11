@@ -5,12 +5,13 @@ import com.algaworks.algafood.api.assembler.GroupInputDisassembler;
 import com.algaworks.algafood.api.dto.GroupDTO;
 import com.algaworks.algafood.api.dto.input.GroupInput;
 import com.algaworks.algafood.api.helper.ResourceUriHelper;
-import com.algaworks.algafood.api.openapi.controller.GroupControllerOpenApi;
+import com.algaworks.algafood.api.springdoc.controller.GroupControllerOpenApi;
 import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Group;
 import com.algaworks.algafood.domain.repository.GroupRepository;
 import com.algaworks.algafood.domain.service.GroupService;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
@@ -37,6 +38,7 @@ public class GroupController implements GroupControllerOpenApi {
 
     @Override
     @CheckSecurity.UsersGroupsPermissions.CanQuery
+    @SecurityRequirement(name = "OAuth2")
     @GetMapping
     public CollectionModel<GroupDTO> fetchAll() {
         return groupDTOAssembler.toCollectionModel(groupRepository.findAll());
@@ -44,8 +46,9 @@ public class GroupController implements GroupControllerOpenApi {
 
     @Override
     @CheckSecurity.UsersGroupsPermissions.CanQuery
+    @SecurityRequirement(name = "OAuth2")
     @GetMapping(value = "/{groupId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public GroupDTO find(@ApiParam(value = "ID do grupo", example = "1") @PathVariable Long groupId) {
+    public GroupDTO find(@Parameter(description = "ID do grupo", example = "1") @PathVariable Long groupId) {
         Group group = service.findOrFail(groupId);
 
         return groupDTOAssembler.toModel(group);
@@ -53,6 +56,7 @@ public class GroupController implements GroupControllerOpenApi {
 
     @Override
     @CheckSecurity.UsersGroupsPermissions.CanEdit
+    @SecurityRequirement(name = "OAuth2")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public GroupDTO add(@RequestBody @Valid GroupInput groupInput) {
@@ -67,8 +71,9 @@ public class GroupController implements GroupControllerOpenApi {
 
     @Override
     @CheckSecurity.UsersGroupsPermissions.CanEdit
+    @SecurityRequirement(name = "OAuth2")
     @PutMapping(value = "/{groupId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public GroupDTO update(@ApiParam(value = "ID do grupo", example = "1") @PathVariable Long groupId,
+    public GroupDTO update(@Parameter(description = "ID do grupo", example = "1") @PathVariable Long groupId,
                            @RequestBody @Valid GroupInput groupInput) {
         Group currentGroup = service.findOrFail(groupId);
         groupInputDisassembler.copyToDomainObject(groupInput, currentGroup);
@@ -79,9 +84,10 @@ public class GroupController implements GroupControllerOpenApi {
 
     @Override
     @CheckSecurity.UsersGroupsPermissions.CanEdit
+    @SecurityRequirement(name = "OAuth2")
     @DeleteMapping("/{groupId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@ApiParam(value = "ID do grupo", example = "1") @PathVariable Long groupId) {
+    public void delete(@Parameter(description = "ID do grupo", example = "1") @PathVariable Long groupId) {
         service.delete(groupId);
     }
 }

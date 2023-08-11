@@ -3,7 +3,7 @@ package com.algaworks.algafood.api.controller;
 import com.algaworks.algafood.api.assembler.ProductPhotoDTOAssembler;
 import com.algaworks.algafood.api.dto.ProductPhotoDTO;
 import com.algaworks.algafood.api.dto.input.ProductPhotoInput;
-import com.algaworks.algafood.api.openapi.controller.RestaurantProductPhotoControllerOpenApi;
+import com.algaworks.algafood.api.springdoc.controller.RestaurantProductPhotoControllerOpenApi;
 import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.exception.EntityNotFoundException;
 import com.algaworks.algafood.domain.model.Product;
@@ -11,7 +11,8 @@ import com.algaworks.algafood.domain.model.ProductPhoto;
 import com.algaworks.algafood.domain.service.PhotoStorageService;
 import com.algaworks.algafood.domain.service.ProductPhotoCatalogService;
 import com.algaworks.algafood.domain.service.ProductService;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -46,8 +47,9 @@ public class RestaurantProductPhotoController implements RestaurantProductPhotoC
 
     @Override
     @CheckSecurity.Restaurants.CanQuery
-    public ProductPhotoDTO find(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
-                                @ApiParam(value = "ID do produto", example = "1") @PathVariable Long productId) {
+    @SecurityRequirement(name = "OAuth2")
+    public ProductPhotoDTO find(@Parameter(description = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
+                                @Parameter(description = "ID do produto", example = "1") @PathVariable Long productId) {
         ProductPhoto productPhoto = productPhotoCatalogService.findOrFail(restaurantId, productId);
 
         return productPhotoDTOAssembler.toModel(productPhoto);
@@ -56,8 +58,8 @@ public class RestaurantProductPhotoController implements RestaurantProductPhotoC
     @Override
     @GetMapping(produces = MediaType.ALL_VALUE)
     public ResponseEntity<?> servePhoto(
-            @ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
-            @ApiParam(value = "ID do produto", example = "1") @PathVariable Long productId,
+            @Parameter(description = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
+            @Parameter(description = "ID do produto", example = "1") @PathVariable Long productId,
             @RequestHeader(name = "accept") String acceptHeader) throws HttpMediaTypeNotAcceptableException {
         try {
             ProductPhoto productPhoto = productPhotoCatalogService.findOrFail(restaurantId, productId);
@@ -81,11 +83,12 @@ public class RestaurantProductPhotoController implements RestaurantProductPhotoC
     }
 
     @Override
+    @SecurityRequirement(name = "OAuth2")
     @CheckSecurity.Restaurants.CanManageOperation
     @PutMapping(produces = MediaType.MULTIPART_FORM_DATA_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ProductPhotoDTO updatePhoto(
-            @ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
-            @ApiParam(value = "ID do produto", example = "1") @PathVariable Long productId,
+            @Parameter(description = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
+            @Parameter(description = "ID do produto", example = "1") @PathVariable Long productId,
             @Valid ProductPhotoInput productPhotoInput, @RequestPart(required = true) MultipartFile file)
             throws IOException {
         Product product = productService.findOrFail(restaurantId, productId);
@@ -104,10 +107,11 @@ public class RestaurantProductPhotoController implements RestaurantProductPhotoC
 
     @Override
     @CheckSecurity.Restaurants.CanManageOperation
+    @SecurityRequirement(name = "OAuth2")
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
-                       @ApiParam(value = "ID do produto", example = "1") @PathVariable Long productId) {
+    public void delete(@Parameter(description = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
+                       @Parameter(description = "ID do produto", example = "1") @PathVariable Long productId) {
         productPhotoCatalogService.delete(restaurantId, productId);
     }
 

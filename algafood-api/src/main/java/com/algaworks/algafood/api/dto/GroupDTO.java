@@ -1,6 +1,6 @@
 package com.algaworks.algafood.api.dto;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
@@ -11,9 +11,9 @@ import org.springframework.hateoas.server.core.Relation;
 @Setter
 public class GroupDTO extends RepresentationModel<GroupDTO> {
 
-    @ApiModelProperty(example = "1", required = true)
+    @Schema(example = "1", required = true)
     private Long id;
 
-    @ApiModelProperty(example = "Garçons", required = true)
+    @Schema(example = "Garçons", required = true)
     private String name;
 }

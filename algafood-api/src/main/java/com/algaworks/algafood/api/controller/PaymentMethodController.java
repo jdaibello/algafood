@@ -6,12 +6,13 @@ import com.algaworks.algafood.api.dto.PaymentMethodDTO;
 import com.algaworks.algafood.api.dto.input.PaymentMethodInput;
 import com.algaworks.algafood.api.helper.AlgaLinks;
 import com.algaworks.algafood.api.helper.ResourceUriHelper;
-import com.algaworks.algafood.api.openapi.controller.PaymentMethodControllerOpenApi;
+import com.algaworks.algafood.api.springdoc.controller.PaymentMethodControllerOpenApi;
 import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.PaymentMethod;
 import com.algaworks.algafood.domain.repository.PaymentMethodRepository;
 import com.algaworks.algafood.domain.service.PaymentMethodService;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.CacheControl;
@@ -47,6 +48,7 @@ public class PaymentMethodController implements PaymentMethodControllerOpenApi {
 
     @Override
     @CheckSecurity.PaymentMethods.CanQuery
+    @SecurityRequirement(name = "OAuth2")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CollectionModel<PaymentMethodDTO>> fetchAll(ServletWebRequest request) {
         ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
@@ -71,9 +73,10 @@ public class PaymentMethodController implements PaymentMethodControllerOpenApi {
 
     @Override
     @CheckSecurity.PaymentMethods.CanQuery
+    @SecurityRequirement(name = "OAuth2")
     @GetMapping(value = "/{paymentMethodId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PaymentMethodDTO> find(
-            @ApiParam(value = "ID da forma de pagamento", example = "1") @PathVariable Long paymentMethodId,
+            @Parameter(description = "ID da forma de pagamento", example = "1") @PathVariable Long paymentMethodId,
             ServletWebRequest request) {
         ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
 
@@ -97,6 +100,7 @@ public class PaymentMethodController implements PaymentMethodControllerOpenApi {
 
     @Override
     @CheckSecurity.PaymentMethods.CanEdit
+    @SecurityRequirement(name = "OAuth2")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public PaymentMethodDTO add(@RequestBody @Valid PaymentMethodInput paymentMethodInput) {
@@ -111,9 +115,10 @@ public class PaymentMethodController implements PaymentMethodControllerOpenApi {
 
     @Override
     @CheckSecurity.PaymentMethods.CanEdit
+    @SecurityRequirement(name = "OAuth2")
     @PutMapping(value = "/{paymentMethodId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public PaymentMethodDTO update(
-            @ApiParam(value = "ID da forma de pagamento", example = "1") @PathVariable Long paymentMethodId,
+            @Parameter(description = "ID da forma de pagamento", example = "1") @PathVariable Long paymentMethodId,
             @RequestBody @Valid PaymentMethodInput paymentMethodInput) {
         PaymentMethod currentPaymentMethod = service.findOrFail(paymentMethodId);
         paymentMethodInputDisassembler.copyToDomainObject(paymentMethodInput, currentPaymentMethod);
@@ -124,10 +129,11 @@ public class PaymentMethodController implements PaymentMethodControllerOpenApi {
 
     @Override
     @CheckSecurity.PaymentMethods.CanEdit
+    @SecurityRequirement(name = "OAuth2")
     @DeleteMapping("/{paymentMethodId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(
-            @ApiParam(value = "ID da forma de pagamento", example = "1") @PathVariable Long paymentMethodId) {
+            @Parameter(description = "ID da forma de pagamento", example = "1") @PathVariable Long paymentMethodId) {
         service.delete(paymentMethodId);
     }
 }

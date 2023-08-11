@@ -7,12 +7,13 @@ import com.algaworks.algafood.api.dto.input.PasswordInput;
 import com.algaworks.algafood.api.dto.input.UserInput;
 import com.algaworks.algafood.api.dto.input.UserWithPasswordInput;
 import com.algaworks.algafood.api.helper.ResourceUriHelper;
-import com.algaworks.algafood.api.openapi.controller.UserControllerOpenApi;
+import com.algaworks.algafood.api.springdoc.controller.UserControllerOpenApi;
 import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.User;
 import com.algaworks.algafood.domain.repository.UserRepository;
 import com.algaworks.algafood.domain.service.UserService;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
@@ -39,6 +40,7 @@ public class UserController implements UserControllerOpenApi {
 
     @Override
     @CheckSecurity.UsersGroupsPermissions.CanQuery
+    @SecurityRequirement(name = "OAuth2")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public CollectionModel<UserDTO> fetchAll() {
         return userDTOAssembler.toCollectionModel(userRepository.findAll());
@@ -46,8 +48,9 @@ public class UserController implements UserControllerOpenApi {
 
     @Override
     @CheckSecurity.UsersGroupsPermissions.CanFind
+    @SecurityRequirement(name = "OAuth2")
     @GetMapping(value = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public UserDTO find(@ApiParam(value = "ID do usuário", example = "1") @PathVariable Long userId) {
+    public UserDTO find(@Parameter(description = "ID do usuário", example = "1") @PathVariable Long userId) {
         User user = service.findOrFail(userId);
 
         return userDTOAssembler.toModel(user);
@@ -68,8 +71,9 @@ public class UserController implements UserControllerOpenApi {
 
     @Override
     @CheckSecurity.UsersGroupsPermissions.CanUpdate
+    @SecurityRequirement(name = "OAuth2")
     @PutMapping(value = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public UserDTO update(@ApiParam(value = "ID do usuário", example = "1") @PathVariable Long userId,
+    public UserDTO update(@Parameter(description = "ID do usuário", example = "1") @PathVariable Long userId,
                           @RequestBody @Valid UserInput userInput) {
         User currentUser = service.findOrFail(userId);
         userInputDisassembler.copyToDomainObject(userInput, currentUser);
@@ -80,9 +84,10 @@ public class UserController implements UserControllerOpenApi {
 
     @Override
     @CheckSecurity.UsersGroupsPermissions.CanUpdateSelfPassword
+    @SecurityRequirement(name = "OAuth2")
     @PatchMapping("/{userId}/reset-password")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updatePassword(@ApiParam(value = "ID do usuário", example = "1") @PathVariable Long userId,
+    public void updatePassword(@Parameter(description = "ID do usuário", example = "1") @PathVariable Long userId,
                                @RequestBody @Valid PasswordInput passwordInput) {
         service.updatePassword(userId, passwordInput.getCurrentPassword(), passwordInput.getNewPassword());
     }

@@ -9,7 +9,7 @@ import com.algaworks.algafood.api.dto.RestaurantDTO;
 import com.algaworks.algafood.api.dto.RestaurantOnlyNameDTO;
 import com.algaworks.algafood.api.dto.input.RestaurantInput;
 import com.algaworks.algafood.api.helper.ResourceUriHelper;
-import com.algaworks.algafood.api.openapi.controller.RestaurantControllerOpenApi;
+import com.algaworks.algafood.api.springdoc.controller.RestaurantControllerOpenApi;
 import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.exception.BusinessException;
 import com.algaworks.algafood.domain.exception.CityNotFoundException;
@@ -18,7 +18,8 @@ import com.algaworks.algafood.domain.exception.RestaurantNotFoundException;
 import com.algaworks.algafood.domain.model.Restaurant;
 import com.algaworks.algafood.domain.repository.RestaurantRepository;
 import com.algaworks.algafood.domain.service.RestaurantService;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
@@ -53,6 +54,7 @@ public class RestaurantController implements RestaurantControllerOpenApi {
 
     @Override
     @CheckSecurity.Restaurants.CanQuery
+    @SecurityRequirement(name = "OAuth2")
     @GetMapping
     public CollectionModel<RestaurantBasicDTO> fetchAll() {
         return restaurantBasicDTOAssembler.toCollectionModel(restaurantRepository.findAll());
@@ -60,6 +62,7 @@ public class RestaurantController implements RestaurantControllerOpenApi {
 
     @Override
     @CheckSecurity.Restaurants.CanQuery
+    @SecurityRequirement(name = "OAuth2")
     @GetMapping(params = "projection=only-name")
     public CollectionModel<RestaurantOnlyNameDTO> fetchAllOnlyNames() {
         return restaurantOnlyNameDTOAssembler.toCollectionModel(restaurantRepository.findAll());
@@ -67,8 +70,9 @@ public class RestaurantController implements RestaurantControllerOpenApi {
 
     @Override
     @CheckSecurity.Restaurants.CanQuery
+    @SecurityRequirement(name = "OAuth2")
     @GetMapping(value = "/{restaurantId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public RestaurantDTO find(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
+    public RestaurantDTO find(@Parameter(description = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
         Restaurant restaurant = service.findOrFail(restaurantId);
 
         return restaurantDTOAssembler.toModel(restaurant);
@@ -76,6 +80,7 @@ public class RestaurantController implements RestaurantControllerOpenApi {
 
     @Override
     @CheckSecurity.Restaurants.CanManageRegistration
+    @SecurityRequirement(name = "OAuth2")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public RestaurantDTO add(@RequestBody @Valid RestaurantInput restaurantInput) {
@@ -93,8 +98,9 @@ public class RestaurantController implements RestaurantControllerOpenApi {
 
     @Override
     @CheckSecurity.Restaurants.CanManageRegistration
+    @SecurityRequirement(name = "OAuth2")
     @PutMapping(value = "/{restaurantId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public RestaurantDTO update(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
+    public RestaurantDTO update(@Parameter(description = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
                                 @RequestBody @Valid RestaurantInput restaurantInput) {
         try {
             Restaurant currentRestaurant = service.findOrFail(restaurantId);
@@ -108,9 +114,10 @@ public class RestaurantController implements RestaurantControllerOpenApi {
 
     @Override
     @CheckSecurity.Restaurants.CanManageRegistration
+    @SecurityRequirement(name = "OAuth2")
     @PutMapping("/{restaurantId}/active")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> activate(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
+    public ResponseEntity<Void> activate(@Parameter(description = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
         service.activate(restaurantId);
 
         return ResponseEntity.noContent().build();
@@ -118,9 +125,10 @@ public class RestaurantController implements RestaurantControllerOpenApi {
 
     @Override
     @CheckSecurity.Restaurants.CanManageRegistration
+    @SecurityRequirement(name = "OAuth2")
     @DeleteMapping("/{restaurantId}/active")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> inactivate(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
+    public ResponseEntity<Void> inactivate(@Parameter(description = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
         service.inactivate(restaurantId);
 
         return ResponseEntity.noContent().build();
@@ -128,6 +136,7 @@ public class RestaurantController implements RestaurantControllerOpenApi {
 
     @Override
     @CheckSecurity.Restaurants.CanManageRegistration
+    @SecurityRequirement(name = "OAuth2")
     @PutMapping(value = "/activations")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void activateMultiples(@RequestBody List<Long> restaurantIds) {
@@ -140,6 +149,7 @@ public class RestaurantController implements RestaurantControllerOpenApi {
 
     @Override
     @CheckSecurity.Restaurants.CanManageRegistration
+    @SecurityRequirement(name = "OAuth2")
     @DeleteMapping(value = "/activations")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void inactivateMultiples(@RequestBody List<Long> restaurantIds) {
@@ -152,9 +162,10 @@ public class RestaurantController implements RestaurantControllerOpenApi {
 
     @Override
     @CheckSecurity.Restaurants.CanManageOperation
+    @SecurityRequirement(name = "OAuth2")
     @PutMapping("/{restaurantId}/opening")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> open(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
+    public ResponseEntity<Void> open(@Parameter(description = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
         service.open(restaurantId);
 
         return ResponseEntity.noContent().build();
@@ -162,9 +173,10 @@ public class RestaurantController implements RestaurantControllerOpenApi {
 
     @Override
     @CheckSecurity.Restaurants.CanManageOperation
+    @SecurityRequirement(name = "OAuth2")
     @PutMapping("/{restaurantId}/closing")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> close(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
+    public ResponseEntity<Void> close(@Parameter(description = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
         service.close(restaurantId);
 
         return ResponseEntity.noContent().build();

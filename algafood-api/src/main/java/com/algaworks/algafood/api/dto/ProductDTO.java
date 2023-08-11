@@ -1,6 +1,6 @@
 package com.algaworks.algafood.api.dto;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
@@ -13,21 +13,21 @@ import java.math.BigDecimal;
 @Setter
 public class ProductDTO extends RepresentationModel<ProductDTO> {
 
-    @ApiModelProperty(example = "1", required = true)
+    @Schema(example = "1", required = true)
     private Long id;
 
-    @ApiModelProperty(example = "X-Tudo", required = true)
+    @Schema(example = "X-Tudo", required = true)
     private String name;
 
-    @ApiModelProperty(
+    @Schema(
             example = "Pão de hambúrguer, hambúrguer caseiro, contra-filé, frango, bacon, calabresa, "
                     + "catupiry, ovo, presunto, mussarela, milho, tomate, alface e batata palha",
             required = true)
     private String description;
 
-    @ApiModelProperty(example = "32.00", required = true)
+    @Schema(example = "32.00", required = true)
     private BigDecimal price;
 
-    @ApiModelProperty(example = "true", required = true)
+    @Schema(example = "true", required = true)
     private Boolean active;
 }

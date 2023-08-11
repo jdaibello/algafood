@@ -3,12 +3,13 @@ package com.algaworks.algafood.api.controller;
 import com.algaworks.algafood.api.assembler.GroupDTOAssembler;
 import com.algaworks.algafood.api.dto.GroupDTO;
 import com.algaworks.algafood.api.helper.AlgaLinks;
-import com.algaworks.algafood.api.openapi.controller.UserGroupControllerOpenApi;
+import com.algaworks.algafood.api.springdoc.controller.UserGroupControllerOpenApi;
 import com.algaworks.algafood.core.security.AlgaSecurity;
 import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.User;
 import com.algaworks.algafood.domain.service.UserService;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
@@ -34,8 +35,9 @@ public class UserGroupController implements UserGroupControllerOpenApi {
 
     @Override
     @CheckSecurity.UsersGroupsPermissions.CanQuery
+    @SecurityRequirement(name = "OAuth2")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public CollectionModel<GroupDTO> fetchAll(@ApiParam(value = "ID do usuário", example = "1") @PathVariable Long userId) {
+    public CollectionModel<GroupDTO> fetchAll(@Parameter(description = "ID do usuário", example = "1") @PathVariable Long userId) {
         User user = service.findOrFail(userId);
 
         CollectionModel<GroupDTO> groupsDTO = groupDTOAssembler.toCollectionModel(user.getGroups()).removeLinks();
@@ -54,10 +56,11 @@ public class UserGroupController implements UserGroupControllerOpenApi {
 
     @Override
     @CheckSecurity.UsersGroupsPermissions.CanEdit
+    @SecurityRequirement(name = "OAuth2")
     @PutMapping("/{groupId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> attach(@ApiParam(value = "ID do usuário", example = "1") @PathVariable Long userId,
-                                 @ApiParam(value = "ID do grupo", example = "1") @PathVariable Long groupId) {
+    public ResponseEntity<Void> attach(@Parameter(description = "ID do usuário", example = "1") @PathVariable Long userId,
+                                 @Parameter(description = "ID do grupo", example = "1") @PathVariable Long groupId) {
         service.attachGroup(userId, groupId);
 
         return ResponseEntity.noContent().build();
@@ -65,10 +68,11 @@ public class UserGroupController implements UserGroupControllerOpenApi {
 
     @Override
     @CheckSecurity.UsersGroupsPermissions.CanEdit
+    @SecurityRequirement(name = "OAuth2")
     @DeleteMapping("/{groupId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> detach(@ApiParam(value = "ID do usuário", example = "1") @PathVariable Long userId,
-                       @ApiParam(value = "ID do grupo", example = "1") @PathVariable Long groupId) {
+    public ResponseEntity<Void> detach(@Parameter(description = "ID do usuário", example = "1") @PathVariable Long userId,
+                       @Parameter(description = "ID do grupo", example = "1") @PathVariable Long groupId) {
         service.detachGroup(userId, groupId);
 
         return ResponseEntity.noContent().build();

@@ -1,12 +1,13 @@
 package com.algaworks.algafood.api.controller;
 
 import com.algaworks.algafood.api.helper.AlgaLinks;
-import com.algaworks.algafood.api.openapi.controller.StatisticsControllerOpenApi;
+import com.algaworks.algafood.api.springdoc.controller.StatisticsControllerOpenApi;
 import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.filter.DailySaleFilter;
 import com.algaworks.algafood.domain.model.dto.DailySale;
 import com.algaworks.algafood.domain.service.SaleQueryService;
 import com.algaworks.algafood.domain.service.SaleReportService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.HttpHeaders;
@@ -37,6 +38,7 @@ public class StatisticsController implements StatisticsControllerOpenApi {
 
     @Override
     @CheckSecurity.Statistics.CanQuery
+    @SecurityRequirement(name = "OAuth2")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public StatisticsDTO statistics() {
         var statisticsDTO = new StatisticsDTO();
@@ -48,6 +50,7 @@ public class StatisticsController implements StatisticsControllerOpenApi {
 
     @Override
     @CheckSecurity.Statistics.CanQuery
+    @SecurityRequirement(name = "OAuth2")
     @GetMapping(path = "/daily-sales", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<DailySale> queryDailySales(DailySaleFilter filter,
                                            @RequestParam(required = false, defaultValue = "+00:00") String timeOffset) {
@@ -56,6 +59,7 @@ public class StatisticsController implements StatisticsControllerOpenApi {
 
     @Override
     @CheckSecurity.Statistics.CanQuery
+    @SecurityRequirement(name = "OAuth2")
     @GetMapping(path = "/daily-sales", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> queryDailySalesPdf(DailySaleFilter filter,
                                                      @RequestParam(required = false, defaultValue = "+00:00") String timeOffset) {

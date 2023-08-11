@@ -2,9 +2,10 @@ package com.algaworks.algafood.api.controller;
 
 import com.algaworks.algafood.api.assembler.PermissionDTOAssembler;
 import com.algaworks.algafood.api.dto.PermissionDTO;
-import com.algaworks.algafood.api.openapi.controller.PermissionControllerOpenApi;
+import com.algaworks.algafood.api.springdoc.controller.PermissionControllerOpenApi;
 import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.repository.PermissionRepository;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.MediaType;
@@ -24,6 +25,7 @@ public class PermissionController implements PermissionControllerOpenApi {
 
     @Override
     @CheckSecurity.UsersGroupsPermissions.CanQuery
+    @SecurityRequirement(name = "OAuth2")
     @GetMapping
     public CollectionModel<PermissionDTO> fetchAll() {
         return permissionDTOAssembler.toCollectionModel(permissionRepository.findAll());

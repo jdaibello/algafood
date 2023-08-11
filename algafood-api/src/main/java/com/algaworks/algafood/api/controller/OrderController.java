@@ -7,7 +7,7 @@ import com.algaworks.algafood.api.dto.OrderDTO;
 import com.algaworks.algafood.api.dto.OrderSummaryDTO;
 import com.algaworks.algafood.api.dto.input.OrderInput;
 import com.algaworks.algafood.api.helper.ResourceUriHelper;
-import com.algaworks.algafood.api.openapi.controller.OrderControllerOpenApi;
+import com.algaworks.algafood.api.springdoc.controller.OrderControllerOpenApi;
 import com.algaworks.algafood.core.data.PageWrapper;
 import com.algaworks.algafood.core.data.PageableTranslator;
 import com.algaworks.algafood.core.security.AlgaSecurity;
@@ -20,7 +20,8 @@ import com.algaworks.algafood.domain.model.User;
 import com.algaworks.algafood.domain.repository.OrderRepository;
 import com.algaworks.algafood.domain.service.OrderIssuanceService;
 import com.algaworks.algafood.infrastructure.repository.spec.OrderSpecs;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -61,6 +62,7 @@ public class OrderController implements OrderControllerOpenApi {
 
     @Override
     @CheckSecurity.Orders.CanSearch
+    @SecurityRequirement(name = "OAuth2")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public PagedModel<OrderSummaryDTO> search(OrderFilter filter, @PageableDefault(size = 10) Pageable pageable) {
         Pageable translatedPageable = translatePageable(pageable);
@@ -73,9 +75,10 @@ public class OrderController implements OrderControllerOpenApi {
 
     @Override
     @CheckSecurity.Orders.CanFind
+    @SecurityRequirement(name = "OAuth2")
     @GetMapping(value = "/{orderCode}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public OrderDTO find(@ApiParam(
-            value = "Código UUID do pedido",
+    public OrderDTO find(@Parameter(
+            description = "Código UUID do pedido",
             example = "123e4567-e89b-12d3-a456-426655440000") @PathVariable String orderCode) {
         Order order = service.findOrFail(orderCode);
 
@@ -84,6 +87,7 @@ public class OrderController implements OrderControllerOpenApi {
 
     @Override
     @CheckSecurity.Orders.CanCreate
+    @SecurityRequirement(name = "OAuth2")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public OrderDTO add(@Valid @RequestBody OrderInput orderInput) {

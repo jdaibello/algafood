@@ -3,12 +3,13 @@ package com.algaworks.algafood.api.controller;
 import com.algaworks.algafood.api.assembler.UserDTOAssembler;
 import com.algaworks.algafood.api.dto.UserDTO;
 import com.algaworks.algafood.api.helper.AlgaLinks;
-import com.algaworks.algafood.api.openapi.controller.RestaurantResponsibleUserControllerOpenApi;
+import com.algaworks.algafood.api.springdoc.controller.RestaurantResponsibleUserControllerOpenApi;
 import com.algaworks.algafood.core.security.AlgaSecurity;
 import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Restaurant;
 import com.algaworks.algafood.domain.service.RestaurantService;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
@@ -34,9 +35,10 @@ public class RestaurantResponsibleUserController implements RestaurantResponsibl
 
     @Override
     @CheckSecurity.Restaurants.CanQuery
+    @SecurityRequirement(name = "OAuth2")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public CollectionModel<UserDTO> fetchAll(
-            @ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
+            @Parameter(description = "ID do restaurante", example = "1") @PathVariable Long restaurantId) {
         Restaurant restaurant = service.findOrFail(restaurantId);
 
         CollectionModel<UserDTO> usersDTO = userDTOAssembler.toCollectionModel(restaurant.getResponsibles())
@@ -57,10 +59,11 @@ public class RestaurantResponsibleUserController implements RestaurantResponsibl
 
     @Override
     @CheckSecurity.Restaurants.CanManageRegistration
+    @SecurityRequirement(name = "OAuth2")
     @PutMapping(value = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> attach(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
-                       @ApiParam(value = "ID do usuário", example = "1") @PathVariable Long userId) {
+    public ResponseEntity<Void> attach(@Parameter(description = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
+                       @Parameter(description = "ID do usuário", example = "1") @PathVariable Long userId) {
         service.attachResponsible(restaurantId, userId);
 
         return ResponseEntity.noContent().build();
@@ -68,10 +71,11 @@ public class RestaurantResponsibleUserController implements RestaurantResponsibl
 
     @Override
     @CheckSecurity.Restaurants.CanManageRegistration
+    @SecurityRequirement(name = "OAuth2")
     @DeleteMapping("/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> detach(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
-                                       @ApiParam(value = "ID do usuário", example = "1") @PathVariable Long userId) {
+    public ResponseEntity<Void> detach(@Parameter(description = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
+                                       @Parameter(description = "ID do usuário", example = "1") @PathVariable Long userId) {
         service.detachResponsible(restaurantId, userId);
 
         return ResponseEntity.noContent().build();

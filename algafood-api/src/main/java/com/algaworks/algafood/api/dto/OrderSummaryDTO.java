@@ -1,6 +1,6 @@
 package com.algaworks.algafood.api.dto;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
@@ -14,27 +14,27 @@ import java.time.OffsetDateTime;
 @Setter
 public class OrderSummaryDTO extends RepresentationModel<OrderSummaryDTO> {
 
-    @ApiModelProperty(example = "123e4567-e89b-12d3-a456-426655440000", required = true)
+    @Schema(example = "123e4567-e89b-12d3-a456-426655440000", required = true)
     private String code;
 
-    @ApiModelProperty(example = "170.00", required = true)
+    @Schema(example = "170.00", required = true)
     private BigDecimal subtotal;
 
-    @ApiModelProperty(example = "4.99", required = true)
+    @Schema(example = "4.99", required = true)
     private BigDecimal shippingFee;
 
-    @ApiModelProperty(example = "174.99", required = true)
+    @Schema(example = "174.99", required = true)
     private BigDecimal totalValue;
 
-    @ApiModelProperty(example = "Confirmado", required = true)
+    @Schema(example = "Confirmado", required = true)
     private String status;
 
-    @ApiModelProperty(required = true)
+    @Schema(required = true)
     private OffsetDateTime creationDate;
 
-    @ApiModelProperty(required = true)
+    @Schema(required = true)
     private RestaurantOnlyNameDTO restaurant;
 
-    @ApiModelProperty(required = true)
+    @Schema(required = true)
     private UserDTO client;
 }

@@ -1,6 +1,6 @@
 package com.algaworks.algafood.api.dto.input;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,20 +13,20 @@ import java.math.BigDecimal;
 @Setter
 public class ProductInput {
 
-    @ApiModelProperty(example = "Marguerita", required = true)
+    @Schema(example = "Marguerita", required = true)
     @NotBlank
     private String name;
 
-    @ApiModelProperty(example = "Molho, mussarela, tomate seco e manjericão", required = true)
+    @Schema(example = "Molho, mussarela, tomate seco e manjericão", required = true)
     @NotBlank
     private String description;
 
-    @ApiModelProperty(example = "50.00", required = true)
+    @Schema(example = "50.00", required = true)
     @NotNull
     @PositiveOrZero
     private BigDecimal price;
 
-    @ApiModelProperty(example = "true", required = true)
+    @Schema(example = "true", required = true)
     @NotNull
     private Boolean active;
 }

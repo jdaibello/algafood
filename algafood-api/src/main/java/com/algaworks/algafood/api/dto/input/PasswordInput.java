@@ -1,6 +1,6 @@
 package com.algaworks.algafood.api.dto.input;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,11 +10,11 @@ import javax.validation.constraints.NotBlank;
 @Setter
 public class PasswordInput {
 
-    @ApiModelProperty(example = "ABCDEFGH", required = true)
+    @Schema(example = "ABCDEFGH", required = true)
     @NotBlank
     private String currentPassword;
 
-    @ApiModelProperty(example = "12345678", required = true)
+    @Schema(example = "12345678", required = true)
     @NotBlank
     private String newPassword;
 }

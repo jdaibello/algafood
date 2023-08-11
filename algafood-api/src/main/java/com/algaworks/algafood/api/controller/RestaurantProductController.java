@@ -6,14 +6,15 @@ import com.algaworks.algafood.api.dto.ProductDTO;
 import com.algaworks.algafood.api.dto.input.ProductInput;
 import com.algaworks.algafood.api.helper.AlgaLinks;
 import com.algaworks.algafood.api.helper.ResourceUriHelper;
-import com.algaworks.algafood.api.openapi.controller.RestaurantProductControllerOpenApi;
+import com.algaworks.algafood.api.springdoc.controller.RestaurantProductControllerOpenApi;
 import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Product;
 import com.algaworks.algafood.domain.model.Restaurant;
 import com.algaworks.algafood.domain.repository.ProductRepository;
 import com.algaworks.algafood.domain.service.ProductService;
 import com.algaworks.algafood.domain.service.RestaurantService;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
@@ -47,9 +48,10 @@ public class RestaurantProductController implements RestaurantProductControllerO
 
     @Override
     @CheckSecurity.Restaurants.CanQuery
+    @SecurityRequirement(name = "OAuth2")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public CollectionModel<ProductDTO> fetchAll(
-            @ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
+            @Parameter(description = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
             @RequestParam(required = false) Boolean includeInactive) {
         Restaurant restaurant = restaurantService.findOrFail(restaurantId);
         List<Product> allProducts = null;
@@ -65,17 +67,19 @@ public class RestaurantProductController implements RestaurantProductControllerO
 
     @Override
     @CheckSecurity.Restaurants.CanQuery
+    @SecurityRequirement(name = "OAuth2")
     @GetMapping(value = "/{productId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ProductDTO find(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
-                           @ApiParam(value = "ID do produto", example = "1") @PathVariable Long productId) {
+    public ProductDTO find(@Parameter(description = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
+                           @Parameter(description = "ID do produto", example = "1") @PathVariable Long productId) {
         return productDTOAssembler.toModel(service.findOrFail(restaurantId, productId));
     }
 
     @Override
     @CheckSecurity.Restaurants.CanManageOperation
+    @SecurityRequirement(name = "OAuth2")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ProductDTO add(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
+    public ProductDTO add(@Parameter(description = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
                           @RequestBody @Valid ProductInput productInput) {
         Restaurant restaurant = restaurantService.findOrFail(restaurantId);
         Product product = productInputDisassembler.toDomainObject(productInput);
@@ -90,9 +94,10 @@ public class RestaurantProductController implements RestaurantProductControllerO
 
     @Override
     @CheckSecurity.Restaurants.CanManageOperation
+    @SecurityRequirement(name = "OAuth2")
     @PutMapping(value = "/{productId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ProductDTO update(@ApiParam(value = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
-                             @ApiParam(value = "ID do produto", example = "1") @PathVariable Long productId,
+    public ProductDTO update(@Parameter(description = "ID do restaurante", example = "1") @PathVariable Long restaurantId,
+                             @Parameter(description = "ID do produto", example = "1") @PathVariable Long productId,
                              @RequestBody @Valid ProductInput productInput) {
         Product currentProduct = service.findOrFail(restaurantId, productId);
         productInputDisassembler.copyToDomainObject(productInput, currentProduct);

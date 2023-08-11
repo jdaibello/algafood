@@ -2,8 +2,8 @@ package com.algaworks.algafood.api.exceptionhandler;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -15,40 +15,36 @@ import java.util.List;
 @Builder
 public class Problem {
 
-    @ApiModelProperty(example = "400", position = 1)
+    @Schema(description = "400")
     private Integer status;
 
-    @ApiModelProperty(example = "2022-12-01T15:54:08.91755Z", position = 2)
+    @Schema(description = "2022-12-01T15:54:08.91755Z")
     private OffsetDateTime timestamp;
 
-    @ApiModelProperty(example = "http://localhost:8080/dados-invalidos", position = 3)
+    @Schema(description = "http://localhost:8080/dados-invalidos")
     private String type;
 
-    @ApiModelProperty(example = "Dados inválidos", position = 4)
+    @Schema(description = "Dados inválidos")
     private String title;
 
-    @ApiModelProperty(
-            example = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.",
-            position = 5)
+    @Schema(description = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.")
     private String detail;
 
-    @ApiModelProperty(
-            example = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.",
-            position = 6)
+    @Schema(description = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.")
     private String userMessage;
 
-    @ApiModelProperty(value = "Lista de objetos ou campos que geraram o erro (opcional)", position = 7)
+    @Schema(description = "Lista de objetos ou campos que geraram o erro (opcional)")
     private List<Object> objects;
 
-    @ApiModel("ObjectProblem")
+    @Schema(name = "ObjectProblem")
     @Getter
     @Builder
     public static class Object {
 
-        @ApiModelProperty(example = "price")
+        @Schema(example = "price")
         private String name;
 
-        @ApiModelProperty(example = "O preço é obrigatório")
+        @Schema(example = "O preço é obrigatório")
         private String userMessage;
     }
 }

@@ -1,6 +1,6 @@
 package com.algaworks.algafood.api.dto;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
@@ -11,12 +11,12 @@ import org.springframework.hateoas.server.core.Relation;
 @Getter
 public class CityDTO extends RepresentationModel<CityDTO> {
 
-    @ApiModelProperty(example = "1", required = true)
+    @Schema(example = "1", required = true)
     private Long id;
 
-    @ApiModelProperty(example = "São Paulo", required = true)
+    @Schema(example = "São Paulo", required = true)
     private String name;
 
-    @ApiModelProperty(required = true)
+    @Schema(required = true)
     private StateDTO state;
 }
