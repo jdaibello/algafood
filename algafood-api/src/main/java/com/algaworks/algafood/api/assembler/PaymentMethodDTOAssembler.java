@@ -3,6 +3,7 @@ package com.algaworks.algafood.api.assembler;
 import com.algaworks.algafood.api.controller.PaymentMethodController;
 import com.algaworks.algafood.api.dto.PaymentMethodDTO;
 import com.algaworks.algafood.api.helper.AlgaLinks;
+import com.algaworks.algafood.core.security.AlgaSecurity;
 import com.algaworks.algafood.domain.model.PaymentMethod;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class PaymentMethodDTOAssembler extends RepresentationModelAssemblerSuppo
     @Autowired
     private AlgaLinks algaLinks;
 
+    @Autowired
+    private AlgaSecurity algaSecurity;
+
     public PaymentMethodDTOAssembler() {
         super(PaymentMethodController.class, PaymentMethodDTO.class);
     }
@@ -28,13 +32,21 @@ public class PaymentMethodDTOAssembler extends RepresentationModelAssemblerSuppo
         PaymentMethodDTO paymentMethodDTO = createModelWithId(paymentMethod.getId(), paymentMethod);
         modelMapper.map(paymentMethod, paymentMethodDTO);
 
-        paymentMethodDTO.add(algaLinks.linkToPaymentMethods("payment-methods"));
+        if (algaSecurity.canQueryPaymentMethods()) {
+            paymentMethodDTO.add(algaLinks.linkToPaymentMethods("payment-methods"));
+        }
 
         return paymentMethodDTO;
     }
 
     @Override
     public CollectionModel<PaymentMethodDTO> toCollectionModel(Iterable<? extends PaymentMethod> entities) {
-        return super.toCollectionModel(entities).add(algaLinks.linkToPaymentMethods());
+        CollectionModel<PaymentMethodDTO> collectionModel = super.toCollectionModel(entities);
+
+        if (algaSecurity.canQueryPaymentMethods()) {
+            collectionModel.add(algaLinks.linkToPaymentMethods());
+        }
+
+        return collectionModel;
     }
 }

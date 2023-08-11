@@ -31,7 +31,9 @@ public class OrderDTOAssembler extends RepresentationModelAssemblerSupport<Order
         OrderDTO orderDTO = createModelWithId(order.getCode(), order);
         modelMapper.map(order, orderDTO);
 
-        orderDTO.add(algaLinks.linkToOrders("orders"));
+        if (algaSecurity.canSearchOrders()) {
+            orderDTO.add(algaLinks.linkToOrders("orders"));
+        }
 
         if (algaSecurity.canManageOrders(order.getCode())) {
             if (order.canBeConfirmed()) {
@@ -47,14 +49,25 @@ public class OrderDTOAssembler extends RepresentationModelAssemblerSupport<Order
             }
         }
 
-        orderDTO.getRestaurant().add(algaLinks.linkToRestaurant(order.getRestaurant().getId()));
-        orderDTO.getClient().add(algaLinks.linkToUser(order.getClient().getId()));
-        orderDTO.getPaymentMethod().add(algaLinks.linkToPaymentMethod(order.getPaymentMethod().getId()));
-        orderDTO.getDeliveryAddress().getCity().add(algaLinks.linkToCity(order.getDeliveryAddress().getCity().getId()));
+        if (algaSecurity.canQueryRestaurants()) {
+            orderDTO.getRestaurant().add(algaLinks.linkToRestaurant(order.getRestaurant().getId()));
 
-        orderDTO.getItems().forEach(item -> {
-            item.add(algaLinks.linkToProduct(orderDTO.getRestaurant().getId(), item.getProductId(), "product"));
-        });
+            orderDTO.getItems().forEach(item -> {
+                item.add(algaLinks.linkToProduct(orderDTO.getRestaurant().getId(), item.getProductId(), "product"));
+            });
+        }
+
+        if (algaSecurity.canQueryUsersGroupsPermissions()) {
+            orderDTO.getClient().add(algaLinks.linkToUser(order.getClient().getId()));
+        }
+
+        if (algaSecurity.canQueryPaymentMethods()) {
+            orderDTO.getPaymentMethod().add(algaLinks.linkToPaymentMethod(order.getPaymentMethod().getId()));
+        }
+
+        if (algaSecurity.canQueryCities()) {
+            orderDTO.getDeliveryAddress().getCity().add(algaLinks.linkToCity(order.getDeliveryAddress().getCity().getId()));
+        }
 
         return orderDTO;
     }

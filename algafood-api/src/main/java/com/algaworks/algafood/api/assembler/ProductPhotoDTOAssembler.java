@@ -3,6 +3,7 @@ package com.algaworks.algafood.api.assembler;
 import com.algaworks.algafood.api.controller.RestaurantProductPhotoController;
 import com.algaworks.algafood.api.dto.ProductPhotoDTO;
 import com.algaworks.algafood.api.helper.AlgaLinks;
+import com.algaworks.algafood.core.security.AlgaSecurity;
 import com.algaworks.algafood.domain.model.ProductPhoto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ public class ProductPhotoDTOAssembler extends RepresentationModelAssemblerSuppor
     @Autowired
     private AlgaLinks algaLinks;
 
+    @Autowired
+    private AlgaSecurity algaSecurity;
+
     public ProductPhotoDTOAssembler() {
         super(RestaurantProductPhotoController.class, ProductPhotoDTO.class);
     }
@@ -26,8 +30,10 @@ public class ProductPhotoDTOAssembler extends RepresentationModelAssemblerSuppor
     public ProductPhotoDTO toModel(ProductPhoto photo) {
         ProductPhotoDTO productPhotoDTO = modelMapper.map(photo, ProductPhotoDTO.class);
 
-        productPhotoDTO.add(algaLinks.linkToProductPhoto(photo.getRestaurantId(), photo.getProduct().getId()));
-        productPhotoDTO.add(algaLinks.linkToProduct(photo.getRestaurantId(), photo.getProduct().getId(), "product"));
+        if (algaSecurity.canQueryRestaurants()) {
+            productPhotoDTO.add(algaLinks.linkToProductPhoto(photo.getRestaurantId(), photo.getProduct().getId()));
+            productPhotoDTO.add(algaLinks.linkToProduct(photo.getRestaurantId(), photo.getProduct().getId(), "product"));
+        }
 
         return productPhotoDTO;
     }

@@ -3,6 +3,7 @@ package com.algaworks.algafood.api.assembler;
 import com.algaworks.algafood.api.controller.RestaurantController;
 import com.algaworks.algafood.api.dto.RestaurantBasicDTO;
 import com.algaworks.algafood.api.helper.AlgaLinks;
+import com.algaworks.algafood.core.security.AlgaSecurity;
 import com.algaworks.algafood.domain.model.Restaurant;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class RestaurantBasicDTOAssembler extends RepresentationModelAssemblerSup
     @Autowired
     private AlgaLinks algaLinks;
 
+    @Autowired
+    private AlgaSecurity algaSecurity;
+
     public RestaurantBasicDTOAssembler() {
         super(RestaurantController.class, RestaurantBasicDTO.class);
     }
@@ -28,14 +32,25 @@ public class RestaurantBasicDTOAssembler extends RepresentationModelAssemblerSup
         RestaurantBasicDTO restaurantDTO = createModelWithId(restaurant.getId(), restaurant);
         modelMapper.map(restaurant, restaurantDTO);
 
-        restaurantDTO.add(algaLinks.linkToRestaurants("restaurants"));
-        restaurantDTO.getKitchen().add(algaLinks.linkToKitchen(restaurant.getKitchen().getId()));
+        if (algaSecurity.canQueryRestaurants()) {
+            restaurantDTO.add(algaLinks.linkToRestaurants("restaurants"));
+        }
+
+        if (algaSecurity.canQueryKitchens()) {
+            restaurantDTO.getKitchen().add(algaLinks.linkToKitchen(restaurant.getKitchen().getId()));
+        }
 
         return restaurantDTO;
     }
 
     @Override
     public CollectionModel<RestaurantBasicDTO> toCollectionModel(Iterable<? extends Restaurant> entities) {
-        return super.toCollectionModel(entities).add(algaLinks.linkToRestaurants());
+        CollectionModel<RestaurantBasicDTO> collectionModel = super.toCollectionModel(entities);
+
+        if (algaSecurity.canQueryRestaurants()) {
+            collectionModel.add(algaLinks.linkToRestaurants());
+        }
+
+        return collectionModel;
     }
 }

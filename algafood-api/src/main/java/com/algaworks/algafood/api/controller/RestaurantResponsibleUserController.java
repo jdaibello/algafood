@@ -4,6 +4,7 @@ import com.algaworks.algafood.api.assembler.UserDTOAssembler;
 import com.algaworks.algafood.api.dto.UserDTO;
 import com.algaworks.algafood.api.helper.AlgaLinks;
 import com.algaworks.algafood.api.openapi.controller.RestaurantResponsibleUserControllerOpenApi;
+import com.algaworks.algafood.core.security.AlgaSecurity;
 import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Restaurant;
 import com.algaworks.algafood.domain.service.RestaurantService;
@@ -28,6 +29,9 @@ public class RestaurantResponsibleUserController implements RestaurantResponsibl
     @Autowired
     private AlgaLinks algaLinks;
 
+    @Autowired
+    private AlgaSecurity algaSecurity;
+
     @Override
     @CheckSecurity.Restaurants.CanQuery
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -36,12 +40,17 @@ public class RestaurantResponsibleUserController implements RestaurantResponsibl
         Restaurant restaurant = service.findOrFail(restaurantId);
 
         CollectionModel<UserDTO> usersDTO = userDTOAssembler.toCollectionModel(restaurant.getResponsibles())
-                .removeLinks().add(algaLinks.linkToRestaurantResponsible(restaurantId))
-                .add(algaLinks.linkToRestaurantResponsibleAttachment(restaurantId, "attach"));
+                .removeLinks();
 
-        usersDTO.getContent().stream().forEach(userDTO -> {
-            userDTO.add(algaLinks.linkToRestaurantResponsibleDetachment(restaurantId, userDTO.getId(), "detach"));
-        });
+        usersDTO.add(algaLinks.linkToRestaurantResponsible(restaurantId));
+
+        if (algaSecurity.canManageRestaurantsRegistration()) {
+            usersDTO.add(algaLinks.linkToRestaurantResponsibleAttachment(restaurantId, "attach"));
+
+            usersDTO.getContent().stream().forEach(userDTO -> {
+                userDTO.add(algaLinks.linkToRestaurantResponsibleDetachment(restaurantId, userDTO.getId(), "detach"));
+            });
+        }
 
         return usersDTO;
     }

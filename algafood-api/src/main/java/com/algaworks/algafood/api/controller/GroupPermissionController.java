@@ -4,6 +4,7 @@ import com.algaworks.algafood.api.assembler.PermissionDTOAssembler;
 import com.algaworks.algafood.api.dto.PermissionDTO;
 import com.algaworks.algafood.api.helper.AlgaLinks;
 import com.algaworks.algafood.api.openapi.controller.GroupPermissionControllerOpenApi;
+import com.algaworks.algafood.core.security.AlgaSecurity;
 import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Group;
 import com.algaworks.algafood.domain.service.GroupService;
@@ -28,6 +29,9 @@ public class GroupPermissionController implements GroupPermissionControllerOpenA
     @Autowired
     private AlgaLinks algaLinks;
 
+    @Autowired
+    private AlgaSecurity algaSecurity;
+
     @Override
     @CheckSecurity.UsersGroupsPermissions.CanQuery
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -35,12 +39,17 @@ public class GroupPermissionController implements GroupPermissionControllerOpenA
         Group group = service.findOrFail(groupId);
 
         CollectionModel<PermissionDTO> permissionsDTO = permissionDTOAssembler.toCollectionModel(group.getPermissions())
-                .removeLinks().add(algaLinks.linkToGroupPermissions(groupId))
-                .add(algaLinks.linkToGroupPermissionAttachment(groupId, "attach"));
+                .removeLinks();
 
-        permissionsDTO.getContent().forEach(permissionDTO -> {
-            permissionDTO.add(algaLinks.linkToGroupPermissionDetachment(groupId, permissionDTO.getId(), "detach"));
-        });
+        permissionsDTO.add(algaLinks.linkToGroupPermissions(groupId));
+
+        if (algaSecurity.canEditUsersGroupsPermissions()) {
+           permissionsDTO.add(algaLinks.linkToGroupPermissionAttachment(groupId, "attach"));
+
+           permissionsDTO.getContent().forEach(permissionDTO -> {
+               permissionDTO.add(algaLinks.linkToGroupPermissionDetachment(groupId, permissionDTO.getId(), "detach"));
+           });
+       }
 
         return permissionsDTO;
     }

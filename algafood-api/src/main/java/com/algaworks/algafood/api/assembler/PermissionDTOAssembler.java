@@ -2,6 +2,7 @@ package com.algaworks.algafood.api.assembler;
 
 import com.algaworks.algafood.api.dto.PermissionDTO;
 import com.algaworks.algafood.api.helper.AlgaLinks;
+import com.algaworks.algafood.core.security.AlgaSecurity;
 import com.algaworks.algafood.domain.model.Permission;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ public class PermissionDTOAssembler implements RepresentationModelAssembler<Perm
     @Autowired
     private AlgaLinks algaLinks;
 
+    @Autowired
+    private AlgaSecurity algaSecurity;
+
     @Override
     public PermissionDTO toModel(Permission permission) {
         return modelMapper.map(permission, PermissionDTO.class);
@@ -25,7 +29,12 @@ public class PermissionDTOAssembler implements RepresentationModelAssembler<Perm
 
     @Override
     public CollectionModel<PermissionDTO> toCollectionModel(Iterable<? extends Permission> entities) {
-        return RepresentationModelAssembler.super.toCollectionModel(entities)
-                .add(algaLinks.linkToPermissions());
+        CollectionModel<PermissionDTO> collectionModel = RepresentationModelAssembler.super.toCollectionModel(entities);
+
+        if (algaSecurity.canQueryUsersGroupsPermissions()) {
+            collectionModel.add(algaLinks.linkToPermissions());
+        }
+
+        return collectionModel;
     }
 }

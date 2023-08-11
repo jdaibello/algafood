@@ -4,6 +4,7 @@ import com.algaworks.algafood.api.assembler.PaymentMethodDTOAssembler;
 import com.algaworks.algafood.api.dto.PaymentMethodDTO;
 import com.algaworks.algafood.api.helper.AlgaLinks;
 import com.algaworks.algafood.api.openapi.controller.RestaurantPaymentMethodControllerOpenApi;
+import com.algaworks.algafood.core.security.AlgaSecurity;
 import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Restaurant;
 import com.algaworks.algafood.domain.service.RestaurantService;
@@ -28,6 +29,9 @@ public class RestaurantPaymentMethodController implements RestaurantPaymentMetho
     @Autowired
     private AlgaLinks algaLinks;
 
+    @Autowired
+    private AlgaSecurity algaSecurity;
+
     @Override
     @CheckSecurity.Restaurants.CanQuery
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -36,14 +40,18 @@ public class RestaurantPaymentMethodController implements RestaurantPaymentMetho
         Restaurant restaurant = service.findOrFail(restaurantId);
 
         CollectionModel<PaymentMethodDTO> paymentMethodsDTO = paymentMethodDTOAssembler
-                .toCollectionModel(restaurant.getPaymentMethods()).removeLinks()
-                .add(algaLinks.linkToRestaurantPaymentMethods(restaurantId))
-                .add(algaLinks.linkToRestaurantPaymentMethodAttachment(restaurantId, "attach"));
+                .toCollectionModel(restaurant.getPaymentMethods()).removeLinks();
 
-        paymentMethodsDTO.getContent().forEach(paymentMethodDTO -> {
-           paymentMethodDTO.add(algaLinks.linkToRestaurantPaymentMethodDetachment(restaurantId,
-                   paymentMethodDTO.getId(), "detach"));
-        });
+        paymentMethodsDTO.add(algaLinks.linkToRestaurantPaymentMethods(restaurantId));
+
+        if (algaSecurity.canManageRestaurantsOperation(restaurantId)) {
+            paymentMethodsDTO.add(algaLinks.linkToRestaurantPaymentMethodAttachment(restaurantId, "attach"));
+
+            paymentMethodsDTO.getContent().forEach(paymentMethodDTO -> {
+                paymentMethodDTO.add(algaLinks.linkToRestaurantPaymentMethodDetachment(restaurantId,
+                        paymentMethodDTO.getId(), "detach"));
+            });
+        }
 
         return  paymentMethodsDTO;
     }

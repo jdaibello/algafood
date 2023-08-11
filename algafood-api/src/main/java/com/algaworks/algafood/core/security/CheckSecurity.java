@@ -12,7 +12,7 @@ public @interface CheckSecurity {
 
     public @interface Kitchens {
 
-        @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
+        @PreAuthorize("@algaSecurity.canQueryKitchens()")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface CanQuery { }
@@ -25,19 +25,17 @@ public @interface CheckSecurity {
 
     public @interface Restaurants {
 
-        @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
+        @PreAuthorize("@algaSecurity.canQueryRestaurants()")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface CanQuery { }
 
-        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_RESTAURANTES')")
+        @PreAuthorize("@algaSecurity.canManageRestaurantsRegistration()")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface CanManageRegistration { }
 
-        @PreAuthorize("hasAuthority('SCOPE_WRITE') and " +
-                "(hasAuthority('EDITAR_RESTAURANTES') or " +
-                "@algaSecurity.manageRestaurant(#restaurantId))")
+        @PreAuthorize("@algaSecurity.canManageRestaurantsOperation(#restaurantId)")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface CanManageOperation { }
@@ -45,9 +43,7 @@ public @interface CheckSecurity {
 
     public @interface Orders {
 
-        @PreAuthorize("hasAuthority('SCOPE_READ') and (hasAuthority('CONSULTAR_PEDIDOS') or " +
-                "@algaSecurity.getUserId() == #filter.clientId or" +
-                "@algaSecurity.manageRestaurant(#filter.restaurantId))")
+        @PreAuthorize("@algaSecurity.canSearchOrders(#filter.restaurantId)")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface CanSearch { }
@@ -65,7 +61,7 @@ public @interface CheckSecurity {
         @Target(ElementType.METHOD)
         public @interface CanCreate { }
 
-        @PreAuthorize("@algaSecurity.canManageOrders(#orderCode))")
+        @PreAuthorize("@algaSecurity.canManageOrders(#orderCode)")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface CanManageOrders { }
@@ -73,7 +69,7 @@ public @interface CheckSecurity {
 
     public @interface PaymentMethods {
 
-        @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
+        @PreAuthorize("@algaSecurity.canQueryPaymentMethods()")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface CanQuery { }
@@ -86,7 +82,7 @@ public @interface CheckSecurity {
 
     public @interface Cities {
 
-        @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
+        @PreAuthorize("@algaSecurity.canQueryCities()")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface CanQuery { }
@@ -99,7 +95,7 @@ public @interface CheckSecurity {
 
     public @interface States {
 
-        @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
+        @PreAuthorize("@algaSecurity.canQueryStates()")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface CanQuery { }
@@ -112,7 +108,7 @@ public @interface CheckSecurity {
 
     public @interface UsersGroupsPermissions {
 
-        @PreAuthorize("hasAuthority('SCOPE_READ') and hasAuthority('CONSULTAR_USUARIOS_GRUPOS_PERMISSOES')")
+        @PreAuthorize("@algaSecurity.canQueryUsersGroupsPermissions()")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface CanQuery { }
@@ -135,7 +131,7 @@ public @interface CheckSecurity {
         @Target(ElementType.METHOD)
         public @interface CanUpdate { }
 
-        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_USUARIOS_GRUPOS_PERMISSOES')")
+        @PreAuthorize("@algaSecurity.canEditUsersGroupsPermissions()")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface CanEdit { }
@@ -143,7 +139,7 @@ public @interface CheckSecurity {
 
     public @interface Statistics {
 
-        @PreAuthorize("hasAuthority('SCOPE_READ') and hasAuthority('GERAR_RELATORIOS')")
+        @PreAuthorize("@algaSecurity.canQueryStatistics()")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface CanQuery { }

@@ -3,6 +3,7 @@ package com.algaworks.algafood.api.assembler;
 import com.algaworks.algafood.api.controller.RestaurantController;
 import com.algaworks.algafood.api.dto.RestaurantDTO;
 import com.algaworks.algafood.api.helper.AlgaLinks;
+import com.algaworks.algafood.core.security.AlgaSecurity;
 import com.algaworks.algafood.domain.model.Restaurant;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class RestaurantDTOAssembler extends RepresentationModelAssemblerSupport<
     @Autowired
     private AlgaLinks algaLinks;
 
+    @Autowired
+    private AlgaSecurity algaSecurity;
+
     public RestaurantDTOAssembler() {
         super(RestaurantController.class, RestaurantDTO.class);
     }
@@ -28,30 +32,42 @@ public class RestaurantDTOAssembler extends RepresentationModelAssemblerSupport<
         RestaurantDTO restaurantDTO = createModelWithId(restaurant.getId(), restaurant);
         modelMapper.map(restaurant, restaurantDTO);
 
-        restaurantDTO.add(algaLinks.linkToRestaurants("restaurants"));
-        restaurantDTO.add(algaLinks.linkToProducts(restaurant.getId(), "products"));
-        restaurantDTO.getKitchen().add(algaLinks.linkToKitchen(restaurant.getKitchen().getId()));
-        restaurantDTO.add(algaLinks.linkToRestaurantPaymentMethods(restaurant.getId(), "payment-methods"));
-        restaurantDTO.add(algaLinks.linkToRestaurantResponsible(restaurant.getId(), "responsible"));
-
-        if (restaurantDTO.getAddress() != null && restaurantDTO.getAddress().getCity() != null) {
-            restaurantDTO.getAddress().getCity().add(algaLinks.linkToCity(restaurant.getAddress().getCity().getId()));
+        if (algaSecurity.canQueryRestaurants()) {
+            restaurantDTO.add(algaLinks.linkToRestaurants("restaurants"));
+            restaurantDTO.add(algaLinks.linkToProducts(restaurant.getId(), "products"));
+            restaurantDTO.add(algaLinks.linkToRestaurantPaymentMethods(restaurant.getId(), "payment-methods"));
         }
 
-        if (restaurant.allowedToActivate()) {
-            restaurantDTO.add(algaLinks.linkToRestaurantActivation(restaurant.getId(), "activate"));
+        if (algaSecurity.canQueryKitchens()) {
+            restaurantDTO.getKitchen().add(algaLinks.linkToKitchen(restaurant.getKitchen().getId()));
         }
 
-        if (restaurant.allowedToDeactivate()) {
-            restaurantDTO.add(algaLinks.linkToRestaurantDeactivation(restaurant.getId(), "deactivate"));
+        if (algaSecurity.canQueryCities()) {
+            if (restaurantDTO.getAddress() != null && restaurantDTO.getAddress().getCity() != null) {
+                restaurantDTO.getAddress().getCity().add(algaLinks.linkToCity(restaurant.getAddress().getCity().getId()));
+            }
         }
 
-        if (restaurant.allowedToOpen()) {
-            restaurantDTO.add(algaLinks.linkToRestaurantOpening(restaurant.getId(), "open"));
+        if (algaSecurity.canManageRestaurantsRegistration()) {
+            restaurantDTO.add(algaLinks.linkToRestaurantResponsible(restaurant.getId(), "responsible"));
+
+            if (restaurant.allowedToActivate()) {
+                restaurantDTO.add(algaLinks.linkToRestaurantActivation(restaurant.getId(), "activate"));
+            }
+
+            if (restaurant.allowedToDeactivate()) {
+                restaurantDTO.add(algaLinks.linkToRestaurantDeactivation(restaurant.getId(), "deactivate"));
+            }
         }
 
-        if (restaurant.allowedToClose()) {
-            restaurantDTO.add(algaLinks.linkToRestaurantClosing(restaurant.getId(), "close"));
+        if (algaSecurity.canManageRestaurantsOperation(restaurant.getId())) {
+            if (restaurant.allowedToOpen()) {
+                restaurantDTO.add(algaLinks.linkToRestaurantOpening(restaurant.getId(), "open"));
+            }
+
+            if (restaurant.allowedToClose()) {
+                restaurantDTO.add(algaLinks.linkToRestaurantClosing(restaurant.getId(), "close"));
+            }
         }
 
         return restaurantDTO;
@@ -59,6 +75,12 @@ public class RestaurantDTOAssembler extends RepresentationModelAssemblerSupport<
 
     @Override
     public CollectionModel<RestaurantDTO> toCollectionModel(Iterable<? extends Restaurant> entities) {
-        return super.toCollectionModel(entities).add(algaLinks.linkToRestaurants());
+        CollectionModel<RestaurantDTO> collectionModel = super.toCollectionModel(entities);
+
+        if (algaSecurity.canQueryRestaurants()) {
+            collectionModel.add(algaLinks.linkToRestaurants());
+        }
+
+        return collectionModel;
     }
 }
