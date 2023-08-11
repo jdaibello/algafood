@@ -16,7 +16,7 @@ DELETE FROM state;
 DELETE FROM user;
 DELETE FROM user_group;
 DELETE FROM restaurant_responsible_user;
-DELETE FROM aouth_client_details;
+DELETE FROM oauth_client_details;
 
 SET foreign_key_checks = 1;
 
@@ -126,16 +126,5 @@ INSERT INTO oauth_client_details (
 VALUES (
   'foodanalytics', null, '$2y$12$fahbH37S2pyk1RPuIHKP.earzFmgAJJGo26rE.59vf4wwiiTKHnzO',
   'READ,WRITE', 'authorization_code', 'http://localhost:8082', null,
-  null, null, null
-);
-
-INSERT INTO oauth_client_details (
-  client_id, resource_ids, client_secret,
-  scope, authorized_grant_types, web_server_redirect_uri, authorities,
-  access_token_validity, refresh_token_validity, autoapprove
-)
-VALUES (
-  'faturamento', null, '$2y$12$fHixriC7yXX/i1/CmpnGH.RFyK/l5YapLCFOEbIktONjE8ZDykSnu',
-  'READ,WRITE', 'client_credentials', null, 'CONSULTAR_PEDIDOS,GERAR_RELATORIOS',
   null, null, null
 );

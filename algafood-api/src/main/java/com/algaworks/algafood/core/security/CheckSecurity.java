@@ -65,8 +65,7 @@ public @interface CheckSecurity {
         @Target(ElementType.METHOD)
         public @interface CanCreate { }
 
-        @PreAuthorize("hasAuthority('SCOPE_WRITE') and (hasAuthority('GERENCIAR_PEDIDOS') or " +
-                "@algaSecurity.manageRestaurantOrder(#orderCode))")
+        @PreAuthorize("@algaSecurity.canManageOrders(#orderCode))")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface CanManageOrders { }

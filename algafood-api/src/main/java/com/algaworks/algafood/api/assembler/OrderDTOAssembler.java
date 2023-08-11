@@ -3,6 +3,7 @@ package com.algaworks.algafood.api.assembler;
 import com.algaworks.algafood.api.controller.OrderController;
 import com.algaworks.algafood.api.dto.OrderDTO;
 import com.algaworks.algafood.api.helper.AlgaLinks;
+import com.algaworks.algafood.core.security.AlgaSecurity;
 import com.algaworks.algafood.domain.model.Order;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ public class OrderDTOAssembler extends RepresentationModelAssemblerSupport<Order
     @Autowired
     private AlgaLinks algaLinks;
 
+    @Autowired
+    private AlgaSecurity algaSecurity;
+
     public OrderDTOAssembler() {
         super(OrderController.class, OrderDTO.class);
     }
@@ -29,16 +33,18 @@ public class OrderDTOAssembler extends RepresentationModelAssemblerSupport<Order
 
         orderDTO.add(algaLinks.linkToOrders("orders"));
 
-        if (order.canBeConfirmed()) {
-            orderDTO.add(algaLinks.linkToOrderConfirmation(order.getCode(), "confirm"));
-        }
+        if (algaSecurity.canManageOrders(order.getCode())) {
+            if (order.canBeConfirmed()) {
+                orderDTO.add(algaLinks.linkToOrderConfirmation(order.getCode(), "confirm"));
+            }
 
-        if (order.canBeCancelled()) {
-            orderDTO.add(algaLinks.linkToOrderCancellation(order.getCode(), "cancel"));
-        }
+            if (order.canBeCancelled()) {
+                orderDTO.add(algaLinks.linkToOrderCancellation(order.getCode(), "cancel"));
+            }
 
-        if (order.canBeDelivered()) {
-            orderDTO.add(algaLinks.linkToOrderDelivery(order.getCode(), "delivery"));
+            if (order.canBeDelivered()) {
+                orderDTO.add(algaLinks.linkToOrderDelivery(order.getCode(), "delivery"));
+            }
         }
 
         orderDTO.getRestaurant().add(algaLinks.linkToRestaurant(order.getRestaurant().getId()));

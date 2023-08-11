@@ -38,4 +38,14 @@ public class AlgaSecurity {
     public boolean manageRestaurantOrder(String orderCode) {
         return orderRepository.isOrderManagedBy(orderCode, getUserId());
     }
+
+    public boolean hasAuthority(String authorityName) {
+        return getAuthentication().getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals(authorityName));
+    }
+
+    public boolean canManageOrders(String orderCode) {
+        return hasAuthority("SCOPE_WRITE") && (hasAuthority("GERENCIAR_PEDIDOS")
+                || manageRestaurantOrder(orderCode));
+    }
 }
