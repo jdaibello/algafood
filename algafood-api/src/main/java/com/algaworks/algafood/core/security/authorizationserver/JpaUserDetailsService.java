@@ -1,7 +1,7 @@
-package com.algaworks.algafood.auth.core;
+package com.algaworks.algafood.core.security.authorizationserver;
 
-import com.algaworks.algafood.auth.domain.UserModel;
-import com.algaworks.algafood.auth.domain.UserRepository;
+import com.algaworks.algafood.domain.model.User;
+import com.algaworks.algafood.domain.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,13 +23,13 @@ public class JpaUserDetailsService implements UserDetailsService {
     @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserModel user = userRepository.findByEmail(username)
+        User user = userRepository.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         return new AuthUser(user, getAuthorities(user));
     }
 
-    private Collection<GrantedAuthority> getAuthorities(UserModel user) {
+    private Collection<GrantedAuthority> getAuthorities(User user) {
         return user.getGroups().stream().flatMap(group -> group.getPermissions().stream())
                 .map(permission -> new SimpleGrantedAuthority(permission.getName().toUpperCase()))
                 .collect(Collectors.toSet());

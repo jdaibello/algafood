@@ -1,4 +1,4 @@
-package com.algaworks.algafood.auth.core;
+package com.algaworks.algafood.core.security.authorizationserver;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -67,11 +66,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
         JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
 
-        var jksResource = new ClassPathResource(jwtKeyStoreProperties.getPath());
         var keyStorePass = jwtKeyStoreProperties.getPassword();
         var keyPairAlias = jwtKeyStoreProperties.getKeypairAlias();
 
-        var keyStoreKeyFactory = new KeyStoreKeyFactory(jksResource, keyStorePass.toCharArray());
+        var keyStoreKeyFactory = new KeyStoreKeyFactory(jwtKeyStoreProperties.getJksLocation(), keyStorePass.toCharArray());
         var keyPair = keyStoreKeyFactory.getKeyPair(keyPairAlias);
 
         jwtAccessTokenConverter.setKeyPair(keyPair);

@@ -43,7 +43,7 @@ public @interface CheckSecurity {
 
     public @interface Orders {
 
-        @PreAuthorize("@algaSecurity.canSearchOrders(#filter.restaurantId)")
+        @PreAuthorize("@algaSecurity.canSearchOrders(#filter.clientId, #filter.restaurantId)")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         public @interface CanSearch { }

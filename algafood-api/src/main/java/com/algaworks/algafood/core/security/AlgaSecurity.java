@@ -82,9 +82,9 @@ public class AlgaSecurity {
         return hasScopeWrite() && hasAuthority("EDITAR_USUARIOS_GRUPOS_PERMISSOES");
     }
 
-    public boolean canSearchOrders(Long restaurantId) {
+    public boolean canSearchOrders(Long clientId, Long restaurantId) {
         return hasScopeRead() && (hasAuthority("CONSULTAR_PEDIDOS")
-                || manageRestaurant(restaurantId));
+                || getUserId().equals(clientId) || manageRestaurant(restaurantId));
     }
 
     public boolean canSearchOrders() {
