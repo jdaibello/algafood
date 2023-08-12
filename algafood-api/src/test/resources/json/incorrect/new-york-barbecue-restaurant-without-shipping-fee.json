@@ -2,5 +2,15 @@
 	"name": "New York Barbecue",
 	"kitchen": {
 		"id": 2
+	},
+	"address": {
+		"zipCode": "38400-999",
+		"street": "Nova Rua",
+		"number": "123",
+		"complement": "Sala 101",
+		"district": "Bairro Novo",
+		"city": {
+			"id": 3
+		}
 	}
 }

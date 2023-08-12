@@ -9,17 +9,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.algaworks.algafood.domain.model.Kitchen;
 import com.algaworks.algafood.domain.repository.KitchenRepository;
-import com.algaworks.algafood.util.DatabaseCleaner;
 import com.algaworks.algafood.util.ResourceUtils;
 
 import io.restassured.RestAssured;
@@ -27,20 +26,18 @@ import io.restassured.http.ContentType;
 
 @DirtiesContext
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-@TestPropertySource("/application-test.properties")
+@SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
+@ActiveProfiles("test")
 public class KitchenAPITests {
 	private static final int NON_EXISTING_KITCHEN_ID = 100;
 
 	private Kitchen americanKitchen;
 	private int numberOfRegisteredKitchens;
 	private String jsonCorrectChineseKitchen;
+	private String allowedUserToken;
 
-	@LocalServerPort
+	@Value("${server.port}")
 	private int port;
-
-	@Autowired
-	private DatabaseCleaner databaseCleaner;
 
 	@Autowired
 	private KitchenRepository kitchenRepository;
@@ -48,10 +45,28 @@ public class KitchenAPITests {
 	@BeforeEach
 	void setUp() {
 		enableLoggingOfRequestAndResponseIfValidationFails();
-		RestAssured.basePath = "/kitchens";
 		RestAssured.port = port;
 
-		//databaseCleaner.clearTables();
+		String clientId = "algafood-mobile";
+		String clientSecret = "mobile123";
+		String grantType = "password";
+		String allowedUserEmail = "joao.ger@algafood.com";
+		String allowedUserPassword = "123";
+
+		allowedUserToken = given()
+				.auth().preemptive().basic(clientId, clientSecret)
+				.contentType(ContentType.URLENC.withCharset("UTF-8"))
+				.formParam("grant_type", grantType)
+				.formParam("username", allowedUserEmail)
+				.formParam("password", allowedUserPassword)
+				.when()
+				.post("http://localhost:" + port + "/oauth/token")
+				.then()
+				.statusCode(HttpStatus.OK.value())
+				.extract().path("access_token");
+
+		RestAssured.basePath = "/kitchens";
+
 		prepareData();
 
 		jsonCorrectChineseKitchen = ResourceUtils.getContentFromResource("/json/correct/chinese-kitchen.json");
@@ -59,29 +74,34 @@ public class KitchenAPITests {
 
 	@Test
 	void shouldReturnStatus200WhenGetKitchens() {
-		given().accept(ContentType.JSON).when().get().then().statusCode(HttpStatus.OK.value());
+		given().header("Authorization", "Bearer " + allowedUserToken).accept(ContentType.JSON).when().get()
+				.then().statusCode(HttpStatus.OK.value());
 	}
 
 	@Test
 	void shouldReturnCorrectQuantityOfKitchensWhenGetKitchens() {
-		given().accept(ContentType.JSON).when().get().then().body("", hasSize(numberOfRegisteredKitchens));
+		given().header("Authorization", "Bearer " + allowedUserToken).accept(ContentType.JSON).when().get()
+				.then().body("_embedded.kitchens", hasSize(numberOfRegisteredKitchens));
 	}
 
 	@Test
 	void shouldReturnStatus201WhenSaveKitchen() {
-		given().body(jsonCorrectChineseKitchen).contentType(ContentType.JSON).accept(ContentType.JSON).when().post()
+		given().header("Authorization", "Bearer " + allowedUserToken).body(jsonCorrectChineseKitchen)
+				.contentType(ContentType.JSON).accept(ContentType.JSON).when().post()
 				.then().statusCode(HttpStatus.CREATED.value());
 	}
 
 	@Test
 	void shouldReturnResponseAndCorrectStatusWhenGetExistingKitchen() {
-		given().pathParam("kitchenId", americanKitchen.getId()).accept(ContentType.JSON).when().get("/{kitchenId}")
+		given().header("Authorization", "Bearer " + allowedUserToken)
+				.pathParam("kitchenId", americanKitchen.getId()).accept(ContentType.JSON).when().get("/{kitchenId}")
 				.then().statusCode(HttpStatus.OK.value()).body("name", equalTo(americanKitchen.getName()));
 	}
 
 	@Test
 	void shouldReturnStatus400WhenGetNonExistingKitchen() {
-		given().pathParam("kitchenId", NON_EXISTING_KITCHEN_ID).accept(ContentType.JSON).when().get("/{kitchenId}")
+		given().header("Authorization", "Bearer " + allowedUserToken)
+				.pathParam("kitchenId", NON_EXISTING_KITCHEN_ID).accept(ContentType.JSON).when().get("/{kitchenId}")
 				.then().statusCode(HttpStatus.NOT_FOUND.value());
 	}
 
