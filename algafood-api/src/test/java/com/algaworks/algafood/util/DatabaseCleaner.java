@@ -76,17 +76,15 @@ public class DatabaseCleaner {
 	private Statement buildSqlStatement(List<String> tableNames) throws SQLException {
 		Statement statement = connection.createStatement();
 
-		statement.addBatch(sql("SET FOREIGN_KEY_CHECKS = 0"));
-		addTruncateStatements(tableNames, statement);
-		statement.addBatch(sql("SET FOREIGN_KEY_CHECKS = 1"));
+		addDeleteStatements(tableNames, statement);
 
 		return statement;
 	}
 
-	private void addTruncateStatements(List<String> tableNames, Statement statement) {
+	private void addDeleteStatements(List<String> tableNames, Statement statement) {
 		tableNames.forEach(tableName -> {
 			try {
-				statement.addBatch(sql("TRUNCATE TABLE " + "`" + tableName + "`"));
+				statement.addBatch(sql("DELETE FROM " + "`" + tableName + "`"));
 			} catch (SQLException e) {
 				throw new RuntimeException(e);
 			}
