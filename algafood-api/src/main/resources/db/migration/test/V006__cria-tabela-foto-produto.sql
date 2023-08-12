@@ -1,4 +1,4 @@
-CREATE TABLE product_photo (
+CREATE TABLE IF NOT EXISTS product_photo (
 	product_id BIGINT NOT NULL, 
 	file_name VARCHAR(150) NOT NULL, 
 	description VARCHAR(150), 

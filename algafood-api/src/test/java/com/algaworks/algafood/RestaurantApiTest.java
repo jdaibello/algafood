@@ -27,11 +27,11 @@ import com.algaworks.algafood.util.ResourceUtils;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 
-@DirtiesContext
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
 @ActiveProfiles("test")
-public class RestaurantApiTests {
+@DirtiesContext
+public class RestaurantApiTest {
 	private static final String BUSINESS_RULE_VIOLATION_PROBLEM_TYPE = "Violação de regra de negócio";
 	private static final String INVALID_DATA_PROBLEM_TITLE = "Dados inválidos";
 	private static final int NON_EXISTING_RESTAURANT_ID = 100;

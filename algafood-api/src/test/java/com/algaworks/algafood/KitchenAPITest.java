@@ -24,11 +24,11 @@ import com.algaworks.algafood.util.ResourceUtils;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 
-@DirtiesContext
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
 @ActiveProfiles("test")
-public class KitchenAPITests {
+@DirtiesContext
+public class KitchenAPITest {
 	private static final int NON_EXISTING_KITCHEN_ID = 100;
 
 	private Kitchen americanKitchen;

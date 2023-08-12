@@ -1,2 +1,2 @@
-ALTER TABLE restaurant ADD active TINYINT(1) NOT NULL;
+ALTER TABLE restaurant ADD COLUMN IF NOT EXISTS active TINYINT(1) NOT NULL;
 UPDATE restaurant SET active = true;
