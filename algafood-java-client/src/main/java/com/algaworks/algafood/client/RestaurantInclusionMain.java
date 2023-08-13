@@ -2,6 +2,7 @@ package com.algaworks.algafood.client;
 
 import java.math.BigDecimal;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.client.RestTemplate;
 
 import com.algaworks.algafood.client.api.ClientApiException;
@@ -12,6 +13,7 @@ import com.algaworks.algafood.client.model.input.CityIdInput;
 import com.algaworks.algafood.client.model.input.KitchenIdInput;
 import com.algaworks.algafood.client.model.input.RestaurantInput;
 
+@Slf4j
 public class RestaurantInclusionMain {
 
 	public static void main(String[] args) {
@@ -44,11 +46,11 @@ public class RestaurantInclusionMain {
 			System.out.println(restaurantModel);
 		} catch (ClientApiException e) {
 			if (e.getProblem() != null) {
-				System.out.println(e.getProblem().getUserMessage());
+				log.error(e.getProblem().getUserMessage());
 				e.getProblem().getObjects().stream().forEach(p -> System.out.println("- " + p.getUserMessage()));
 			} else {
-				System.out.println("Erro desconhecido");
-				e.printStackTrace();
+				log.error("Erro desconhecido");
+				log.info(e.getMessage());
 			}
 		}
 	}
