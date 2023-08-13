@@ -5,8 +5,8 @@ CREATE TABLE IF NOT EXISTS restaurant_responsible_user (
 	PRIMARY KEY (restaurant_id, user_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-ALTER TABLE restaurant_responsible_user ADD CONSTRAINT IF NOT EXISTS fk_restaurant_user_restaurant
+ALTER TABLE restaurant_responsible_user ADD CONSTRAINT fk_restaurant_user_restaurant
 FOREIGN KEY (restaurant_id) REFERENCES restaurant (id);
 
-ALTER TABLE restaurant_responsible_user ADD CONSTRAINT IF NOT EXISTS fk_restaurant_user_user
+ALTER TABLE restaurant_responsible_user ADD CONSTRAINT fk_restaurant_user_user
 FOREIGN KEY (user_id) REFERENCES `user` (id);

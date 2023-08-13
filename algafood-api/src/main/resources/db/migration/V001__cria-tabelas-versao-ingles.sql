@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS state (
 	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-ALTER TABLE city ADD CONSTRAINT IF NOT EXISTS fk_city_state FOREIGN KEY (state_id) REFERENCES state (id);
+ALTER TABLE city ADD CONSTRAINT fk_city_state FOREIGN KEY (state_id) REFERENCES state (id);
 
 CREATE TABLE IF NOT EXISTS payment_method (
 	id BIGINT NOT NULL AUTO_INCREMENT,
@@ -89,19 +89,19 @@ CREATE TABLE IF NOT EXISTS user_group (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-ALTER TABLE group_permission ADD CONSTRAINT IF NOT EXISTS fk_group_permission_permission FOREIGN KEY (permission_id) REFERENCES permission (id);
-ALTER TABLE group_permission ADD CONSTRAINT IF NOT EXISTS fk_group_permission_group FOREIGN KEY (group_id) REFERENCES `group` (id);
+ALTER TABLE group_permission ADD CONSTRAINT fk_group_permission_permission FOREIGN KEY (permission_id) REFERENCES permission (id);
+ALTER TABLE group_permission ADD CONSTRAINT fk_group_permission_group FOREIGN KEY (group_id) REFERENCES `group` (id);
 
-ALTER TABLE product ADD CONSTRAINT IF NOT EXISTS fk_product_restaurant FOREIGN KEY (restaurant_id) REFERENCES restaurant (id);
+ALTER TABLE product ADD CONSTRAINT fk_product_restaurant FOREIGN KEY (restaurant_id) REFERENCES restaurant (id);
 
-ALTER TABLE restaurant ADD CONSTRAINT IF NOT EXISTS fk_restaurant_kitchen FOREIGN KEY (kitchen_id) REFERENCES kitchen (id);
-ALTER TABLE restaurant ADD CONSTRAINT IF NOT EXISTS fk_restaurant_city FOREIGN KEY (address_city_id) REFERENCES city (id);
+ALTER TABLE restaurant ADD CONSTRAINT fk_restaurant_kitchen FOREIGN KEY (kitchen_id) REFERENCES kitchen (id);
+ALTER TABLE restaurant ADD CONSTRAINT fk_restaurant_city FOREIGN KEY (address_city_id) REFERENCES city (id);
 
-ALTER TABLE restaurant_payment_method ADD CONSTRAINT IF NOT EXISTS fk_restaurant_payment_method_payment_method FOREIGN KEY (payment_method_id) REFERENCES payment_method (id);
-ALTER TABLE restaurant_payment_method ADD CONSTRAINT IF NOT EXISTS fk_restaurant_payment_method_restaurant FOREIGN KEY (restaurant_id) REFERENCES restaurant (id);
+ALTER TABLE restaurant_payment_method ADD CONSTRAINT fk_restaurant_payment_method_payment_method FOREIGN KEY (payment_method_id) REFERENCES payment_method (id);
+ALTER TABLE restaurant_payment_method ADD CONSTRAINT fk_restaurant_payment_method_restaurant FOREIGN KEY (restaurant_id) REFERENCES restaurant (id);
 
-ALTER TABLE user_group ADD CONSTRAINT IF NOT EXISTS fk_user_group_group FOREIGN KEY (group_id) REFERENCES `group` (id);
-ALTER TABLE user_group ADD CONSTRAINT IF NOT EXISTS fk_user_group_user FOREIGN KEY (user_id) REFERENCES `user` (id);
+ALTER TABLE user_group ADD CONSTRAINT fk_user_group_group FOREIGN KEY (group_id) REFERENCES `group` (id);
+ALTER TABLE user_group ADD CONSTRAINT fk_user_group_user FOREIGN KEY (user_id) REFERENCES `user` (id);
 
 CREATE TABLE IF NOT EXISTS `order` (
     id BIGINT NOT NULL AUTO_INCREMENT,
