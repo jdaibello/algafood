@@ -1,0 +1,25 @@
+
+j
+java:S2259”"NA "NullPointerException" could be thrown; "getRequiredType()" can return null.(ó–ú’ıÿÿÿÿ
+|
+java:S6201A"fReplace this instanceof check and cast with 'instanceof InvalidFormatException invalidformatexception'(ÇÂ²Ş
+
+java:S6201C"jReplace this instanceof check and cast with 'instanceof PropertyBindingException propertybindingexception'(“ƒòA
+—
+java:S6201T"€Replace this instanceof check and cast with 'instanceof MethodArgumentTypeMismatchException methodargumenttypemismatchexception'(²…Î
+i
+java:S6204«"RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(œçÖß
+e
+java:S6201¦"NReplace this instanceof check and cast with 'instanceof FieldError fielderror'(‡£¥à
+Z
+java:S1612´"DReplace this lambda with method reference 'Reference::getFieldName'.(••öN
+]
+java:S6201¾"FReplace this instanceof check and cast with 'instanceof String string'(òÌŠª
+=
+java:S1452Ó"&Remove usage of generic wildcard type.(Œ€œ­
+=
+java:S1452Ş"&Remove usage of generic wildcard type.(ÈÜ©¾
+=
+java:S1452è"&Remove usage of generic wildcard type.( ¹”
+B
+java:S1452÷"&Remove usage of generic wildcard type.(»€»şÿÿÿÿ
