@@ -27,6 +27,10 @@
 		<spring-security-jwt.version>1.0.11.RELEASE</spring-security-jwt.version>
 		<springdoc.version>1.7.0</springdoc.version>
 		<h2.version>2.1.210</h2.version>
+		<jacoco.version>0.8.10</jacoco.version>
+		<jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
+		<sonar.organization>jdaibello</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
 
 	<dependencies>
@@ -214,6 +218,12 @@
 			<artifactId>springdoc-openapi-security</artifactId>
 			<version>${springdoc.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.jacoco</groupId>
+			<artifactId>jacoco-maven-plugin</artifactId>
+			<version>${jacoco.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -225,7 +235,30 @@
 			<plugin>
 				<artifactId>maven-failsafe-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${jacoco-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>prepare-agent</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<goals>
+							<goal>report</goal>
+						</goals>
+						<configuration>
+							<formats>
+								<format>XML</format>
+							</formats>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
-
 </project>
