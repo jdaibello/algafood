@@ -26,7 +26,7 @@
 		<spring-security-oauth2.version>2.5.2.RELEASE</spring-security-oauth2.version>
 		<spring-security-jwt.version>1.0.11.RELEASE</spring-security-jwt.version>
 		<springdoc.version>1.7.0</springdoc.version>
-		<h2.version>2.1.210</h2.version>
+		<h2.version>2.2.220</h2.version>
 		<jacoco.version>0.8.10</jacoco.version>
 		<jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
 		<sonar.organization>jdaibello</sonar.organization>
