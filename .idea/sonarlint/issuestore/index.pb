@@ -11,8 +11,6 @@ K
 .github/workflows/build.yml,f/e/fe77d5d1439f26e353a42bbd38dece2467ff6558
 
 Oalgafood-api/src/test/java/com/algaworks/algafood/domain/model/AddressTest.java,f/2/f26485a4e99688ba2b0cb3e4fd9ccf137d790423
-D
-algafood-api/pom.xml,8/9/894e5d45637a56ae8e8ac623dd8f47ef68805a67
 G
 algafood-api/.gitignore,8/b/8b8dc9ef19610151aa76127ba5128dea683ba292
 :

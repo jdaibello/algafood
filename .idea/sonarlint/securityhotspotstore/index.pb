@@ -13,8 +13,6 @@ G
 algafood-api/.gitignore,8/b/8b8dc9ef19610151aa76127ba5128dea683ba292
 
 Oalgafood-api/src/test/java/com/algaworks/algafood/domain/model/AddressTest.java,f/2/f26485a4e99688ba2b0cb3e4fd9ccf137d790423
-D
-algafood-api/pom.xml,8/9/894e5d45637a56ae8e8ac623dd8f47ef68805a67
 :
 
 .gitignore,a/5/a5cc2925ca8258af241be7e5b0381edf30266302
