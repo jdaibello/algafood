@@ -1,5 +1,7 @@
 SET foreign_key_checks = 0;
 
+LOCK TABLES city write, `group` write, group_permission write, kitchen write, `order` write, order_item write, payment_method write, permission write, product write, product_photo write, restaurant write, restaurant_payment_method write, state write, `user` write, user_group write, restaurant_responsible_user write, oauth_client_details write;
+
 DELETE FROM city;
 DELETE FROM `group`;
 DELETE FROM group_permission;
@@ -128,3 +130,5 @@ VALUES (
   'READ,WRITE', 'authorization_code', 'http://localhost:8082', null,
   null, null, null
 );
+
+UNLOCK TABLES;
