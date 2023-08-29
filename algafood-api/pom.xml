@@ -24,7 +24,7 @@
 		<logback-ext-loggly.version>0.1.5</logback-ext-loggly.version>
 		<oauth2-oidc-sdk.version>6.21.2</oauth2-oidc-sdk.version>
 		<springdoc.version>1.7.0</springdoc.version>
-		<h2.version>2.1.210</h2.version>
+		<h2.version>2.2.220</h2.version>
 		<jacoco.version>0.8.10</jacoco.version>
 		<jacoco-maven-plugin.version>0.8.7</jacoco-maven-plugin.version>
 		<springauthserver.version>0.3.1</springauthserver.version>
