@@ -16,3 +16,9 @@ Oalgafood-api/src/test/java/com/algaworks/algafood/domain/model/AddressTest.java
 :
 
 .gitignore,a/5/a5cc2925ca8258af241be7e5b0381edf30266302
+…
+Ualgafood-api/src/main/java/com/algaworks/algafood/api/assembler/CityDTOAssembler.java,3/5/354361b8eddbaa685181573b24ed45914c1d7581
+K
+algafood-api/wait-for-it.sh,a/2/a2cec6ddb590f2f6ea6e1e3fc349fc55e764cbe0
+G
+algafood-api/Dockerfile,b/0/b0937dbd4bdfe7b4dd122502d9b7870da1b5209b
