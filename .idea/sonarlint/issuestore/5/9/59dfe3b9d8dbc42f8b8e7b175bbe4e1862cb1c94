@@ -1,25 +1,25 @@
 
-j
-java:S2259”"NA "NullPointerException" could be thrown; "getRequiredType()" can return null.(ó–ú’ıÿÿÿÿ
-|
-java:S6201A"fReplace this instanceof check and cast with 'instanceof InvalidFormatException invalidformatexception'(ÇÂ²Ş
-
-java:S6201C"jReplace this instanceof check and cast with 'instanceof PropertyBindingException propertybindingexception'(“ƒòA
 —
-java:S6201T"€Replace this instanceof check and cast with 'instanceof MethodArgumentTypeMismatchException methodargumenttypemismatchexception'(²…Î
-i
-java:S6204«"RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(œçÖß
-e
-java:S6201¦"NReplace this instanceof check and cast with 'instanceof FieldError fielderror'(‡£¥à
-Z
-java:S1612´"DReplace this lambda with method reference 'Reference::getFieldName'.(••öN
-]
-java:S6201¾"FReplace this instanceof check and cast with 'instanceof String string'(òÌŠª
-=
-java:S1452Ó"&Remove usage of generic wildcard type.(Œ€œ­
-=
-java:S1452Ş"&Remove usage of generic wildcard type.(ÈÜ©¾
-=
-java:S1452è"&Remove usage of generic wildcard type.( ¹”
-B
-java:S1452÷"&Remove usage of generic wildcard type.(»€»şÿÿÿÿ
+java:S2259"NA "NullPointerException" could be thrown; "getRequiredType()" can return null.(ó–ú’ıÿÿÿÿ8‹çØª1J$7f603045-d026-491b-8a01-2e8ec1a8b324
+©
+java:S6201;"fReplace this instanceof check and cast with 'instanceof InvalidFormatException invalidformatexception'(ÇÂ²Ş8‘çØª1J$7609e99e-9ba3-4dd7-b7a6-c8de1eb322f0
+¬
+java:S6201="jReplace this instanceof check and cast with 'instanceof PropertyBindingException propertybindingexception'(“ƒòA8‘çØª1J$841ea9cc-2254-48e9-87e7-e7b361a32f44
+Ä
+java:S6201N"€Replace this instanceof check and cast with 'instanceof MethodArgumentTypeMismatchException methodargumenttypemismatchexception'(²…Î8”çØª1J$295c28c4-84e2-4fcf-8060-ed861e3be867
+–
+java:S6204¥"RReplace this usage of 'Stream.collect(Collectors.toList())' with 'Stream.toList()'(œçÖß8™çØª1J$346b2f6c-2628-4edd-9926-4ad76d4d72a8
+’
+java:S6201 "NReplace this instanceof check and cast with 'instanceof FieldError fielderror'(‡£¥à8™çØª1J$f285bf4e-38ad-40c9-a761-90aeb25eb6a6
+‡
+java:S1612®"DReplace this lambda with method reference 'Reference::getFieldName'.(••öN8›çØª1J$075eba60-3380-4b54-8cd2-523f84708b65
+Š
+java:S6201¹"FReplace this instanceof check and cast with 'instanceof String string'(òÌŠª8 çØª1J$276c0e0d-149d-468d-9804-3810189c7c8d
+j
+java:S1452Î"&Remove usage of generic wildcard type.(Œ€œ­8£çØª1J$b10645f0-ff86-43ec-8a1e-ffcfaf864724
+j
+java:S1452Ù"&Remove usage of generic wildcard type.(ÈÜ©¾8¥çØª1J$79263410-9f68-46ad-b1c3-01410524339c
+j
+java:S1452ã"&Remove usage of generic wildcard type.( ¹”8¦çØª1J$4148158f-a046-4ea2-9fe3-4a0b7aab3054
+o
+java:S1452ò"&Remove usage of generic wildcard type.(»€»şÿÿÿÿ8¨çØª1J$74afc41e-f660-4304-a625-59e0db233e29
