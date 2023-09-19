@@ -18,7 +18,7 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import io.swagger.v3.oas.models.tags.Tag;
-import org.springdoc.core.customizers.OpenApiCustomiser;
+import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -30,16 +30,15 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @SecurityScheme(
         name = "OAuth2",
-        bearerFormat = "JWT",
-        scheme = "bearer",
         type = SecuritySchemeType.OAUTH2,
-        flows = @OAuthFlows(password = @OAuthFlow(
+        flows = @OAuthFlows(authorizationCode = @OAuthFlow(
+                authorizationUrl = "${springdoc.oAuthFlow.authorizationUrl}",
                 tokenUrl = "${springdoc.oAuthFlow.tokenUrl}",
                 scopes = {
                         @OAuthScope(name = "READ", description = "read scope"),
                         @OAuthScope(name = "WRITE", description = "write scope")
-                })
-        )
+                }
+        ))
 )
 @Configuration
 public class SpringDocConfig {
@@ -82,7 +81,7 @@ public class SpringDocConfig {
     }
 
     @Bean
-    public OpenApiCustomiser openApiCustomizer() {
+    public OpenApiCustomizer openApiCustomizer() {
         return openApi -> {
             openApi.getPaths()
                     .values()

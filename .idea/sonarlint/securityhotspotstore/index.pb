@@ -30,8 +30,6 @@ G
 algafood-api/Dockerfile,b/0/b0937dbd4bdfe7b4dd122502d9b7870da1b5209b
 P
  algafood-api/docker-compose.yaml,e/e/ee1bbe4b47b31c1e71ef5d5267d5fb7ff8558fcf
-ë
-aalgafood-api/src/main/java/com/algaworks/algafood/core/security/authorizationserver/AuthUser.java,b/5/b5e5a6740ac3cac93e6c117a610139c0473a2dca
 û
 nalgafood-api/src/main/java/com/algaworks/algafood/core/security/authorizationserver/JpaUserDetailsService.java,4/b/4bf0bb35c852a6c26299662ca8ff9940b646a6b9
 û
@@ -44,3 +42,7 @@ D
 ralgafood-api/src/main/java/com/algaworks/algafood/core/security/authorizationserver/AuthorizationServerConfig.java,1/f/1f0f4b118f58cebb06f6051cf8067a84cb60e43b
 £
 salgafood-api/src/main/java/com/algaworks/algafood/core/security/authorizationserver/AlgafoodSecurityProperties.java,3/6/36b13c58a7ccbe26e04e9e0633ffeabebbc9848a
+Å
+Qalgafood-api/src/main/java/com/algaworks/algafood/core/security/AlgaSecurity.java,1/4/14c1fca04085832c7ae0168571d9eae031186c53
+
+Oalgafood-api/src/main/java/com/algaworks/algafood/core/security/CorsConfig.java,5/9/59901a7bdbb4930e6f560010e2065b0d6a82a693
