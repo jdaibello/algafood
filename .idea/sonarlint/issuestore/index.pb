@@ -98,3 +98,11 @@ ialgafood-api/src/main/java/com/algaworks/algafood/infrastructure/service/report
 Valgafood-api/src/main/java/com/algaworks/algafood/domain/service/SaleQueryService.java,7/4/74c89d9172becc47addeba12012835cc6400b97e
 ƒ
 Salgafood-api/src/main/java/com/algaworks/algafood/core/openapi/SpringDocConfig.java,7/7/77bab54f217d267b0ee17654eac72549ea13c591
+š
+jalgafood-api/src/main/java/com/algaworks/algafood/infrastructure/service/email/EmailTemplateProcessor.java,c/7/c7bc4b2e98a11113054258d872e3e87ca3bfa855
+›
+kalgafood-api/src/main/java/com/algaworks/algafood/infrastructure/service/email/SmtpEmailSendingService.java,3/e/3eceb0cdb3bb5e2e72076f2a718b1c3672cb9ed0
+›
+kalgafood-api/src/main/java/com/algaworks/algafood/infrastructure/service/email/FakeEmailSendingService.java,8/3/8322793ad56a8a2f642fb0478ad8a90234bdc29e
+9
+	README.md,8/e/8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
